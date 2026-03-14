@@ -1,0 +1,131 @@
+% ============================================================================
+% CHAPTER 4: Anticipated Results and Contributions
+% ============================================================================
+\chapter{Expected Result and Contribution}
+\label{ch:contributions}
+
+\section{Scientific Contributions}
+\label{sec:scientific-contributions}
+
+This research is expected to have the following scientific contributions:
+
+\textbf{Novel application of learning automata to environmental monitoring:} Although learning automata have been used to image segmentation \citep{Cuevas2011} and sensor placement \citep{BenZvi2018}, this work is the first for satellite-based ecosystem monitoring. The blend of context-aware adaptation with the GLA principles takes the theory of Learning Automata into a new domain.
+
+\textbf{Empirical characterization of heuristic complementarity:} The experimental design will uncover which detection heuristics perform well under which environmental conditions, thus providing empirical evidence for (or against) the hypothesis that detection heuristics with diverse heuristic pools are better than specialized approaches.
+
+\textbf{Understanding of sparse feedback learning dynamics:} The sparse label experiments will characterize how learning efficiency degrades with label scarcity and delay, informing both theoretical understanding and practical system design.
+
+\section{Methodological Contributions}
+\label{sec:methodological-contributions}
+
+\textbf{Sparse label handling mechanism:} The buffering and delayed reward propagation mechanism provides a principled solution to a practical problem of many operational monitoring systems. The mechanism is sufficiently general to be applicable to other areas where asynchronous feedback is involved.
+
+\textbf{Context-aware adaptation framework:} The combination of memory-based similarity matching with global-local probability blending offers a template for systems which must generalize across heterogeneous conditions with limited site-specific calibration.
+
+\textbf{Multi-objective reward formulation:} The extension of LA to multi-objective rewards (accuracy + speed + uncertainty + carbon) addresses increasing concerns about the environmental cost of machine learning, and the need for well-calibrated uncertainty.
+
+\textbf{Evaluation protocols for adaptive systems:} The temporal, spatial and sparse label evaluation protocols can be used as benchmarks for future adaptive monitoring studies.
+
+\section{Practical Applications}
+\label{sec:practical-applications}
+
+\textbf{Kelp forest conservation in BC:} Based on this research, an operational monitoring system could provide:
+\begin{itemize}
+    \item Coastline-scale kelp extent maps updated weekly to monthly
+    \item Early warning of kelp forest decline in areas monitored
+    \item Quantitative monitoring of recovery after disturbance
+    \item Prioritization of areas for field survey or intervention
+    \item Data to inform site selection for kelp restoration efforts as demonstrated by the decision framework of \citet{GiraldoOspina2024}
+\end{itemize}
+
+\textbf{Decision support for fisheries management:} Kelp forests provide juvenile fish habitat; kelp extent information could be used to make fisheries management decisions for herring, rockfish and other species.
+
+\textbf{Climate change impact assessment:} Long-term kelp monitoring provides indicator data for the assessment of climate change impacts on temperate marine ecosystems.
+
+\textbf{Blue carbon accounting:} Kelp forests store lots of carbon; proper extent mapping aids blue carbon efforts, climate change planning.
+
+\textbf{Framework transferability:} The methodology developed for kelp monitoring should transfer to other spatially extensive and environmentally heterogeneous monitoring problems, such as seagrass meadows, coral reefs and terrestrial vegetation.
+
+
+% ============================================================================
+% CHAPTER 5: RESEARCH TIMELINE
+% ============================================================================
+\chapter{Research Timeline}
+\label{ch:timeline}
+
+\section{Phase 1: Groundwork and Data Preparation}
+
+\textbf{Tasks:}
+\begin{itemize}
+    \item Finish literature review and refine methodology
+    \item Obtain and preprocess Sentinel-2 imagery for BC coastal waters
+    \item Aggregate ground-truth labels from available sources
+    \item Implement baseline heuristics (Tier 1 spectral indices)
+    \item Establish evaluation infrastructure
+\end{itemize}
+
+\section{Phase 2: Development of Core Framework}
+
+\textbf{Tasks:}
+\begin{itemize}
+    \item Implement Component 1: Global Policy Learning using L$_\text{R-I}$
+    \item Implement Component 2: Context-Aware Local Adaptation
+    \item Implement Component 3: Sparse label handling
+    \item Integrate components into unifying framework
+    \item Create Tier 2 and Tier 3 heuristics
+    \item Validation on subset of data (initial)
+\end{itemize}
+
+\section{Phase 3: Experimental Evaluation}
+
+\textbf{Tasks:}
+\begin{itemize}
+    \item Execute Protocol A: Experiments on temporal adaptation
+    \item Implement Protocol B: Spatial adaptation experiments
+    \item Perform Protocol C: Sparse label simulation
+    \item Perform ablation studies
+    \item Examine results and improve methodology
+\end{itemize}
+
+\section{Phase 4: Extensions and Integration}
+
+\textbf{Tasks:}
+\begin{itemize}
+    \item Consider pursuit/estimator algorithm extensions
+    \item Explore multi-objective reward formulations
+    \item Establish indigenous integration of knowledge (Phase 1 relationship building)
+    \item Develop visualization and interpretation tools
+\end{itemize}
+
+\section{Phase 5: Thesis Completion}
+
+\textbf{Tasks:}
+\begin{itemize}
+    \item Synthesize results from experiments
+    \item Write thesis chapters
+    \item Prepare publications to be submitted to journals
+    \item Thesis defense and revisions
+\end{itemize}
+
+\section{Milestones Summary}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Milestone} & \textbf{Deliverable} & \textbf{Dependencies} \\
+\midrule
+M1 & Dataset and baselines ready & None \\
+M2 & Core framework functional & M1 \\
+M3 & Temporal experiments complete & M2 \\
+M4 & Spatial experiments finished & M3 \\
+M5 & Sparse label experiments complete & M3 \\
+M6 & Extensions implemented & M4, M5 \\
+M7 & Thesis draft complete & M6 \\
+M8 & Thesis defense & M7 \\
+\bottomrule
+\end{tabular}
+\caption{Research Milestones and Dependencies.
+\label{tab:milestones}
+\end{table}
+

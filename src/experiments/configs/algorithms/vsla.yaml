@@ -1,0 +1,15 @@
+# VSLA (Variable Structure Learning Automata) Configuration
+# Adaptive learning rate based on entropy - explores early, exploits late
+
+experiment:
+  name: "vsla_adaptive"
+  description: "VSLA with entropy-based adaptive learning rate"
+
+automaton:
+  type: "VSLA"
+  alpha_max: 0.1    # Maximum learning rate (high entropy)
+  alpha_min: 0.001  # Minimum learning rate (low entropy)
+  initial_prob: "uniform"
+
+training:
+  num_epochs: 20

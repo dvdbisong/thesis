@@ -1,0 +1,66 @@
+{
+  "random": {
+    "name": "random",
+    "iou": 0.05678445107751898,
+    "iou_std": 0.10184521180778056,
+    "f1": 0.09288775307987807,
+    "precision": 0.060366299290557424,
+    "recall": 0.4986272102520644,
+    "action_counts": {
+      "ndvi": 15,
+      "fai": 13,
+      "gndvi": 20,
+      "ensemble": 20
+    }
+  },
+  "fixed_ndvi": {
+    "name": "fixed_ndvi",
+    "heuristic": "ndvi",
+    "iou": 0.04301078335501196,
+    "iou_std": 0.0842625740450274,
+    "f1": 0.07238831128258781,
+    "precision": 0.044262487777558195,
+    "recall": 0.6453081181026221
+  },
+  "fixed_fai": {
+    "name": "fixed_fai",
+    "heuristic": "fai",
+    "iou": 0.007390750889126702,
+    "iou_std": 0.029952334169356398,
+    "f1": 0.013122763171429151,
+    "precision": 0.012391324983185351,
+    "recall": 0.06366674616849045
+  },
+  "fixed_gndvi": {
+    "name": "fixed_gndvi",
+    "heuristic": "gndvi",
+    "iou": 0.071145179079135,
+    "iou_std": 0.10826720898826346,
+    "f1": 0.11661393174135808,
+    "precision": 0.07550435850428631,
+    "recall": 0.5474781520558819
+  },
+  "fixed_ensemble": {
+    "name": "fixed_ensemble",
+    "heuristic": "ensemble",
+    "iou": 0.07191329484381483,
+    "iou_std": 0.11097200256189718,
+    "f1": 0.11723933012361046,
+    "precision": 0.07645871572610122,
+    "recall": 0.5438697146024782
+  },
+  "oracle": {
+    "name": "oracle",
+    "iou": 0.07651449755771136,
+    "iou_std": 0.11125748452233439,
+    "f1": 0.12521469040923133,
+    "precision": 0.08141122144621626,
+    "recall": 0.5895339273551912,
+    "best_heuristic_counts": {
+      "ndvi": 43,
+      "fai": 2,
+      "gndvi": 10,
+      "ensemble": 13
+    }
+  }
+}

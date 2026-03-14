@@ -1,0 +1,14 @@
+# LR-I (Linear Reward-Inaction) Configuration
+# Baseline automaton - only updates on reward, ignores penalty
+
+experiment:
+  name: "lri_baseline"
+  description: "LR-I automaton with default parameters"
+
+automaton:
+  type: "LR-I"
+  alpha: 0.01
+  initial_prob: "uniform"
+
+training:
+  num_epochs: 20

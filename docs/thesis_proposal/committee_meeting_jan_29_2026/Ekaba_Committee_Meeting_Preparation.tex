@@ -1,0 +1,2771 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{longtable}
+\usepackage{titlesec}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+
+\title{\textbf{PhD Committee Meeting Preparation Document}\\[0.5em]
+\large Comprehensive Talking Points, Facts, and Q\&A}
+\author{Ekaba Bisong\\University of Victoria}
+\date{January 29, 2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+% ============================================================================
+\section{Slide-by-Slide Detailed Content}
+% ============================================================================
+
+% ----------------------------------------------------------------------------
+\subsection{Slide 1: Title}
+% ----------------------------------------------------------------------------
+
+\textbf{Opening Statement (30 seconds):}
+
+``Good morning/afternoon. Thank you for taking the time to attend my PhD committee review meeting. My research focuses on developing a Learning Automata framework for adaptive kelp forest monitoring in British Columbia coastal waters. This work addresses a critical environmental monitoring challenge using principled machine learning techniques.''
+
+\textbf{Context to Set:}
+\begin{itemize}
+    \item This is a \textbf{committee review}, not the proposal defense
+    \item Purpose: Get feedback on research direction and progress
+    \item Supervisor: Dr. Neil Ernst (Computer Science)
+    \item Committee: Dr. Maycira Costa (Geography - remote sensing), Dr. Kevin Stanley (Computer Science - ML)
+\end{itemize}
+
+% ----------------------------------------------------------------------------
+\subsection{Slide 2: Motivation}
+% ----------------------------------------------------------------------------
+
+\textbf{Key Statistics to Memorize:}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Fact} & \textbf{Source} \\
+\midrule
+BC coastline length & 26,000+ km \\
+Some regions kelp loss & $>$70\% (Starko et al. 2024) \\
+Thermal threshold for kelp stress & 18--20$^\circ$C SST \\
+Sentinel-2 resolution & 10m spatial, 5-day revisit \\
+Primary species in BC & Bull kelp (\textit{Nereocystis luetkeana}) \\
+Bull kelp life cycle & Annual (recruits spring, dies after reproduction) \\
+Marine heatwave ``Blob'' & 2014--2016, caused widespread mortality \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Detailed Talking Points:}
+
+\textbf{Why Kelp Matters:}
+\begin{itemize}
+    \item \textbf{Productivity}: Net primary production of 500--1,000+ g C m$^{-2}$ year$^{-1}$ in dense stands---rivals tropical rainforests
+    \item \textbf{Ecosystem services}: (1) habitat for commercially important fish (herring, rockfish); (2) carbon sequestration; (3) coastal protection via wave attenuation; (4) nutrient cycling
+    \item \textbf{Cultural significance}: Coastal First Nations have sustained traditional kelp harvesting practices for millennia. Archaeological evidence shows human-kelp interactions spanning thousands of years.
+    \item \textbf{Species}: Bull kelp (\textit{Nereocystis luetkeana}) dominates BC. It's an \textbf{annual} species (unlike California's perennial giant kelp), making it especially sensitive to conditions during spring-summer growth.
+\end{itemize}
+
+\textbf{The Problem - Regional Variation:}
+\begin{itemize}
+    \item \textbf{Southern BC (thermal stress)}: Summer SST regularly exceeds 18--20$^\circ$C threshold. Berry et al. (2021) documented 63\% decline in South Puget Sound over 145 years.
+    \item \textbf{Northern BC (trophic cascades)}: Sea star wasting disease (2013--2017) eliminated sunflower stars (\textit{Pycnopodia helianthoides}), causing urchin population explosion and ``urchin barrens.''
+    \item \textbf{Key insight}: The \textbf{causes of decline are spatially heterogeneous}, meaning detection methods need to adapt to local conditions.
+\end{itemize}
+
+\textbf{Monitoring Challenge:}
+\begin{itemize}
+    \item \textbf{Spectral variability}: Kelp signature changes with water turbidity, sun glint, atmospheric conditions, tide height, and kelp physiological state.
+    \item \textbf{Algorithm failure modes}: Methods working under ideal conditions (calm water, low tide, minimal cloud) fail when conditions deviate.
+    \item \textbf{Label scarcity}: Ground-truth surveys are expensive, logistically challenging in remote areas, and cannot keep pace with satellite acquisition.
+\end{itemize}
+
+% ----------------------------------------------------------------------------
+\subsection{Slide 3: Problem Statement}
+% ----------------------------------------------------------------------------
+
+\textbf{Core Technical Challenge:}
+
+The fundamental tension is between:
+\begin{enumerate}
+    \item \textbf{Need for site-specific optimization}: Different environments need different detection strategies
+    \item \textbf{Difficulty obtaining labeled data}: Cannot get sufficient training data for every environmental context
+\end{enumerate}
+
+\textbf{Four Interconnected Problems:}
+
+\begin{enumerate}
+    \item \textbf{Environmental heterogeneity}:
+    \begin{itemize}
+        \item Mora-Soto et al. (2024) identified \textbf{4 distinct environmental clusters} in southern Salish Sea alone
+        \item Each cluster shows different kelp growth patterns and spectral characteristics
+        \item Bull kelp in exposed outer coast behaves differently from protected inland waters
+    \end{itemize}
+
+    \item \textbf{Limited labeled data}:
+    \begin{itemize}
+        \item Deep learning requires 1000s--10000s of labeled examples
+        \item Ground truth comes from: ShoreZone photography, WorldView classifications, in-situ surveys, citizen science
+        \item Labels arrive \textbf{irregularly and with delay} (days to months after imagery)
+    \end{itemize}
+
+    \item \textbf{Sparse and delayed feedback}:
+    \begin{itemize}
+        \item Traditional supervised learning assumes dense, contemporaneous labels
+        \item In operational monitoring, you might get validation for 1--10\% of predictions
+        \item Delay can be 1 day to 6 months
+    \end{itemize}
+
+    \item \textbf{TEK integration}:
+    \begin{itemize}
+        \item Indigenous communities have observed kelp dynamics for millennia
+        \item Integration must respect data sovereignty and community protocols
+    \end{itemize}
+\end{enumerate}
+
+\textbf{Why Learning Automata?}
+\begin{itemize}
+    \item LA provides mathematically grounded framework for learning optimal actions from sparse feedback
+    \item Unlike supervised learning, LA only needs sparse reward signals to shift probability mass
+    \item The ``inaction'' property: missing labels leave probabilities unchanged (graceful handling of sparse feedback)
+    \item Proven convergence guarantees ($\epsilon$-optimal)
+\end{itemize}
+
+% ----------------------------------------------------------------------------
+\subsection{Slide 4: Research Questions}
+% ----------------------------------------------------------------------------
+
+\textbf{RQ1 (Adaptation with Limited Labels):}
+\begin{itemize}
+    \item \textbf{Full question}: ``How can we adapt kelp segmentation to diverse environmental conditions without extensive labeled data per region?''
+    \item \textbf{Hypothesis}: LA can achieve effective adaptation using \textbf{10--100$\times$ fewer labels} than supervised approaches
+    \item \textbf{Mechanism}: L$_{\text{R-I}}$ only needs sparse binary/continuous feedback to shift probability mass toward better-performing heuristics
+    \item \textbf{Validation}: Compare label efficiency curves (performance vs. number of labels) between LA, supervised CNN, online learning baseline
+\end{itemize}
+
+\textbf{RQ2 (Heterogeneous Region Coverage):}
+\begin{itemize}
+    \item \textbf{Full question}: ``Can adaptive selection of detection methods enable effective monitoring across heterogeneous regions where single models fail?''
+    \item \textbf{Hypothesis}: Different heuristics have \textbf{complementary failure modes}:
+    \begin{itemize}
+        \item Spectral indices: fail under turbid conditions, robust to atmospheric variation
+        \item Deep learning: capture complex patterns, can overfit to training distribution
+    \end{itemize}
+    \item \textbf{Validation}: Stratify test set by environmental conditions (turbidity quartiles, SST ranges), compare LA vs. best single heuristic vs. oracle
+\end{itemize}
+
+\textbf{RQ3 (Sparse Label Learning):}
+\begin{itemize}
+    \item \textbf{Full question}: ``How can a monitoring system improve its performance during deployment using sparse, asynchronously-arriving validation labels?''
+    \item \textbf{Hypothesis}: Buffering + delayed reward propagation enables effective learning despite asynchronous feedback
+    \item \textbf{Mechanism}: Temporal decay $\gamma^{\Delta t}$ downweights stale feedback that may no longer reflect current conditions
+    \item \textbf{Validation}: Simulate different delay distributions (days/weeks/months), compare LA vs. baseline discarding delayed feedback vs. baseline treating delayed as immediate
+\end{itemize}
+
+\textbf{RQ4 (TEK Integration):}
+\begin{itemize}
+    \item \textbf{Full question}: ``How can Traditional Ecological Knowledge from coastal First Nations be integrated into automated kelp forest monitoring?''
+    \item \textbf{Hypothesis}: TEK provides complementary temporal depth, spatial resolution, and contextual understanding
+    \item \textbf{Integration points}: (1) Site importance weights $w_s$ for prioritizing culturally significant areas; (2) temporal priors from traditional calendars; (3) elder validation of ambiguous detections
+    \item \textbf{Key principle}: Two-Eyed Seeing (Etuaptmumk) - drawing on strengths of both indigenous and Western knowledge systems
+\end{itemize}
+
+% ----------------------------------------------------------------------------
+\subsection{Slide 5: Learning Automata Background}
+% ----------------------------------------------------------------------------
+
+\textbf{Mathematical Framework to Know:}
+
+\textbf{Environment} $E = \{\alpha, c, \beta\}$:
+\begin{itemize}
+    \item $\alpha = \{\alpha_1, \alpha_2, \ldots, \alpha_r\}$: Set of $r$ input actions (our 12 heuristics)
+    \item $\beta$: Feedback response. Three models:
+    \begin{itemize}
+        \item \textbf{P-model}: Binary $\beta \in \{0, 1\}$ (reward/penalty)
+        \item \textbf{Q-model}: Finite discrete values in $[0,1]$
+        \item \textbf{S-model}: Continuous random variable in $[0,1]$ --- \textbf{we use this} (IoU, F1 are continuous)
+    \end{itemize}
+    \item $c = \{c_1, c_2, \ldots, c_r\}$: Penalty probabilities $c_i = P(\beta=1 | \alpha_i)$
+\end{itemize}
+
+\textbf{Automaton} $A = \{\Phi, \alpha, \beta, F, G\}$:
+\begin{itemize}
+    \item $\Phi$: Internal states
+    \item $F$: State transition function $\phi(n+1) = F[\phi(n), \beta(n)]$
+    \item $G$: Output mapping (action selection)
+\end{itemize}
+
+\textbf{L$_{\text{R-I}}$ Update Equations:}
+
+When action $\alpha_i$ selected and receives reward ($\beta = 0$):
+\begin{align}
+p_i(n+1) &= p_i(n) + \lambda[1 - p_i(n)] \\
+p_j(n+1) &= (1-\lambda) p_j(n), \quad j \neq i
+\end{align}
+When penalty received ($\beta = 1$): \textbf{No change} (inaction)
+
+\textbf{Key Properties:}
+\begin{itemize}
+    \item $\lambda \in (0, 1)$: Learning rate
+    \item \textbf{$\epsilon$-optimal}: Probability of converging to optimal action approaches 1 as $\lambda \to 0$
+    \item \textbf{Absorbing Markov chain}: Converges to one of $r$ absorbing states (unit vectors)
+\end{itemize}
+
+\textbf{For S-model (our case):}
+\begin{align}
+p_i(n+1) &= p_i(n) + \lambda \cdot R \cdot [1 - p_i(n)] \\
+p_j(n+1) &= p_j(n) - \lambda \cdot R \cdot p_j(n), \quad j \neq i
+\end{align}
+where $R \in [0,1]$ is the continuous reward (IoU score).
+
+\textbf{Non-Stationary Environments:}
+\begin{itemize}
+    \item \textbf{MSE (Markovian Switching)}: Environment states form a Markov chain. Models \textbf{interannual variability} (unpredictable regime shifts).
+    \item \textbf{PSE (Periodic Switching)}: Environment cycles through $k$ states every $T$ events. Models \textbf{seasonal dynamics} (kelp phenology).
+\end{itemize}
+
+\textbf{Historical Context:}
+\begin{itemize}
+    \item Originated: Soviet Union, 1960s (Tsetlin)
+    \item My prior work: Object Migration Automata (OMA) for adaptive data structures (Bisong \& Oommen 2019--2021)
+    \item Applications: Image segmentation, classifier selection, sensor placement, wireless networks
+\end{itemize}
+
+% ----------------------------------------------------------------------------
+\subsection{Slide 6: Framework Architecture}
+% ----------------------------------------------------------------------------
+
+\textbf{High-Level Flow:}
+
+\begin{enumerate}
+    \item \textbf{Input}: Satellite tile $\mathbf{x}_t \in \mathbb{R}^{B \times H \times W}$ where $B=5$ bands, $H \times W = 256 \times 256$ pixels
+    \item \textbf{Context extraction}: $\mathbf{c}_t \in \mathbb{R}^{D}$ encoding environmental conditions
+    \item \textbf{Heuristic selection}: LA samples heuristic $h_i$ from probability vector $\mathbf{p}$
+    \item \textbf{Prediction}: Apply heuristic to get $\hat{\mathbf{y}}_t \in \{0,1\}^{H \times W}$
+    \item \textbf{Buffering}: Store prediction until validation label arrives
+    \item \textbf{Update}: When label $\mathbf{y}_t$ arrives, compute reward $R = \text{IoU}(\hat{\mathbf{y}}_t, \mathbf{y}_t)$, update LA
+\end{enumerate}
+
+\textbf{Environment-Automaton Interaction:}
+\begin{itemize}
+    \item \textbf{Environment}: The kelp detection problem instance (tile + context)
+    \item \textbf{Action}: Selected heuristic from pool
+    \item \textbf{Response}: Delayed feedback $\beta(n) \in [0,1]$ (IoU score when label arrives)
+\end{itemize}
+
+\textbf{Why This Architecture:}
+\begin{itemize}
+    \item Decouples learning (LA) from prediction (heuristics)
+    \item Heuristics can be pre-trained, frozen during deployment
+    \item LA adapts the \textbf{selection policy}, not the heuristics themselves
+    \item Handles any heuristic that produces binary segmentation mask
+\end{itemize}
+
+% ----------------------------------------------------------------------------
+\subsection{Slide 7: Framework Components}
+% ----------------------------------------------------------------------------
+
+\textbf{Component 1: Global Policy Learning}
+
+\begin{itemize}
+    \item \textbf{What it does}: Maintains probability vector $\mathbf{p} = [p_1, \ldots, p_{12}]$ over 12 heuristics
+    \item \textbf{Initialization}: Uniform $p_i(0) = 1/12$
+    \item \textbf{Update}: L$_{\text{R-I}}$ with S-model rewards (IoU scores)
+    \item \textbf{Key insight}: This is the ``global'' policy that applies everywhere. It learns which heuristics are generally better.
+    \item \textbf{Multi-objective extension}:
+    \[
+    R_{\text{total}} = w_1 \cdot R_{\text{IoU}} + w_2 \cdot R_{\text{speed}} + w_3 \cdot R_{\text{uncertainty}} + w_4 \cdot R_{\text{carbon}}
+    \]
+\end{itemize}
+
+\textbf{Heuristic Pool (12 methods in 3 tiers):}
+
+\textbf{Tier 1 - Spectral Indices (4):}
+\begin{enumerate}
+    \item NDVI threshold: $(B_{\text{NIR}} - B_{\text{Red}}) / (B_{\text{NIR}} + B_{\text{Red}}) > \tau$
+    \item FAI threshold: Floating Algae Index using red-edge bands
+    \item GNDVI threshold: Green NDVI (green instead of red)
+    \item Multi-index ensemble: Majority vote of above 3
+\end{enumerate}
+
+\textbf{Tier 2 - Classical ML (4):}
+\begin{enumerate}
+    \setcounter{enumi}{4}
+    \item Random Forest: 100-tree ensemble on spectral features
+    \item Gradient Boosting: XGBoost classifier
+    \item SVM with RBF kernel
+    \item K-means clustering + class assignment
+\end{enumerate}
+
+\textbf{Tier 3 - Deep Learning (4):}
+\begin{enumerate}
+    \setcounter{enumi}{8}
+    \item U-Net (basic): ResNet-18 encoder
+    \item U-Net (deep): ResNet-50 encoder
+    \item DeepLab v3+: Atrous spatial pyramid pooling
+    \item Lightweight U-Net: MobileNet encoder (fast inference)
+\end{enumerate}
+
+\textbf{Component 2: Context-Aware Local Adaptation}
+
+\begin{itemize}
+    \item \textbf{What it does}: Enables generalization across heterogeneous conditions by learning context-dependent policies
+    \item \textbf{Based on}: Generalized Learning Automata (GLA) principles
+\end{itemize}
+
+\textbf{Context Feature Vector $\mathbf{c} \in \mathbb{R}^D$:}
+\begin{itemize}
+    \item \textbf{Spectral}: Mean, variance of each band
+    \item \textbf{Spatial}: Texture features (entropy, homogeneity)
+    \item \textbf{Temporal}: Day of year, time since last valid observation
+    \item \textbf{Environmental}: SST (from NOAA CoralTemp), tide height (CHS predictions), solar zenith angle
+    \item \textbf{Geographic}: Latitude, longitude, distance to shore
+\end{itemize}
+
+\textbf{Memory Bank + k-NN Retrieval:}
+\begin{itemize}
+    \item Memory bank $\mathcal{M} = \{(\mathbf{c}_j, \mathbf{p}_j, R_j)\}_{j=1}^{M}$
+    \item Use FAISS for efficient approximate nearest neighbor search
+    \item Retrieve $k$ most similar contexts: $\mathcal{N}_k(\mathbf{c}) = \text{arg-}k\text{-min}_{\mathbf{c}_j} \|\mathbf{c} - \mathbf{c}_j\|_2$
+\end{itemize}
+
+\textbf{Local Probability Estimation:}
+\[
+\mathbf{p}_{\text{local}}(\mathbf{c}) = \frac{\sum_{j \in \mathcal{N}_k(\mathbf{c})} w_j \cdot R_j \cdot \mathbf{p}_j}{\sum_{j \in \mathcal{N}_k(\mathbf{c})} w_j \cdot R_j}
+\]
+where $w_j = \exp(-\|\mathbf{c} - \mathbf{c}_j\|_2^2 / \sigma^2)$
+
+\textbf{Global-Local Blending:}
+\[
+\mathbf{p}_{\text{final}}(\mathbf{c}) = \alpha(\mathbf{c}) \cdot \mathbf{p}_{\text{global}} + (1 - \alpha(\mathbf{c})) \cdot \mathbf{p}_{\text{local}}(\mathbf{c})
+\]
+\begin{itemize}
+    \item $\alpha \to 1$ when few similar entries exist (favor global)
+    \item $\alpha \to 0$ when many similar entries with consistent performance (favor local)
+\end{itemize}
+
+\textbf{Component 3: Sparse Label Handling}
+
+\begin{itemize}
+    \item \textbf{What it does}: Handles asynchronous arrival of validation labels
+\end{itemize}
+
+\textbf{Prediction Buffer:}
+\[
+\mathcal{B} = \{(t_j, \mathbf{x}_j, \mathbf{c}_j, i_j, \hat{\mathbf{y}}_j)\}
+\]
+Stores: timestamp, input tile, context, selected heuristic index, prediction
+
+\textbf{Hash Map Lookup:}
+$\mathcal{L}: (\text{location}, \text{time}) \to \text{buffer\_index}$ for O(1) lookup
+
+\textbf{Label Arrival Processing:}
+\begin{enumerate}
+    \item Look up entry in buffer using $\mathcal{L}(\ell, t)$
+    \item Compute reward $R = \text{IoU}(\hat{\mathbf{y}}, \mathbf{y})$
+    \item Update Component 1 global policy with $(i, R)$
+    \item Update Component 2 memory bank with $(\mathbf{c}, \mathbf{p}_{\text{final}}, R)$
+    \item Remove entry from buffer
+\end{enumerate}
+
+\textbf{Buffer Management:}
+\begin{itemize}
+    \item Entries older than $T_{\text{max}} = 6$ months removed without update
+    \item Assumption: conditions changed too much for reward to be informative
+\end{itemize}
+
+\textbf{Temporal Decay:}
+\[
+R_{\text{effective}} = R \cdot \gamma^{\delta}
+\]
+where $\delta = t_{\text{label}} - t_{\text{prediction}}$ (delay in days), $\gamma < 1$ is decay factor (e.g., 0.99)
+
+% ----------------------------------------------------------------------------
+\subsection{Slide 8: Experimental Design}
+% ----------------------------------------------------------------------------
+
+\textbf{Dataset Specifications:}
+
+\textbf{Imagery - Sentinel-2 Level-2A:}
+\begin{itemize}
+    \item \textbf{Spatial resolution}: 10m (bands 2,3,4,8), 20m (band 5, resampled to 10m)
+    \item \textbf{Temporal coverage}: 2017--2024 (8 years)
+    \item \textbf{Revisit time}: 5 days (twin satellite constellation)
+    \item \textbf{Tile size}: 256 $\times$ 256 pixels = 2.56 km$^2$
+    \item \textbf{Bands used}: B2 (blue), B3 (green), B4 (red), B5 (red-edge), B8 (NIR)
+    \item \textbf{Preprocessing}: Cloud/shadow masking (Scene Classification Layer), land masking (vector shoreline)
+\end{itemize}
+
+\textbf{Ground Truth Labels:}
+\begin{itemize}
+    \item \textbf{ShoreZone}: Oblique photography interpretations (historical baseline, updated every 10--15 years)
+    \item \textbf{WorldView}: High-resolution (1.2--2.6m) classifications where available. Schroeder (2020) achieved 86.9\% accuracy in Cowichan Bay.
+    \item \textbf{In-situ surveys}: SCUBA transects, shoreline surveys from research partners
+    \item \textbf{Citizen science}: iNaturalist, kelp-specific projects
+\end{itemize}
+
+\textbf{Environmental Context Data:}
+\begin{itemize}
+    \item \textbf{SST}: NOAA CoralTemp product
+    \item \textbf{Tide height}: Canadian Hydrographic Service (CHS) tidal predictions
+    \item \textbf{Ocean color}: Sentinel-3 OLCI (chlorophyll, turbidity)
+\end{itemize}
+
+\textbf{Three Evaluation Protocols:}
+
+\textbf{Protocol A - Temporal Adaptation:}
+\begin{itemize}
+    \item Train: 2017--2020 (4 years)
+    \item Validate: 2021--2022 (2 years)
+    \item Test: 2023--2024 (2 years)
+    \item Tests adaptation to interannual variability and climate anomalies
+\end{itemize}
+
+\textbf{Protocol B - Spatial Adaptation:}
+\begin{itemize}
+    \item Leave-one-region-out cross-validation
+    \item Regions: Southern Vancouver Island, Central Coast, Northern Coast, Haida Gwaii
+    \item Tests generalization along geographic and environmental gradients
+\end{itemize}
+
+\textbf{Protocol C - Sparse Label Simulation:}
+\begin{itemize}
+    \item Withhold varying fractions of labels: 10\%, 50\%, 90\%
+    \item Introduce variable delay: 1 day to 6 months (uniform, exponential distributions)
+    \item Measures learning efficiency as function of label availability
+\end{itemize}
+
+\textbf{Metrics:}
+
+\textbf{Detection Performance:}
+\begin{itemize}
+    \item IoU (Intersection over Union): $\frac{|P \cap G|}{|P \cup G|}$
+    \item F1-score: $\frac{2 \cdot \text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}$
+    \item Precision: $\frac{TP}{TP + FP}$
+    \item Recall: $\frac{TP}{TP + FN}$
+    \item AUC (for probabilistic outputs)
+\end{itemize}
+
+\textbf{Adaptation Metrics:}
+\begin{itemize}
+    \item \textbf{Regret}: Cumulative difference from oracle that always selects best heuristic
+    \item \textbf{Convergence rate}: Number of labels needed to achieve 90\% of asymptotic performance
+    \item \textbf{Stability}: Variance in heuristic selection probabilities over time
+\end{itemize}
+
+\textbf{Computational Efficiency:}
+\begin{itemize}
+    \item Inference time per tile
+    \item Memory footprint
+    \item Carbon cost (CodeCarbon)
+\end{itemize}
+
+\textbf{Ablation Studies:}
+\begin{enumerate}
+    \item Without Component 2: Global policy only (no context-aware adaptation)
+    \item Without Component 3: Assume immediate labels (no delayed reward handling)
+    \item Without pursuit/estimator extensions: Basic L$_{\text{R-I}}$ only
+    \item Heuristic pool ablations: Remove each tier to assess contribution
+    \item Context feature ablations: Subset of context features to identify most informative
+\end{enumerate}
+
+% ----------------------------------------------------------------------------
+\subsection{Slide 9: Expected Contributions}
+% ----------------------------------------------------------------------------
+
+\textbf{Scientific Contributions:}
+\begin{enumerate}
+    \item \textbf{Novel LA application to environmental monitoring}: First application to satellite-based ecosystem monitoring. Prior LA applications: image segmentation (Cuevas 2011), sensor placement (Ben-Zvi 2018), wireless networks (Nicopolitidis 2011).
+
+    \item \textbf{Empirical characterization of heuristic complementarity}: Will provide evidence for/against hypothesis that diverse heuristic pools outperform specialized approaches.
+
+    \item \textbf{Understanding sparse feedback learning dynamics}: Characterize how learning efficiency degrades with label scarcity and delay.
+\end{enumerate}
+
+\textbf{Methodological Contributions:}
+\begin{enumerate}
+    \item \textbf{Sparse label handling mechanism}: Buffering + delayed reward propagation. General enough for other domains with asynchronous feedback.
+
+    \item \textbf{Context-aware adaptation framework}: Memory-based similarity matching + global-local blending. Template for systems that must generalize across heterogeneous conditions.
+
+    \item \textbf{Multi-objective reward formulation}: Accuracy + speed + uncertainty + carbon. Addresses environmental cost of ML.
+
+    \item \textbf{Evaluation protocols}: Temporal, spatial, sparse label protocols as benchmarks for future adaptive monitoring studies.
+
+    \item \textcolor{red}{\textbf{Multi-Source Environmental Data Fusion Framework (KEY CONTRIBUTION - SEPARATE PAPER):}} Systematic methodology for fusing heterogeneous data sources (Sentinel-2 at 10m, SST at 5km, Sentinel-3 at 300m, tide stations, bathymetry) with principled handling of resolution mismatches, temporal alignment, and missing data. This is a \textbf{standalone methodological contribution} applicable to any coastal ecosystem monitoring application.
+\end{enumerate}
+
+\textbf{Practical Applications:}
+\begin{itemize}
+    \item Coastline-scale kelp extent maps (weekly to monthly updates)
+    \item Early warning of kelp forest decline
+    \item Monitoring recovery after disturbance
+    \item Prioritization for field survey or intervention
+    \item Blue carbon accounting
+    \item Framework transferable to seagrass, coral reefs, terrestrial vegetation
+\end{itemize}
+
+\vspace{0.5em}
+\fbox{\parbox{0.95\textwidth}{
+\textbf{REVISED PUBLICATION PLAN (5 Papers):}
+\begin{enumerate}
+    \item \textbf{Paper 1 (RQ1):} Core LA Framework for Adaptive Kelp Detection
+    \item \textbf{Paper 2 (RQ2):} Context-Aware Heuristic Selection Across Heterogeneous Environments
+    \item \textbf{Paper 3 (RQ3):} Learning from Sparse and Delayed Labels in Environmental Monitoring
+    \item \textcolor{red}{\textbf{Paper 4 (NEW - Data Fusion):} Multi-Source Environmental Data Fusion for Coastal Monitoring: Handling Resolution Mismatches and Missing Data}
+    \item \textbf{Paper 5 (RQ4):} TEK Integration Framework for Kelp Forest Monitoring
+\end{enumerate}
+}}
+
+% ----------------------------------------------------------------------------
+\subsection{Slide 10: Summary}
+% ----------------------------------------------------------------------------
+
+\textbf{Key Takeaways (30-second version):}
+
+``My research addresses the challenge of adaptive kelp monitoring with limited labels and heterogeneous conditions. The solution is a Learning Automata framework with three components: global policy learning using L$_{\text{R-I}}$, context-aware local adaptation using memory-based similarity matching, and sparse label handling with temporal decay. I will validate this through four research questions with rigorous experimental design across temporal, spatial, and sparse label dimensions. The target is October 2027 completion with \textbf{five publications}. The impact is scalable monitoring supporting kelp conservation across BC's 26,000+ km coastline.''
+
+% ============================================================================
+\section{Dataset Usage in the LA Framework - Complete Details}
+% ============================================================================
+
+This section provides a comprehensive explanation of exactly how each data element flows through the Learning Automata framework. This is critical for the committee to understand the concrete data requirements and processing pipeline.
+
+% ----------------------------------------------------------------------------
+\subsection{Overview: Three Data Streams}
+% ----------------------------------------------------------------------------
+
+The framework requires three distinct data streams, each serving a specific purpose:
+
+\begin{center}
+\begin{tabular}{p{3cm}p{4cm}p{5cm}}
+\toprule
+\textbf{Data Stream} & \textbf{Source} & \textbf{Role in Framework} \\
+\midrule
+Satellite Imagery & Sentinel-2 Level-2A & Input to heuristics for kelp prediction \\
+Environmental Context & Multiple sources (NOAA, CHS, derived) & Determines which heuristic to select \\
+Ground Truth Labels & Surveys, WorldView, citizen science & Provides reward signal for LA learning \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ----------------------------------------------------------------------------
+\subsection{Data Stream 1: Satellite Imagery (Input to Heuristics)}
+% ----------------------------------------------------------------------------
+
+\textbf{What it is:} Sentinel-2 multispectral satellite imagery covering BC coastal waters.
+
+\textbf{Source:} European Space Agency (ESA) Copernicus program, freely available via:
+\begin{itemize}
+    \item Google Earth Engine (GEE) - primary access method
+    \item Copernicus Open Access Hub - alternative
+    \item AWS Open Data Registry - for bulk download
+\end{itemize}
+
+\textbf{Specifications:}
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Product Level & Level-2A (surface reflectance, atmospherically corrected) \\
+Spatial Resolution & 10m (B2, B3, B4, B8), 20m (B5, resampled to 10m) \\
+Temporal Resolution & 5 days (Sentinel-2A + 2B constellation) \\
+Spectral Bands Used & B2 (490nm blue), B3 (560nm green), B4 (665nm red), \\
+ & B5 (705nm red-edge), B8 (842nm NIR) \\
+Tile Size & 256 $\times$ 256 pixels = 2.56 km $\times$ 2.56 km \\
+Archive Period & 2017--2024 (8 years) \\
+Geographic Extent & BC coastal zone (approximately 1 km inland to 5 km offshore) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Preprocessing Pipeline:}
+\begin{enumerate}
+    \item \textbf{Cloud/Shadow Masking}: Use Scene Classification Layer (SCL) from Level-2A product
+    \begin{itemize}
+        \item Remove pixels classified as: cloud (high/medium/low probability), cloud shadow, cirrus
+        \item Retain only: water, vegetation, not vegetated, unclassified
+    \end{itemize}
+
+    \item \textbf{Land Masking}: Apply vector shoreline from BC Geographic Warehouse
+    \begin{itemize}
+        \item Buffer 100m inland to capture intertidal zone
+        \item Purpose: Focus on water pixels where kelp can occur
+    \end{itemize}
+
+    \item \textbf{Quality Filtering}: Reject tiles with $>$30\% masked pixels
+
+    \item \textbf{Tiling}: Extract 256$\times$256 pixel tiles along coastline
+    \begin{itemize}
+        \item 50\% overlap between adjacent tiles for continuity
+        \item Each tile tagged with: center lat/lon, acquisition timestamp, tile ID
+    \end{itemize}
+
+    \item \textbf{Normalization}: Scale reflectance values to [0, 1] range
+\end{enumerate}
+
+\textbf{How imagery enters the framework:}
+\begin{enumerate}
+    \item Preprocessed tile $\mathbf{x}_t \in \mathbb{R}^{5 \times 256 \times 256}$ arrives with metadata (timestamp $t$, location $\ell$)
+    \item Tile is passed to the \textbf{selected heuristic} $h_i$ for prediction
+    \item Heuristic outputs binary mask $\hat{\mathbf{y}}_t \in \{0,1\}^{256 \times 256}$
+    \item The LA does NOT see the raw imagery---only the heuristics process pixels
+\end{enumerate}
+
+\textbf{Data Volume Estimates:}
+\begin{itemize}
+    \item BC coastline: 26,000 km
+    \item Coastal zone tiles: $\sim$4,000 tiles per acquisition
+    \item Acquisitions per year: $\sim$73 (5-day revisit)
+    \item Usable fraction (after cloud filtering): $\sim$30\%
+    \item Usable tiles per year: $\sim$88,000
+    \item 8-year archive: $\sim$700,000 tile-observations
+    \item Storage: $\sim$50 GB (compressed) for all bands
+\end{itemize}
+
+% ----------------------------------------------------------------------------
+\subsection{Data Stream 2: Environmental Context Features}
+% ----------------------------------------------------------------------------
+
+\textbf{Purpose:} Context features enable the LA to learn \textit{which heuristic works best under which conditions}. Without context, the LA can only learn a single global policy. With context, it can adapt to local conditions.
+
+\textbf{The key insight:} A heuristic that works well in clear water may fail in turbid water. By encoding environmental conditions as features, the memory bank can store ``in turbid conditions, heuristic X worked well'' and retrieve this knowledge when similar conditions occur.
+
+\subsubsection{Context Feature Categories and Sources}
+
+\textbf{Category 1: Spectral Features (Derived from Imagery)}
+
+These are computed directly from the satellite tile $\mathbf{x}_t$:
+
+\begin{center}
+\begin{tabular}{p{3.5cm}p{4cm}p{4.5cm}}
+\toprule
+\textbf{Feature} & \textbf{Computation} & \textbf{Why It Matters} \\
+\midrule
+Mean reflectance (per band) & $\mu_b = \frac{1}{N}\sum_{i} x_{b,i}$ for each band $b$ & Indicates water clarity, atmospheric conditions \\
+Variance reflectance (per band) & $\sigma^2_b = \frac{1}{N}\sum_i (x_{b,i} - \mu_b)^2$ & High variance = heterogeneous scene (mixed kelp/water) \\
+NIR/Red ratio & $\mu_{\text{NIR}} / \mu_{\text{Red}}$ & Proxy for vegetation presence \\
+Blue/Green ratio & $\mu_{\text{Blue}} / \mu_{\text{Green}}$ & Water turbidity indicator \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Total spectral features:} 5 means + 5 variances + 2 ratios = \textbf{12 features}
+
+\textbf{Category 2: Spatial Texture Features (Derived from Imagery)}
+
+Computed using Gray-Level Co-occurrence Matrix (GLCM) on the NIR band:
+
+\begin{center}
+\begin{tabular}{p{3cm}p{4.5cm}p{4.5cm}}
+\toprule
+\textbf{Feature} & \textbf{Definition} & \textbf{Why It Matters} \\
+\midrule
+Entropy & $-\sum_{i,j} P_{i,j} \log P_{i,j}$ & High entropy = complex texture (kelp canopy) \\
+Homogeneity & $\sum_{i,j} \frac{P_{i,j}}{1 + |i-j|}$ & High homogeneity = uniform (open water) \\
+Contrast & $\sum_{i,j} (i-j)^2 P_{i,j}$ & Edge strength indicator \\
+Correlation & Normalized correlation of GLCM & Texture directionality \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Total texture features:} \textbf{4 features}
+
+\textbf{Category 3: Temporal Features (Derived from Metadata)}
+
+\begin{center}
+\begin{tabular}{p{4cm}p{4cm}p{4cm}}
+\toprule
+\textbf{Feature} & \textbf{Source} & \textbf{Why It Matters} \\
+\midrule
+Day of year (DOY) & Timestamp $t$ & Kelp phenology is seasonal (peak in summer) \\
+Days since last observation & $t - t_{\text{prev}}$ at same location & Data continuity indicator \\
+Year & Timestamp $t$ & Interannual variability (e.g., heatwave years) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Total temporal features:} \textbf{3 features}
+
+\textbf{Category 4: Environmental Features (External Data Sources)}
+
+These require auxiliary datasets matched to the tile's location and time:
+
+\begin{center}
+\begin{tabular}{p{3.5cm}p{4cm}p{4.5cm}}
+\toprule
+\textbf{Feature} & \textbf{Source \& Access} & \textbf{Why It Matters} \\
+\midrule
+Sea Surface Temperature (SST) & NOAA CoralTemp (5km, daily). Access via ERDDAP API & Kelp stressed above 18--20$^\circ$C \\
+Tide Height & CHS Tidal Predictions. Access via Fisheries \& Oceans API & Kelp visibility varies with tide \\
+Chlorophyll-a & Sentinel-3 OLCI (300m, daily). Access via GEE & Proxy for water productivity \\
+Turbidity (Kd490) & Sentinel-3 OLCI & Water clarity affects spectral signature \\
+Solar Zenith Angle & Computed from lat/lon/time & Sun glint varies with sun angle \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Total environmental features:} \textbf{5 features}
+
+\textbf{Category 5: Geographic Features (Derived from Location)}
+
+\begin{center}
+\begin{tabular}{p{3.5cm}p{4cm}p{4.5cm}}
+\toprule
+\textbf{Feature} & \textbf{Source} & \textbf{Why It Matters} \\
+\midrule
+Latitude & Tile center coordinate & North-south environmental gradient \\
+Longitude & Tile center coordinate & East-west exposure gradient \\
+Distance to shore & Computed from shoreline vector & Kelp occurs near shore \\
+Fetch (wave exposure) & Precomputed from bathymetry & Exposed vs. sheltered sites \\
+Depth (bathymetry) & CHS bathymetry dataset & Kelp needs substrate within depth range \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Total geographic features:} \textbf{5 features}
+
+\subsubsection{Complete Context Vector}
+
+\textbf{Total dimension:} $D = 12 + 4 + 3 + 5 + 5 = \mathbf{29}$ features
+
+The context vector for tile $\mathbf{x}_t$ at location $\ell$ and time $t$ is:
+
+\[
+\mathbf{c}_t = [\underbrace{\mu_{B2}, \ldots, \sigma^2_{B8}, r_1, r_2}_{\text{12 spectral}}, \underbrace{H, \text{Hom}, C, \text{Cor}}_{\text{4 texture}}, \underbrace{\text{DOY}, \Delta t, Y}_{\text{3 temporal}}, \underbrace{\text{SST}, h_{\text{tide}}, \text{Chl}, K, \theta}_{\text{5 environmental}}, \underbrace{\phi, \lambda, d_s, F, z}_{\text{5 geographic}}]
+\]
+
+\subsubsection{Context Feature Acquisition Pipeline}
+
+\textbf{When a new tile arrives, the following happens:}
+
+\begin{enumerate}
+    \item \textbf{Spectral/Texture Features} (computed on-the-fly):
+    \begin{itemize}
+        \item Input: Raw tile $\mathbf{x}_t$
+        \item Computation: NumPy operations for statistics, scikit-image for GLCM
+        \item Time: $<$100 ms per tile
+    \end{itemize}
+
+    \item \textbf{Temporal Features} (from metadata):
+    \begin{itemize}
+        \item Input: Timestamp $t$
+        \item Computation: Date parsing, lookup of previous observation time
+        \item Time: $<$1 ms
+    \end{itemize}
+
+    \item \textbf{Environmental Features} (from cached external data):
+    \begin{itemize}
+        \item \textbf{Pre-download strategy}: Download SST, tide, ocean color for entire study period at start
+        \item \textbf{Storage}: NetCDF files indexed by date and lat/lon grid
+        \item \textbf{Lookup}: Bilinear interpolation to tile center location
+        \item Time: $<$10 ms per tile (from local cache)
+    \end{itemize}
+
+    \item \textbf{Geographic Features} (from precomputed layers):
+    \begin{itemize}
+        \item \textbf{Pre-compute strategy}: Create raster layers for distance-to-shore, fetch, bathymetry
+        \item \textbf{Storage}: GeoTIFF files covering BC coastal zone
+        \item \textbf{Lookup}: Direct pixel lookup based on tile center
+        \item Time: $<$5 ms per tile
+    \end{itemize}
+
+    \item \textbf{Normalization}:
+    \begin{itemize}
+        \item Z-score normalization: $c_i' = (c_i - \mu_i) / \sigma_i$
+        \item $\mu_i, \sigma_i$ computed from training set statistics
+        \item Purpose: Ensure all features on similar scale for k-NN distance
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Spatial and Temporal Alignment of External Data Sources}
+
+\textbf{The Alignment Problem:}
+
+External data sources (SST, tide, ocean color, bathymetry) have different:
+\begin{itemize}
+    \item \textbf{Spatial resolutions}: ranging from 10m to 25km
+    \item \textbf{Temporal resolutions}: ranging from hourly to static
+    \item \textbf{Coordinate systems}: some in lat/lon, some in projected coordinates
+    \item \textbf{Grid structures}: regular grids vs. irregular station networks
+\end{itemize}
+
+We need to extract a single value for each feature at the tile's location and time.
+
+\textbf{Alignment Strategy by Data Source:}
+
+\begin{center}
+\small
+\begin{tabular}{p{2.2cm}p{2cm}p{2cm}p{2cm}p{4cm}}
+\toprule
+\textbf{Data Source} & \textbf{Native Spatial Res.} & \textbf{Native Temporal Res.} & \textbf{Alignment Method} & \textbf{Details} \\
+\midrule
+NOAA CoralTemp SST & 5 km & Daily & Bilinear interp. & Interpolate 4 nearest grid points to tile center \\
+\addlinespace
+CHS Tide & Station-based & 6-minute & Nearest station + time interp. & Find nearest tide station, interpolate to image time \\
+\addlinespace
+Sentinel-3 OLCI (Chl, Kd490) & 300 m & 1--2 days & Bilinear interp. + temporal nearest & Spatially interpolate, use closest cloud-free date \\
+\addlinespace
+Solar Zenith Angle & Computed & Instantaneous & Direct calculation & Compute from lat, lon, datetime using PyEphem \\
+\addlinespace
+CHS Bathymetry & 100 m & Static & Bilinear interp. & One-time precomputation for study area \\
+\addlinespace
+Distance to Shore & 10 m & Static & Direct lookup & Precomputed raster, exact pixel match \\
+\addlinespace
+Fetch (wave exposure) & 100 m & Static & Bilinear interp. & Precomputed from wind rose and coastline \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Detailed Alignment Procedures:}
+
+\textbf{1. SST Alignment (NOAA CoralTemp):}
+
+\begin{verbatim}
+def get_sst(tile_lat, tile_lon, tile_datetime):
+    # CoralTemp is on 0.05° grid (~5km)
+    # Find the 4 surrounding grid points
+    lat_grid = np.arange(-90, 90, 0.05)
+    lon_grid = np.arange(-180, 180, 0.05)
+
+    lat_idx = np.searchsorted(lat_grid, tile_lat)
+    lon_idx = np.searchsorted(lon_grid, tile_lon)
+
+    # Get 2x2 grid of SST values for the date
+    date_str = tile_datetime.strftime('%Y-%m-%d')
+    sst_grid = load_coraltemp(date_str)  # From pre-downloaded NetCDF
+
+    # Bilinear interpolation
+    sst_value = bilinear_interp(
+        sst_grid[lat_idx-1:lat_idx+1, lon_idx-1:lon_idx+1],
+        tile_lat, tile_lon,
+        lat_grid[lat_idx-1:lat_idx+1],
+        lon_grid[lon_idx-1:lon_idx+1]
+    )
+    return sst_value
+\end{verbatim}
+
+\textbf{2. Tide Height Alignment (CHS):}
+
+\begin{verbatim}
+def get_tide(tile_lat, tile_lon, tile_datetime):
+    # Find nearest tide prediction station
+    stations = load_chs_stations()  # ~400 stations in BC
+    distances = haversine(tile_lat, tile_lon,
+                          stations['lat'], stations['lon'])
+    nearest_station = stations[np.argmin(distances)]
+
+    # Load tide predictions for that station
+    tide_data = load_tide_predictions(nearest_station['id'],
+                                      tile_datetime.date())
+
+    # Interpolate to exact image acquisition time
+    # Tide predictions are at 6-minute intervals
+    tide_height = np.interp(
+        tile_datetime.timestamp(),
+        tide_data['timestamps'],
+        tide_data['heights']
+    )
+    return tide_height
+\end{verbatim}
+
+\textbf{3. Ocean Color Alignment (Sentinel-3 OLCI):}
+
+\begin{verbatim}
+def get_ocean_color(tile_lat, tile_lon, tile_datetime, product='CHL'):
+    # Sentinel-3 OLCI is 300m resolution, ~daily but with gaps due to clouds
+    # Search for nearest cloud-free observation within +/- 3 days
+    for day_offset in [0, -1, 1, -2, 2, -3, 3]:
+        search_date = tile_datetime + timedelta(days=day_offset)
+        olci_data = load_olci(search_date, product)
+
+        if olci_data is not None:
+            # Check if tile location has valid (non-cloud) data
+            value = bilinear_interp(olci_data, tile_lat, tile_lon)
+            if not np.isnan(value):
+                return value, day_offset  # Return value and temporal offset
+
+    # No valid data found within window
+    return np.nan, None
+\end{verbatim}
+
+\subsubsection{Handling Missing Context Data}
+
+\textbf{Why Data Gaps Occur:}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Data Source} & \textbf{Gap Cause} & \textbf{Typical Frequency} \\
+\midrule
+SST (CoralTemp) & Rare (composite product) & $<$1\% of days \\
+Tide predictions & Station coverage gaps & 5--10\% of remote locations \\
+Sentinel-3 OLCI & Clouds, sun glint, swath gaps & 30--50\% of coastal observations \\
+Bathymetry & Survey coverage gaps & 10\% of remote areas \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Missing Data Strategies (Hierarchical Fallback):}
+
+For each feature with potential gaps, we implement a cascade of fallback strategies:
+
+\textbf{Strategy 1: Temporal Interpolation (for time-varying features)}
+
+If data missing at exact time, search nearby times:
+
+\begin{verbatim}
+def get_with_temporal_fallback(lat, lon, datetime, max_days=7):
+    # Try exact date first
+    value = get_value(lat, lon, datetime)
+    if not np.isnan(value):
+        return value, 'exact'
+
+    # Try expanding window
+    for offset in range(1, max_days + 1):
+        for direction in [-1, 1]:
+            search_dt = datetime + timedelta(days=offset * direction)
+            value = get_value(lat, lon, search_dt)
+            if not np.isnan(value):
+                return value, f'offset_{offset * direction}d'
+
+    return np.nan, 'missing'
+\end{verbatim}
+
+\textbf{Strategy 2: Spatial Interpolation (for spatially sparse data)}
+
+If nearest station/grid point has no data, interpolate from surrounding points:
+
+\begin{verbatim}
+def get_with_spatial_fallback(lat, lon, datetime, product):
+    # Try direct lookup
+    value = get_value(lat, lon, datetime)
+    if not np.isnan(value):
+        return value, 'direct'
+
+    # Find k nearest valid observations and inverse-distance weight
+    neighbors = find_k_nearest_valid(lat, lon, datetime, k=4)
+    if len(neighbors) >= 2:
+        weights = 1.0 / neighbors['distances']
+        value = np.average(neighbors['values'], weights=weights)
+        return value, 'idw_interpolated'
+
+    return np.nan, 'missing'
+\end{verbatim}
+
+\textbf{Strategy 3: Climatological Fallback (for persistent gaps)}
+
+Use long-term average for that location and time of year:
+
+\begin{verbatim}
+def get_with_climatology_fallback(lat, lon, datetime, product):
+    value, method = get_with_temporal_fallback(lat, lon, datetime)
+    if not np.isnan(value):
+        return value, method
+
+    # Use climatological mean for this location and day-of-year
+    doy = datetime.timetuple().tm_yday
+    climatology = load_climatology(product)  # Pre-computed from 8-year archive
+    clim_value = bilinear_interp(climatology[doy], lat, lon)
+
+    if not np.isnan(clim_value):
+        return clim_value, 'climatology'
+
+    return np.nan, 'missing'
+\end{verbatim}
+
+\textbf{Strategy 4: Imputation with Flag (last resort)}
+
+If all else fails, impute with a default value but flag the feature:
+
+\begin{verbatim}
+def get_with_imputation(lat, lon, datetime, product):
+    value, method = get_with_climatology_fallback(lat, lon, datetime)
+    if not np.isnan(value):
+        return value, method, False  # False = not imputed
+
+    # Impute with global mean from training set
+    imputed_value = GLOBAL_MEANS[product]
+    return imputed_value, 'imputed', True  # True = was imputed
+\end{verbatim}
+
+\textbf{Feature-Specific Fallback Configuration:}
+
+\begin{center}
+\small
+\begin{tabular}{p{2.5cm}p{2cm}p{2cm}p{2cm}p{3cm}}
+\toprule
+\textbf{Feature} & \textbf{Primary} & \textbf{Fallback 1} & \textbf{Fallback 2} & \textbf{Last Resort} \\
+\midrule
+SST & Exact date & $\pm$3 day window & Monthly climatology & Training mean (14.2°C) \\
+\addlinespace
+Tide Height & Nearest station & 2nd nearest & Interpolate 3 stations & 0.0m (mean tide) \\
+\addlinespace
+Chlorophyll-a & Exact date & $\pm$7 day window & Seasonal climatology & Training mean \\
+\addlinespace
+Turbidity (Kd490) & Exact date & $\pm$7 day window & Seasonal climatology & Training mean \\
+\addlinespace
+Bathymetry & Direct lookup & IDW from neighbors & Regional mean depth & -20m (typical kelp depth) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{Tracking Data Quality in Context Vectors}
+
+\textbf{Augmented Context Vector with Quality Flags:}
+
+To inform the k-NN matching about data quality, we augment the context vector with quality indicators:
+
+\[
+\mathbf{c}_t^{\text{aug}} = [\mathbf{c}_t, \underbrace{q_{\text{SST}}, q_{\text{tide}}, q_{\text{chl}}, q_{\text{turb}}, q_{\text{bathy}}}_{\text{5 quality flags}}]
+\]
+
+where $q_i \in \{0, 1, 2, 3\}$ indicates:
+\begin{itemize}
+    \item 0 = Exact match (highest quality)
+    \item 1 = Temporal/spatial interpolation (good quality)
+    \item 2 = Climatology fallback (moderate quality)
+    \item 3 = Imputed (low quality)
+\end{itemize}
+
+\textbf{Why this matters:} When querying the memory bank, we want to match tiles that have similar \textit{quality} of context data. A prediction made with imputed SST should be compared to other predictions with imputed SST, not to predictions with exact SST measurements.
+
+\subsubsection{Expected Data Availability Analysis}
+
+Based on preliminary analysis of BC coastal zone (2017--2024):
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Feature} & \textbf{Exact Match} & \textbf{Interpolated} & \textbf{Climatology/Imputed} \\
+\midrule
+SST & 95\% & 4\% & 1\% \\
+Tide Height & 85\% & 12\% & 3\% \\
+Chlorophyll-a & 45\% & 35\% & 20\% \\
+Turbidity (Kd490) & 45\% & 35\% & 20\% \\
+Bathymetry & 90\% & 8\% & 2\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Key Insight:} Ocean color products (Chl, Kd490) have lowest availability due to coastal cloud cover. This is acceptable because:
+\begin{enumerate}
+    \item These features are supplementary (spectral features from imagery are primary)
+    \item Climatology provides reasonable seasonal baseline
+    \item Quality flags ensure k-NN matches consider data quality
+\end{enumerate}
+
+\subsubsection{Validation of Context Feature Alignment}
+
+\textbf{Sanity Checks to Perform:}
+
+\begin{enumerate}
+    \item \textbf{SST Range Check}: BC coastal SST should be 5--20°C. Flag values outside this range.
+
+    \item \textbf{Tide Consistency}: Compare predicted tide to satellite-observed water line position (where visible).
+
+    \item \textbf{Spatial Coherence}: Adjacent tiles should have similar SST, Chl values (unless at front/boundary).
+
+    \item \textbf{Seasonal Patterns}: DOY-stratified distributions should show expected seasonal cycles.
+\end{enumerate}
+
+\textbf{Diagnostic Visualizations to Generate:}
+
+\begin{itemize}
+    \item Maps of context feature coverage (what percentage of tiles have exact vs. interpolated data)
+    \item Time series of data availability by feature
+    \item Scatter plots of context features vs. tile location (check for spatial biases)
+    \item Histograms of feature values by quality flag (check if imputed values are reasonable)
+\end{itemize}
+
+\subsubsection{How Context Features Are Used in the Framework}
+
+\textbf{Step 1: Storage in Memory Bank}
+
+When a prediction receives a label (reward), we store:
+\[
+\mathcal{M} \leftarrow \mathcal{M} \cup \{(\mathbf{c}_t, \mathbf{p}_{\text{final}}, R)\}
+\]
+
+This records: ``Under context $\mathbf{c}_t$, using probability vector $\mathbf{p}_{\text{final}}$, we achieved reward $R$''
+
+\textbf{Step 2: Retrieval for New Tiles}
+
+When a new tile arrives with context $\mathbf{c}_{\text{new}}$:
+
+\begin{enumerate}
+    \item Query memory bank for $k$ nearest neighbors by L2 distance:
+    \[
+    \mathcal{N}_k(\mathbf{c}_{\text{new}}) = \text{arg-}k\text{-min}_{j} \|\mathbf{c}_{\text{new}} - \mathbf{c}_j\|_2
+    \]
+
+    \item Compute distance-based weights:
+    \[
+    w_j = \exp\left(-\frac{\|\mathbf{c}_{\text{new}} - \mathbf{c}_j\|_2^2}{2\sigma^2}\right)
+    \]
+    where $\sigma$ is a bandwidth hyperparameter
+
+    \item Compute local probability estimate (reward-weighted average):
+    \[
+    \mathbf{p}_{\text{local}} = \frac{\sum_{j \in \mathcal{N}_k} w_j \cdot R_j \cdot \mathbf{p}_j}{\sum_{j \in \mathcal{N}_k} w_j \cdot R_j}
+    \]
+
+    \item Blend with global policy:
+    \[
+    \mathbf{p}_{\text{final}} = \alpha \cdot \mathbf{p}_{\text{global}} + (1-\alpha) \cdot \mathbf{p}_{\text{local}}
+    \]
+\end{enumerate}
+
+\textbf{Intuition:} If the new tile has high turbidity (low blue/green ratio, high Kd490), and the memory bank contains entries from similar turbid conditions where Random Forest performed well, then $\mathbf{p}_{\text{local}}$ will favor Random Forest.
+
+\subsubsection{Concrete Example: Context-Driven Heuristic Selection}
+
+\textbf{Scenario:} Two tiles from the same location, different conditions
+
+\textbf{Tile A (Clear Summer Day):}
+\begin{itemize}
+    \item SST = 14$^\circ$C, Turbidity (Kd490) = 0.05, Tide = +1.5m (high)
+    \item Context vector $\mathbf{c}_A$ is similar to memory entries where NDVI threshold worked well
+    \item $\mathbf{p}_{\text{local}}$ = [0.6, 0.2, 0.05, 0.05, 0.02, 0.02, 0.02, 0.01, 0.01, 0.01, 0.005, 0.005]
+    \item Heuristic 1 (NDVI) likely selected
+\end{itemize}
+
+\textbf{Tile B (Turbid Winter Day):}
+\begin{itemize}
+    \item SST = 8$^\circ$C, Turbidity (Kd490) = 0.25, Tide = -0.5m (low)
+    \item Context vector $\mathbf{c}_B$ is similar to memory entries where Random Forest worked well
+    \item $\mathbf{p}_{\text{local}}$ = [0.05, 0.05, 0.02, 0.02, 0.5, 0.2, 0.1, 0.02, 0.01, 0.01, 0.01, 0.01]
+    \item Heuristic 5 (Random Forest) likely selected
+\end{itemize}
+
+% ----------------------------------------------------------------------------
+\subsection{Data Stream 3: Ground Truth Labels}
+% ----------------------------------------------------------------------------
+
+\textbf{Purpose:} Labels provide the \textbf{reward signal} that drives LA learning. Without labels, the LA cannot update its policy.
+
+\textbf{Critical Characteristics:}
+\begin{itemize}
+    \item \textbf{Sparse}: Only 1--10\% of tiles will ever receive labels
+    \item \textbf{Delayed}: Labels arrive days to months after the satellite image was acquired
+    \item \textbf{Heterogeneous}: Labels come from different sources with different accuracies
+\end{itemize}
+
+\subsubsection{Label Sources - Detailed Breakdown}
+
+\textbf{Source 1: ShoreZone Oblique Photography}
+\begin{itemize}
+    \item \textbf{What it is}: Aerial photography of BC coastline taken from helicopter/aircraft
+    \item \textbf{Coverage}: Entire BC coastline, but updated only every 10--15 years
+    \item \textbf{Format}: Classified polygons indicating kelp presence/absence
+    \item \textbf{Accuracy}: High (expert interpretation), but temporal mismatch with satellite
+    \item \textbf{Access}: BC Marine Conservation Atlas, Data BC
+    \item \textbf{Use in framework}: Historical baseline, not for real-time learning
+\end{itemize}
+
+\textbf{Source 2: WorldView High-Resolution Classifications}
+\begin{itemize}
+    \item \textbf{What it is}: Commercial satellite imagery (1.2--2.6m resolution) with expert kelp classification
+    \item \textbf{Coverage}: Limited areas (e.g., Cowichan Bay, Barkley Sound)
+    \item \textbf{Format}: Rasterized kelp masks, can be resampled to Sentinel-2 resolution
+    \item \textbf{Accuracy}: 86.9\% overall accuracy (Schroeder 2020)
+    \item \textbf{Temporal alignment}: Can match within $\pm$5 days of Sentinel-2 acquisition
+    \item \textbf{Use in framework}: High-quality labels for specific regions
+\end{itemize}
+
+\textbf{Source 3: In-Situ Surveys (SCUBA, Shoreline)}
+\begin{itemize}
+    \item \textbf{What it is}: Direct observation by divers or shore-based surveyors
+    \item \textbf{Coverage}: Point observations at specific coordinates
+    \item \textbf{Format}: GPS coordinates with kelp presence/absence/density
+    \item \textbf{Accuracy}: Very high (ground truth), but point-based, not pixel-based
+    \item \textbf{Challenge}: Must convert point observations to tile-level labels
+    \item \textbf{Use in framework}: Validation of heuristic accuracy at surveyed locations
+\end{itemize}
+
+\textbf{Source 4: Citizen Science (iNaturalist, Kelp Projects)}
+\begin{itemize}
+    \item \textbf{What it is}: Geotagged observations from public contributors
+    \item \textbf{Coverage}: Opportunistic, biased toward accessible areas
+    \item \textbf{Format}: GPS coordinates with photos, sometimes species ID
+    \item \textbf{Accuracy}: Variable (requires quality filtering)
+    \item \textbf{Use in framework}: Supplementary labels, especially for accessible coastline
+\end{itemize}
+
+\textbf{Source 5: UAV/Drone Surveys}
+\begin{itemize}
+    \item \textbf{What it is}: Low-altitude aerial imagery from unoccupied aerial vehicles
+    \item \textbf{Coverage}: Very limited spatial extent, but very high resolution (cm-scale)
+    \item \textbf{Format}: Orthomosaics with kelp classification
+    \item \textbf{Accuracy}: 93\% (Cavanaugh et al. 2021)
+    \item \textbf{Use in framework}: High-quality local validation, especially for accuracy assessment
+\end{itemize}
+
+\subsubsection{Label Processing Pipeline}
+
+\textbf{Step 1: Temporal Matching}
+
+For each label source, find corresponding Sentinel-2 tiles:
+\begin{itemize}
+    \item Match within temporal window $\pm \tau$ days (e.g., $\tau = 7$)
+    \item Rationale: Kelp canopy can change rapidly; too large $\tau$ introduces noise
+    \item For ShoreZone (annual surveys), use larger $\tau$ for summer period only
+\end{itemize}
+
+\textbf{Step 2: Spatial Resampling}
+
+Convert label source to Sentinel-2 tile grid:
+\begin{itemize}
+    \item WorldView: Downsample from 2.6m to 10m using majority vote within each 10m pixel
+    \item Point observations: Buffer to 30m radius, assign to overlapping tiles
+    \item Polygons: Rasterize to 10m grid
+\end{itemize}
+
+\textbf{Step 3: Quality Filtering}
+
+Remove low-quality labels:
+\begin{itemize}
+    \item Citizen science: Require photo verification, minimum confidence score
+    \item Old surveys: Weight by age (temporal decay)
+    \item Cloud-affected: Reject if Sentinel-2 tile had $>$10\% cloud at label time
+\end{itemize}
+
+\textbf{Step 4: Label Format Standardization}
+
+Final label format for each tile:
+\[
+(\ell, t, \mathbf{y}) \quad \text{where } \mathbf{y} \in \{0, 1, \text{unknown}\}^{256 \times 256}
+\]
+\begin{itemize}
+    \item $\ell$: Tile location (lat/lon of center)
+    \item $t$: Timestamp of the satellite image being labeled
+    \item $\mathbf{y}$: Binary mask (0 = no kelp, 1 = kelp, unknown = no label for this pixel)
+\end{itemize}
+
+\subsubsection{How Labels Enter the Framework}
+
+\textbf{The Asynchronous Label Arrival Process:}
+
+\begin{enumerate}
+    \item \textbf{Day 0}: Sentinel-2 tile $\mathbf{x}_t$ acquired at location $\ell$
+    \item \textbf{Day 0}: Framework processes tile, selects heuristic $h_i$, produces prediction $\hat{\mathbf{y}}_t$
+    \item \textbf{Day 0}: Prediction stored in buffer: $\mathcal{B} \leftarrow \mathcal{B} \cup \{(t, \ell, \mathbf{c}_t, i, \hat{\mathbf{y}}_t)\}$
+
+    \item \textbf{Day $\delta$}: Label $\mathbf{y}_t$ arrives (from survey, WorldView, etc.)
+    \item \textbf{Day $\delta$}: System looks up buffered prediction for $(\ell, t)$
+    \item \textbf{Day $\delta$}: Compute reward $R = \text{IoU}(\hat{\mathbf{y}}_t, \mathbf{y}_t)$
+    \item \textbf{Day $\delta$}: Apply temporal decay $R_{\text{eff}} = R \cdot \gamma^{\delta}$
+    \item \textbf{Day $\delta$}: Update LA policy (Component 1) and memory bank (Component 2)
+    \item \textbf{Day $\delta$}: Remove entry from buffer
+\end{enumerate}
+
+\textbf{Why $\delta$ varies:}
+\begin{itemize}
+    \item WorldView tasking: 1--7 days (commercial satellite can be tasked quickly)
+    \item Citizen science: 1--30 days (depends on when someone visits the area)
+    \item Planned surveys: 30--180 days (surveys scheduled months in advance)
+    \item ShoreZone: Years (archival data)
+\end{itemize}
+
+% ============================================================================
+\section{Sparse Label Handling - Complete Explanation}
+% ============================================================================
+
+This section provides an exhaustive explanation of Component 3 (Sparse Label Handling), which is essential for the framework to learn from operational monitoring conditions.
+
+% ----------------------------------------------------------------------------
+\subsection{The Fundamental Problem}
+% ----------------------------------------------------------------------------
+
+\textbf{Standard Machine Learning Assumption:}
+
+In typical supervised learning:
+\begin{itemize}
+    \item Training data: $\{(\mathbf{x}_1, \mathbf{y}_1), (\mathbf{x}_2, \mathbf{y}_2), \ldots, (\mathbf{x}_N, \mathbf{y}_N)\}$
+    \item Every input $\mathbf{x}_i$ has a corresponding label $\mathbf{y}_i$
+    \item Labels are available \textit{before} model is deployed
+\end{itemize}
+
+\textbf{Operational Kelp Monitoring Reality:}
+
+\begin{itemize}
+    \item We acquire 100,000+ satellite tiles per year
+    \item Ground truth surveys can validate maybe 1,000--5,000 of these
+    \item That's 1--5\% label availability
+    \item Labels arrive \textit{after} the system has already made predictions
+    \item Delay ranges from days (rapid UAV survey) to months (planned research cruise)
+\end{itemize}
+
+\textbf{The Challenge:}
+
+How can a system learn and improve when:
+\begin{enumerate}
+    \item 90--99\% of predictions never receive feedback?
+    \item Feedback for the remaining 1--10\% arrives unpredictably?
+    \item By the time feedback arrives, the system has processed many more tiles?
+\end{enumerate}
+
+% ----------------------------------------------------------------------------
+\subsection{The Sparse Label Handling Solution}
+% ----------------------------------------------------------------------------
+
+\textbf{Core Idea:} Maintain a buffer of predictions ``awaiting validation.'' When a label eventually arrives, look up the corresponding prediction and compute the reward.
+
+\textbf{This is analogous to:}
+\begin{itemize}
+    \item \textit{Experience replay} in deep reinforcement learning (but for sparse rewards)
+    \item \textit{Credit assignment} in delayed reward settings
+    \item \textit{Asynchronous SGD} in distributed training (but for label arrival)
+\end{itemize}
+
+\subsubsection{Data Structures}
+
+\textbf{Structure 1: Prediction Buffer $\mathcal{B}$}
+
+A FIFO (First-In-First-Out) queue storing predictions awaiting validation:
+
+\[
+\mathcal{B} = \{(t_1, \ell_1, \mathbf{c}_1, i_1, \hat{\mathbf{y}}_1), (t_2, \ell_2, \mathbf{c}_2, i_2, \hat{\mathbf{y}}_2), \ldots\}
+\]
+
+Each entry contains:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Field} & \textbf{Type} & \textbf{Description} \\
+\midrule
+$t$ & timestamp & When the satellite image was acquired \\
+$\ell$ & (lat, lon) & Location (tile center coordinates) \\
+$\mathbf{c}$ & $\mathbb{R}^{29}$ & Context feature vector at prediction time \\
+$i$ & int $\in \{1, \ldots, 12\}$ & Index of heuristic that was selected \\
+$\hat{\mathbf{y}}$ & $\{0,1\}^{256 \times 256}$ & The prediction that was made \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Storage requirements:}
+\begin{itemize}
+    \item Context vector: 29 $\times$ 4 bytes = 116 bytes
+    \item Prediction mask: 256 $\times$ 256 $\times$ 1 bit = 8 KB (or compressed)
+    \item Metadata: $\sim$50 bytes
+    \item Per entry: $\sim$8 KB
+    \item For 100,000 buffered predictions: $\sim$800 MB
+\end{itemize}
+
+\textbf{Structure 2: Hash Map $\mathcal{L}$}
+
+For O(1) lookup when labels arrive:
+
+\[
+\mathcal{L}: (\ell, t) \mapsto \text{buffer\_index}
+\]
+
+\begin{itemize}
+    \item Key: (location, timestamp) tuple
+    \item Value: Index into buffer $\mathcal{B}$
+    \item Implementation: Python dict or Redis for distributed systems
+\end{itemize}
+
+\subsubsection{Detailed Algorithm}
+
+\textbf{Algorithm 1: Prediction and Buffering (runs for every tile)}
+
+\begin{verbatim}
+def process_tile(x_t, t, location):
+    # Step 1: Extract context features
+    c_t = extract_context(x_t, t, location)
+
+    # Step 2: Get selection probability (Component 2)
+    p_local = query_memory_bank(c_t, k=10)
+    alpha = compute_blending_coefficient(c_t)
+    p_final = alpha * p_global + (1 - alpha) * p_local
+
+    # Step 3: Select heuristic
+    i = sample_categorical(p_final)
+
+    # Step 4: Apply heuristic to get prediction
+    y_hat = heuristics[i].predict(x_t)
+
+    # Step 5: Store in buffer for future validation
+    buffer_entry = (t, location, c_t, i, y_hat)
+    buffer.append(buffer_entry)
+    lookup_map[(location, t)] = len(buffer) - 1
+
+    # Step 6: Clean old entries (beyond T_max)
+    clean_old_entries(T_max=180)  # 6 months
+
+    return y_hat
+\end{verbatim}
+
+\textbf{Algorithm 2: Label Processing (runs when label arrives)}
+
+\begin{verbatim}
+def process_label(y_true, t_label, location):
+    # Step 1: Look up the original prediction
+    if (location, t_label) not in lookup_map:
+        # No matching prediction (expired or never made)
+        return
+
+    buffer_index = lookup_map[(location, t_label)]
+    t_pred, loc, c_t, i, y_hat = buffer[buffer_index]
+
+    # Step 2: Compute raw reward (IoU)
+    intersection = np.sum(y_hat & y_true)
+    union = np.sum(y_hat | y_true)
+    R = intersection / union if union > 0 else 0.0
+
+    # Step 3: Compute delay and apply temporal decay
+    delta = (datetime.now() - t_pred).days
+    R_effective = R * (gamma ** delta)  # gamma = 0.99
+
+    # Step 4: Update global policy (Component 1)
+    # L_{R-I} update for action i with reward R_effective
+    p_global[i] += lambda_lr * R_effective * (1 - p_global[i])
+    for j in range(12):
+        if j != i:
+            p_global[j] -= lambda_lr * R_effective * p_global[j]
+
+    # Step 5: Update memory bank (Component 2)
+    memory_bank.add(c_t, p_final_at_prediction_time, R)
+
+    # Step 6: Remove from buffer
+    del buffer[buffer_index]
+    del lookup_map[(location, t_label)]
+\end{verbatim}
+
+\subsubsection{Why Temporal Decay?}
+
+\textbf{The Problem with Stale Feedback:}
+
+Consider a prediction made on January 1st for a tile showing kelp. A label arrives on July 1st (180 days later). By July:
+\begin{itemize}
+    \item Kelp may have grown or died (bull kelp is annual)
+    \item Environmental conditions are completely different
+    \item The heuristic that worked in January may not be optimal in July
+\end{itemize}
+
+If we treat this feedback equally with recent feedback, we contaminate the learning signal.
+
+\textbf{The Temporal Decay Solution:}
+
+Weight rewards by recency:
+\[
+R_{\text{effective}} = R \cdot \gamma^{\delta}
+\]
+
+where $\delta$ is delay in days and $\gamma \in (0.95, 0.999)$.
+
+\textbf{Example with $\gamma = 0.99$:}
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Delay $\delta$} & \textbf{Decay Factor $\gamma^{\delta}$} & \textbf{Interpretation} \\
+\midrule
+1 day & 0.99 & Almost full weight \\
+7 days & 0.93 & 93\% weight \\
+30 days & 0.74 & 74\% weight \\
+90 days & 0.41 & 41\% weight \\
+180 days & 0.16 & 16\% weight \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Intuition:} Recent feedback gets nearly full weight; old feedback gets downweighted but not completely ignored.
+
+\subsubsection{Buffer Management}
+
+\textbf{Maximum Buffer Age $T_{\text{max}}$:}
+
+Entries older than $T_{\text{max}}$ (default: 180 days / 6 months) are removed without update:
+
+\begin{verbatim}
+def clean_old_entries(T_max):
+    current_time = datetime.now()
+    to_remove = []
+    for idx, (t, loc, c, i, y_hat) in enumerate(buffer):
+        if (current_time - t).days > T_max:
+            to_remove.append((loc, t))
+
+    for (loc, t) in to_remove:
+        del lookup_map[(loc, t)]
+
+    buffer = [e for e in buffer if (current_time - e[0]).days <= T_max]
+\end{verbatim}
+
+\textbf{Rationale:}
+\begin{itemize}
+    \item After 6 months, conditions have changed enough that feedback is no longer informative
+    \item Prevents unbounded buffer growth
+    \item Aligns with kelp phenology (annual cycle)
+\end{itemize}
+
+\textbf{Memory Efficiency:}
+
+For operational deployment:
+\begin{itemize}
+    \item Don't store full prediction mask; store compressed version or hash
+    \item Use database (PostgreSQL, Redis) instead of in-memory for large-scale
+    \item Index by (location, time) for efficient queries
+\end{itemize}
+
+\subsubsection{Handling Edge Cases}
+
+\textbf{Case 1: Label arrives for non-existent prediction}
+
+Can happen if:
+\begin{itemize}
+    \item Prediction was made before system started (historical labels)
+    \item Prediction was cleaned from buffer (too old)
+    \item Location/time mismatch due to coordinate precision
+\end{itemize}
+
+\textbf{Solution:} Skip update, log for monitoring.
+
+\textbf{Case 2: Multiple labels for same tile}
+
+Can happen if multiple validation sources cover the same area.
+
+\textbf{Solution:} Use highest-quality label (based on source reliability ranking).
+
+\textbf{Case 3: Partial labels (not all pixels labeled)}
+
+Common with point observations and small UAV footprints.
+
+\textbf{Solution:} Compute IoU only over labeled pixels:
+\[
+R = \frac{|\hat{\mathbf{y}}_{\text{labeled}} \cap \mathbf{y}_{\text{labeled}}|}{|\hat{\mathbf{y}}_{\text{labeled}} \cup \mathbf{y}_{\text{labeled}}|}
+\]
+
+\textbf{Case 4: No labels ever arrive (99\% of tiles)}
+
+This is the normal case! The L$_{\text{R-I}}$ ``inaction'' property handles it:
+\begin{itemize}
+    \item No label $\Rightarrow$ No update
+    \item Probabilities remain unchanged
+    \item System continues using best-known policy
+\end{itemize}
+
+This is the key advantage of L$_{\text{R-I}}$ over methods that require constant feedback.
+
+\subsubsection{Experimental Validation of Sparse Label Handling}
+
+\textbf{Protocol C experiments will test:}
+
+\begin{enumerate}
+    \item \textbf{Sparsity levels}: What happens as label availability decreases?
+    \begin{itemize}
+        \item 100\% labels (baseline)
+        \item 50\% labels (moderately sparse)
+        \item 10\% labels (sparse)
+        \item 1\% labels (very sparse)
+    \end{itemize}
+
+    \item \textbf{Delay distributions}: How does delay affect learning?
+    \begin{itemize}
+        \item Immediate (0 days) - baseline
+        \item Short delay: $\delta \sim U[1, 7]$ days
+        \item Medium delay: $\delta \sim U[7, 30]$ days
+        \item Long delay: $\delta \sim U[30, 180]$ days
+        \item Mixed: Realistic distribution from actual validation timelines
+    \end{itemize}
+
+    \item \textbf{Metrics to report}:
+    \begin{itemize}
+        \item \textbf{Convergence rate}: How many labels until 90\% of asymptotic performance?
+        \item \textbf{Final performance}: IoU/F1 after all labels processed
+        \item \textbf{Stability}: Variance in heuristic selection over time
+        \item \textbf{Comparison}: LA vs. baseline that discards delayed labels vs. baseline that ignores delay
+    \end{itemize}
+\end{enumerate}
+
+% ============================================================================
+\section{Methodology Flow - Complete Walkthrough}
+% ============================================================================
+
+\textbf{Step-by-Step Processing of One Tile:}
+
+\textbf{Step 1: Input Acquisition}
+\begin{itemize}
+    \item Sentinel-2 tile $\mathbf{x}_t$ arrives (256 $\times$ 256 $\times$ 5 bands)
+    \item Timestamp $t$, location $\ell$
+    \item Already preprocessed: cloud-masked, land-masked
+\end{itemize}
+
+\textbf{Step 2: Context Feature Extraction}
+\begin{itemize}
+    \item Compute spectral statistics: mean, variance per band (10 features)
+    \item Compute spatial texture: entropy, homogeneity (2 features)
+    \item Look up temporal context: day of year, days since last observation (2 features)
+    \item Query environmental data: SST from NOAA, tide from CHS (2 features)
+    \item Extract geographic: lat, lon, distance to shore (3 features)
+    \item Result: context vector $\mathbf{c}_t \in \mathbb{R}^{D}$ where $D \approx 19$
+\end{itemize}
+
+\textbf{Step 3: k-NN Retrieval (Component 2)}
+\begin{itemize}
+    \item Query memory bank $\mathcal{M}$ for $k$ nearest neighbors to $\mathbf{c}_t$
+    \item Use FAISS for O($\log M$) approximate search
+    \item Retrieve: $\{(\mathbf{c}_j, \mathbf{p}_j, R_j)\}$ for $j \in \mathcal{N}_k(\mathbf{c}_t)$
+\end{itemize}
+
+\textbf{Step 4: Probability Blending}
+\begin{itemize}
+    \item Compute local probability: $\mathbf{p}_{\text{local}} = \frac{\sum w_j R_j \mathbf{p}_j}{\sum w_j R_j}$
+    \item Compute blending coefficient $\alpha(\mathbf{c}_t)$ based on neighbor confidence
+    \item Blend: $\mathbf{p}_{\text{final}} = \alpha \cdot \mathbf{p}_{\text{global}} + (1-\alpha) \cdot \mathbf{p}_{\text{local}}$
+\end{itemize}
+
+\textbf{Step 5: Heuristic Selection}
+\begin{itemize}
+    \item Sample heuristic index $i \sim \text{Categorical}(\mathbf{p}_{\text{final}})$
+    \item Select heuristic $h_i$ from pool $\mathcal{H}$
+\end{itemize}
+
+\textbf{Step 6: Prediction}
+\begin{itemize}
+    \item Apply heuristic: $\hat{\mathbf{y}}_t = h_i(\mathbf{x}_t)$
+    \item Result: binary mask (256 $\times$ 256) indicating kelp/non-kelp
+\end{itemize}
+
+\textbf{Step 7: Buffering (Component 3)}
+\begin{itemize}
+    \item Add to prediction buffer: $\mathcal{B} \leftarrow \mathcal{B} \cup \{(t, \mathbf{x}_t, \mathbf{c}_t, i, \hat{\mathbf{y}}_t)\}$
+    \item Update hash map: $\mathcal{L}[(\ell, t)] \leftarrow \text{buffer\_index}$
+\end{itemize}
+
+\textbf{Step 8: Label Arrival (Asynchronous)}
+\begin{itemize}
+    \item Ground truth $\mathbf{y}_t$ arrives for location $\ell$, time $t$
+    \item Look up: buffer\_index $= \mathcal{L}[(\ell, t)]$
+    \item Retrieve: $(t, \mathbf{x}_t, \mathbf{c}_t, i, \hat{\mathbf{y}}_t)$
+\end{itemize}
+
+\textbf{Step 9: Reward Computation}
+\begin{itemize}
+    \item Compute IoU: $R = \frac{|\hat{\mathbf{y}}_t \cap \mathbf{y}_t|}{|\hat{\mathbf{y}}_t \cup \mathbf{y}_t|}$
+    \item Compute delay: $\delta = t_{\text{now}} - t$
+    \item Apply temporal decay: $R_{\text{eff}} = R \cdot \gamma^{\delta}$
+\end{itemize}
+
+\textbf{Step 10: Policy Update (Component 1)}
+\begin{itemize}
+    \item Update global policy using L$_{\text{R-I}}$ with reward $R_{\text{eff}}$ for action $i$:
+    \begin{align}
+    p_i &\leftarrow p_i + \lambda \cdot R_{\text{eff}} \cdot (1 - p_i) \\
+    p_j &\leftarrow p_j - \lambda \cdot R_{\text{eff}} \cdot p_j, \quad \forall j \neq i
+    \end{align}
+\end{itemize}
+
+\textbf{Step 11: Memory Bank Update (Component 2)}
+\begin{itemize}
+    \item Add to memory: $\mathcal{M} \leftarrow \mathcal{M} \cup \{(\mathbf{c}_t, \mathbf{p}_{\text{final}}, R)\}$
+    \item If $|\mathcal{M}| > M_{\text{max}}$, remove oldest entry (FIFO)
+\end{itemize}
+
+\textbf{Step 12: Cleanup}
+\begin{itemize}
+    \item Remove from buffer: $\mathcal{B} \leftarrow \mathcal{B} \setminus \{(t, \ldots)\}$
+    \item Remove from hash map: $\mathcal{L}[(\ell, t)] \leftarrow \text{null}$
+\end{itemize}
+
+% ============================================================================
+\section{Comprehensive Q\&A}
+% ============================================================================
+
+% ----------------------------------------------------------------------------
+\subsection{Questions About Learning Automata}
+% ----------------------------------------------------------------------------
+
+\textbf{Q1: Why Learning Automata instead of standard Reinforcement Learning (Q-learning, Policy Gradient)?}
+
+\textbf{A:} Several reasons make LA more suitable for this problem:
+
+\begin{enumerate}
+    \item \textbf{Sparse feedback handling}: LA (especially L$_{\text{R-I}}$) has the ``inaction'' property---when no feedback is received, probabilities remain unchanged. Standard RL methods require feedback at every timestep or use bootstrapping (temporal difference), which can introduce instability with sparse feedback.
+
+    \item \textbf{Convergence guarantees}: L$_{\text{R-I}}$ is proven $\epsilon$-optimal in all stationary environments. Q-learning converges under stricter conditions (all state-action pairs visited infinitely often).
+
+    \item \textbf{Simplicity}: LA maintains a probability vector of size $r$ (12 heuristics). Q-learning would need a Q-table or neural network mapping (state, action) $\to$ value, which is more complex.
+
+    \item \textbf{Domain fit}: The problem naturally fits LA formulation---we're selecting among discrete actions (heuristics) based on sparse rewards (validation labels).
+
+    \item \textbf{My prior expertise}: I have published work on Learning Automata, specifically Object Migration Automata (OMA). This gives me theoretical grounding.
+\end{enumerate}
+
+However, I acknowledge that deep RL could be explored as an extension, especially for learning the context features or heuristic parameters.
+
+\textbf{Q2: What if the optimal heuristic changes over time (non-stationarity)?}
+
+\textbf{A:} This is a key consideration, and the framework handles it through:
+
+\begin{enumerate}
+    \item \textbf{Context-aware adaptation (Component 2)}: The memory bank allows different heuristic preferences for different contexts. Even if optimal heuristic changes globally, context-specific adaptation can track local optimality.
+
+    \item \textbf{Temporal decay (Component 3)}: Old feedback is downweighted by $\gamma^{\delta}$, reducing influence of stale information. This provides implicit forgetting.
+
+    \item \textbf{MSE/PSE theory}: LA theory includes analysis for Markovian Switching Environments (MSE) and Periodic Switching Environments (PSE). My prior work showed PEOMA outperforms EOMA by order of magnitude in MSEs. I can incorporate these techniques.
+
+    \item \textbf{Potential extensions}:
+    \begin{itemize}
+        \item Sliding window for global policy (only recent rewards count)
+        \item Explicit change detection with policy reset
+        \item Pursuit algorithms that track running estimates
+    \end{itemize}
+\end{enumerate}
+
+\textbf{Q3: How do you choose the learning rate $\lambda$?}
+
+\textbf{A:} This is a hyperparameter to be tuned. Key considerations:
+
+\begin{enumerate}
+    \item \textbf{Theory}: $\epsilon$-optimality holds as $\lambda \to 0$, but convergence becomes infinitely slow. Practical values: $\lambda \in [0.01, 0.2]$.
+
+    \item \textbf{Trade-off}: Small $\lambda$ = more stable but slower adaptation. Large $\lambda$ = faster adaptation but more noise sensitivity.
+
+    \item \textbf{Plan}: Grid search over $\lambda \in \{0.01, 0.05, 0.1, 0.2\}$ in validation experiments.
+
+    \item \textbf{Adaptive rate}: Could decay $\lambda$ over time (start large for exploration, decrease for stability).
+\end{enumerate}
+
+\textbf{Q4: Can you explain the difference between Fixed Structure (FSSA) and Variable Structure (VSSA) automata?}
+
+\textbf{A:}
+
+\textbf{FSSA (e.g., Tsetlin automaton):}
+\begin{itemize}
+    \item Maintains $N$ memory states per action
+    \item State transitions are deterministic given current state and feedback
+    \item Reward: move deeper into action's memory
+    \item Penalty: move toward boundary where action changes
+    \item Action selection is deterministic from state
+\end{itemize}
+
+\textbf{VSSA (e.g., L$_{\text{R-I}}$):}
+\begin{itemize}
+    \item Directly maintains probability vector $\mathbf{p}$
+    \item Updates probabilities using continuous equations
+    \item More analytically tractable
+    \item Basis for modern LA applications
+\end{itemize}
+
+I use VSSA (specifically L$_{\text{R-I}}$) because it's more flexible for continuous S-model rewards and easier to analyze mathematically.
+
+% ----------------------------------------------------------------------------
+\subsection{Questions About the Framework}
+% ----------------------------------------------------------------------------
+
+\textbf{Q5: Why a 3-tier heuristic pool? Why not just use the best deep learning model?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Complementary failure modes}: Deep learning models can overfit to training distribution. Spectral indices are robust to distribution shift but less expressive. Having both allows the LA to select the right tool for each situation.
+
+    \item \textbf{Computational efficiency}: Spectral indices are 100-1000$\times$ faster than deep learning. For clear conditions where indices suffice, we save computation. Carbon footprint matters.
+
+    \item \textbf{Interpretability}: Indices are interpretable (``kelp has NDVI $>$ 0.1''). This is valuable for validation with domain experts and TEK holders.
+
+    \item \textbf{Empirical evidence}: Yong et al. (2005) showed 85\% accuracy in predicting optimal segmentation algorithm based on image features. Different algorithms excel under different conditions.
+
+    \item \textbf{Ablation planned}: I will explicitly test removing each tier to quantify contribution.
+\end{enumerate}
+
+\textbf{Q6: How does the k-NN retrieval scale with memory bank size?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{FAISS}: I use Facebook AI Similarity Search (FAISS) for efficient approximate nearest neighbor. With IVF (Inverted File) indexing, query time is O($\log M$) where $M$ is memory bank size.
+
+    \item \textbf{Memory management}: Memory bank has maximum size $M_{\text{max}}$. When exceeded, oldest entries are removed (FIFO). This bounds memory usage and ensures recency.
+
+    \item \textbf{Expected scale}: For BC coastline, expect $\sim$100,000 tiles over 8 years. With 10\% labeled, $\sim$10,000 memory entries. FAISS handles millions of entries easily.
+
+    \item \textbf{Alternative}: Could use locality-sensitive hashing (LSH) or clustering-based indexing if scale becomes issue.
+\end{enumerate}
+
+\textbf{Q7: What if there are no similar contexts in the memory bank (cold start)?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Adaptive blending}: When few neighbors found or distances are large, $\alpha(\mathbf{c}) \to 1$, favoring global policy. The global policy provides reasonable default.
+
+    \item \textbf{Initialization}: Start with uniform global policy $p_i = 1/12$. All heuristics get tried with equal probability initially.
+
+    \item \textbf{Bootstrapping}: Can pre-populate memory bank with historical data if available (e.g., prior studies, WorldView classifications).
+
+    \item \textbf{Exploration-exploitation}: Early on, more exploration (uniform selection). As memory grows, more exploitation (local adaptation).
+\end{enumerate}
+
+\textbf{Q8: How do you handle the case where multiple heuristics perform similarly well?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{L$_{\text{R-I}}$ behavior}: When multiple heuristics receive similar rewards, probability mass distributes among them. The automaton doesn't necessarily converge to a single action---it can maintain a mixture.
+
+    \item \textbf{Practical benefit}: If NDVI and FAI both work well for clear water, the system might use either. This provides robustness.
+
+    \item \textbf{Multi-objective extension}: Can add computational cost as secondary objective. Between equally accurate heuristics, prefer faster/cheaper one.
+
+    \item \textbf{Ensemble possibility}: Could extend framework to select multiple heuristics and ensemble their predictions. Not in current design but possible extension.
+\end{enumerate}
+
+\textbf{Q9: How sensitive is the framework to the choice of context features?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Ablation planned}: Will systematically test subsets of context features to identify most informative.
+
+    \item \textbf{Prior knowledge}: Based on literature, expect SST, turbidity, and tide to be most important (Schroeder 2020, Timmer 2024).
+
+    \item \textbf{Feature learning}: Could learn context representation via autoencoder or contrastive learning. This is a potential extension.
+
+    \item \textbf{Distance metric}: Currently using L2 distance. Could learn metric via Mahalanobis distance or neural metric learning.
+\end{enumerate}
+
+% ----------------------------------------------------------------------------
+\subsection{Questions About Experimental Design}
+% ----------------------------------------------------------------------------
+
+\textbf{Q10: How large is the BC Bull Kelp dataset?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Imagery}: Sentinel-2 covers BC coast. At 10m resolution, 256$\times$256 tiles cover 2.56 km$^2$. For 26,000 km coastline with 1 km buffer, approximately 10,000 km$^2$ coverage. That's $\sim$4,000 tiles per acquisition.
+
+    \item \textbf{Temporal}: 5-day revisit $\times$ 8 years = $\sim$580 acquisitions. Not all are usable (clouds, winter). Estimate 30\% usable = $\sim$175 acquisitions.
+
+    \item \textbf{Total}: $\sim$700,000 tile-observations. After cloud filtering, expect 100,000--200,000 usable tiles.
+
+    \item \textbf{Labels}: Ground truth is sparse. Estimate 1--10\% labeled = 1,000--20,000 labeled tiles. This is a key challenge the framework addresses.
+\end{enumerate}
+
+\textbf{Q11: How do you ensure fair comparison with baselines?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Same data splits}: All methods see exactly the same train/val/test splits. Use Protocol A (temporal), Protocol B (spatial).
+
+    \item \textbf{Same computational budget}: For label efficiency curves, compare at same number of labels, not same training time.
+
+    \item \textbf{Hyperparameter tuning}: All methods get same hyperparameter search budget on validation set.
+
+    \item \textbf{Multiple seeds}: Report mean $\pm$ std over 5+ random seeds.
+
+    \item \textbf{Statistical tests}: Use paired t-test or Wilcoxon signed-rank for significance.
+\end{enumerate}
+
+\textbf{Q12: What are your baselines?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Fixed heuristic}: Each of the 12 heuristics used alone (no adaptation)
+    \item \textbf{Best single heuristic}: Oracle that always selects the globally best heuristic (upper bound for fixed approach)
+    \item \textbf{Random selection}: Uniform random selection among heuristics
+    \item \textbf{Supervised CNN}: U-Net trained on all available labels with standard training
+    \item \textbf{Online learning}: Baseline that updates randomly when labels missing
+    \item \textbf{Oracle}: Per-tile best heuristic (upper bound for any selection method)
+    \item \textbf{Majority vote ensemble}: All heuristics applied, majority vote
+\end{enumerate}
+
+\textbf{Q13: How do you simulate sparse and delayed labels?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Sparsity}: Randomly withhold labels. Test 10\%, 50\%, 90\% withheld.
+
+    \item \textbf{Delay distributions}:
+    \begin{itemize}
+        \item Uniform: $\delta \sim U[1, 180]$ days
+        \item Exponential: $\delta \sim \text{Exp}(\mu=30)$ days
+        \item Realistic: Based on actual validation timeline if available
+    \end{itemize}
+
+    \item \textbf{Biased sampling}: Test if label availability correlates with conditions (e.g., more labels for clear conditions). This tests robustness to selection bias.
+
+    \item \textbf{Metrics}: Convergence rate, final performance, stability over time.
+\end{enumerate}
+
+% ----------------------------------------------------------------------------
+\subsection{Questions About Practical Considerations}
+% ----------------------------------------------------------------------------
+
+\textbf{Q14: What about computational cost? Can this run operationally?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Inference cost}: Depends on selected heuristic. Indices: milliseconds per tile. Deep learning: seconds per tile on GPU.
+
+    \item \textbf{LA overhead}: Negligible. k-NN lookup is O($\log M$). Probability update is O($r$) = O(12).
+
+    \item \textbf{Memory}: Global policy: 12 floats. Memory bank: $M \times (D + 12 + 1)$ floats. For $M=10,000$, $D=19$: $\sim$1.3 MB.
+
+    \item \textbf{Operational feasibility}: Yes. Main cost is running heuristics, not the LA. Could run on standard server, potentially edge device for simple heuristics.
+
+    \item \textbf{Multi-objective}: $R_{\text{speed}}$ reward encourages selection of faster heuristics when accuracy is similar.
+\end{enumerate}
+
+\textbf{Q15: How does this compare to transfer learning or domain adaptation?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Complementary approaches}: Transfer learning adapts model parameters. LA adapts model \textit{selection}. Could combine: pre-train heuristics via transfer learning, then use LA for selection.
+
+    \item \textbf{Different assumptions}: Transfer learning assumes source and target domains are related. LA makes no such assumption---it learns from feedback in target domain directly.
+
+    \item \textbf{Label requirements}: Fine-tuning for transfer needs labeled target data. LA can start with zero target labels and learn from sparse feedback.
+
+    \item \textbf{Potential extension}: Domain-adaptive heuristics in the pool (e.g., DANN-trained U-Net). LA selects among adapted and non-adapted models.
+\end{enumerate}
+
+\textbf{Q16: What if all heuristics perform poorly in some conditions?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Detection}: Can track uncertainty or confidence. High uncertainty = all heuristics unreliable.
+
+    \item \textbf{Flagging}: Output ``low confidence'' flag for tiles where all heuristics disagree or have historically poor performance.
+
+    \item \textbf{Feedback to operators}: Alert that certain conditions (e.g., very high turbidity) are beyond system capability.
+
+    \item \textbf{Heuristic pool expansion}: If systematic failure mode identified, add new heuristic designed for that condition.
+
+    \item \textbf{Graceful degradation}: Better to know you can't detect kelp than to confidently give wrong answer.
+\end{enumerate}
+
+% ----------------------------------------------------------------------------
+\subsection{Questions About TEK Integration}
+% ----------------------------------------------------------------------------
+
+\textbf{Q17: How will you actually integrate TEK? Do you have community partnerships?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Current status}: RQ4 is exploratory. I have not yet established formal partnerships. This is Phase 4 work (after core framework validated).
+
+    \item \textbf{Approach}: Four-phase protocol:
+    \begin{itemize}
+        \item Phase 1: Relationship building through proper channels
+        \item Phase 2: Co-design integration points with community input
+        \item Phase 3: Implementation with ongoing engagement
+        \item Phase 4: Community-led evaluation
+    \end{itemize}
+
+    \item \textbf{Potential partners}: Coastal First Nations (Heiltsuk, Haida, etc.), Ocean Wise, provincial agencies with existing relationships.
+
+    \item \textbf{Key principles}: Indigenous data sovereignty, Two-Eyed Seeing, benefit sharing, no extractive data collection.
+
+    \item \textbf{Backup plan}: If community partnerships don't materialize, RQ4 becomes theoretical framework + recommendations rather than empirical study.
+\end{enumerate}
+
+\textbf{Q18: What specific TEK elements could be integrated?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Site importance weights}: Weight evaluation metrics by cultural significance. Prioritize accuracy at culturally important sites.
+
+    \item \textbf{Temporal priors}: Traditional seasonal calendars inform expected kelp phenology. Can weight predictions by alignment with traditional expectations.
+
+    \item \textbf{Validation labels}: Elder observations as additional ground truth. Especially valuable for historical baseline.
+
+    \item \textbf{Anomaly detection}: TEK holders might identify unusual patterns that automated system misses.
+
+    \item \textbf{Decision support}: Framework outputs inform community-based monitoring and management decisions.
+\end{enumerate}
+
+% ----------------------------------------------------------------------------
+\subsection{Questions About Timeline and Scope}
+% ----------------------------------------------------------------------------
+
+\textbf{Q19: Is October 2027 realistic? That's less than 2 years.}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Foundation work done}: I've completed literature review, have working proposal, understand LA theory deeply from prior publications.
+
+    \item \textbf{Dataset accessible}: Sentinel-2 data is freely available via Google Earth Engine. Ground truth sources identified.
+
+    \item \textbf{Modular design}: Three components can be developed incrementally. Can validate core framework (Components 1+2) before full sparse label experiments.
+
+    \item \textbf{Publications strategy}: Four papers target different aspects:
+    \begin{itemize}
+        \item Paper 1 (RQ1): Core LA framework
+        \item Paper 2 (RQ2): Context-aware adaptation
+        \item Paper 3 (RQ3): Sparse label learning
+        \item Paper 4 (RQ4): TEK integration
+    \end{itemize}
+
+    \item \textbf{Risk mitigation}: If RQ4 (TEK) doesn't materialize fully, can still complete thesis with RQ1-3.
+\end{enumerate}
+
+\textbf{Q20: What are the main risks to your timeline?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Data quality issues}: If ground truth labels are noisier than expected, may need additional preprocessing or label quality filtering.
+
+    \item \textbf{Negative results}: If LA doesn't outperform baselines, need to pivot. But even negative results are publishable if well-analyzed.
+
+    \item \textbf{Computational resources}: Deep learning training requires GPU time. Have access to Compute Canada, but queue times can delay experiments.
+
+    \item \textbf{TEK partnerships}: Relationship building takes time. May not achieve formal partnerships within timeline.
+
+    \item \textbf{Scope creep}: Temptation to add more heuristics, more features, more experiments. Must stay focused on core contributions.
+\end{enumerate}
+
+% ----------------------------------------------------------------------------
+\subsection{Challenging/Skeptical Questions}
+% ----------------------------------------------------------------------------
+
+\textbf{Q21: Isn't this just an ensemble method with extra steps?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Key difference}: Ensembles typically combine all models (e.g., averaging, voting). LA \textit{selects} one model per instance based on learned context-dependent policy.
+
+    \item \textbf{Advantages of selection}:
+    \begin{itemize}
+        \item Computational efficiency: Only run one heuristic, not all 12
+        \item Interpretability: Know which heuristic was used for each prediction
+        \item Handles incompatible heuristics: Some may give completely wrong answers in certain conditions; averaging would hurt
+    \end{itemize}
+
+    \item \textbf{Related work}: This is related to ``hyper-heuristics'' literature. LA provides principled selection mechanism with convergence guarantees.
+
+    \item \textbf{Fair comparison}: Will include majority vote ensemble as baseline.
+\end{enumerate}
+
+\textbf{Q22: Why not just train one big end-to-end model that handles all conditions?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Data requirements}: End-to-end model needs labeled data covering all conditions. We have sparse, biased labels.
+
+    \item \textbf{Interpretability}: Black-box model doesn't tell us \textit{why} it works or fails in specific conditions.
+
+    \item \textbf{Modularity}: Pre-trained heuristics can come from different sources (published methods, domain experts). Don't need to retrain everything.
+
+    \item \textbf{Adaptation speed}: LA adapts with few labels. Retraining end-to-end model requires many labels and compute.
+
+    \item \textbf{Empirical question}: This is testable. U-Net baseline represents this approach. If it wins convincingly, that's a valid finding.
+\end{enumerate}
+
+\textbf{Q23: How do you know the heuristic pool has sufficient diversity?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Design rationale}: Three tiers (indices, ML, DL) represent fundamentally different approaches with different inductive biases.
+
+    \item \textbf{Literature support}: Prior work shows spectral indices and ML have complementary strengths (Schroeder 2020, Gendall 2023).
+
+    \item \textbf{Empirical validation}: Will analyze which heuristics win in which conditions. If one tier dominates everywhere, others could be removed.
+
+    \item \textbf{Expandability}: Pool can be extended. If new method emerges (e.g., foundation models), can add as heuristic.
+
+    \item \textbf{Oracle comparison}: Gap between LA and per-tile oracle indicates room for improvement. Large gap suggests need for more/better heuristics.
+\end{enumerate}
+
+\textbf{Q24: What's the novel scientific contribution beyond engineering?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Novel LA application}: First application of LA to satellite-based environmental monitoring. Extends LA theory to new domain.
+
+    \item \textbf{Sparse feedback theory}: Formalizing delayed reward propagation with temporal decay. Connects LA to experience replay in RL.
+
+    \item \textbf{Context-aware GLA}: Practical implementation of Generalized Learning Automata principles with memory-based adaptation.
+
+    \item \textbf{Empirical science}: Characterizing heuristic complementarity across environmental conditions. This is new knowledge about kelp detection.
+
+    \item \textbf{Methodology transfer}: Framework applicable to other monitoring problems (seagrass, coral). Generalizable contribution.
+
+    \item \textbf{Multi-source data fusion framework}: Novel methodology for fusing heterogeneous environmental data sources (satellite imagery, oceanographic data, tidal predictions) with principled handling of resolution mismatches and missing data. This is a standalone methodological contribution.
+\end{enumerate}
+
+% ----------------------------------------------------------------------------
+\subsection{Deep Technical Questions (Expect from Dr. Costa - Remote Sensing)}
+% ----------------------------------------------------------------------------
+
+\textbf{Q25: How do you handle mixed pixels where kelp only partially covers a 10m$\times$10m area?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{The mixed pixel problem}: At 10m resolution, a pixel may contain 30\% kelp, 70\% water. Binary classification forces a decision.
+
+    \item \textbf{Current approach}: Threshold-based. If spectral signature suggests $>$50\% kelp, classify as kelp. This is standard practice in kelp remote sensing.
+
+    \item \textbf{Spectral unmixing alternative}: Could use linear spectral unmixing to estimate sub-pixel kelp fraction:
+    \[
+    \mathbf{r}_{\text{pixel}} = f_{\text{kelp}} \cdot \mathbf{r}_{\text{kelp}} + f_{\text{water}} \cdot \mathbf{r}_{\text{water}} + \epsilon
+    \]
+    But this requires pure endmember spectra, which vary with conditions.
+
+    \item \textbf{Why binary is acceptable}: For coastline-scale monitoring, we care about kelp presence/absence at tile level. Sub-pixel fraction is secondary. Also, our evaluation uses IoU which is robust to boundary effects.
+
+    \item \textbf{Future extension}: Could add fractional kelp cover as soft output from some heuristics.
+\end{enumerate}
+
+\textbf{Q26: Sentinel-2 has known issues with adjacency effects near coastlines. How do you handle this?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{The problem}: Bright land adjacent to dark water causes ``bleeding'' of land signal into water pixels due to atmospheric scattering and sensor PSF.
+
+    \item \textbf{Magnitude}: Can affect pixels up to 1-2 km from shoreline---exactly where kelp occurs.
+
+    \item \textbf{Mitigation strategies}:
+    \begin{itemize}
+        \item Use Level-2A (atmospherically corrected) which partially addresses this
+        \item Exclude pixels within 100m of land mask (but lose some kelp)
+        \item Include ``distance to shore'' as context feature so LA can learn which heuristics handle adjacency better
+    \end{itemize}
+
+    \item \textbf{Empirical approach}: Some heuristics (especially deep learning) may implicitly learn to handle adjacency. Let the LA discover which work best near shore vs. offshore.
+
+    \item \textbf{Acknowledgment}: This is a known limitation. Perfect correction would require radiative transfer modeling beyond scope of this thesis.
+\end{enumerate}
+
+\textbf{Q27: How do you validate that your SST/tide/turbidity values are actually correct for a given tile?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{SST validation}: Compare NOAA CoralTemp to BC buoy network (Environment Canada) where co-located. Expect RMSE $<$1°C based on product validation literature.
+
+    \item \textbf{Tide validation}: CHS predictions are highly accurate ($\pm$15 cm for major stations). For interpolated locations, compare to water line position visible in imagery where possible.
+
+    \item \textbf{Turbidity validation}: Hardest to validate. Can compare Sentinel-3 Kd490 to in-situ Secchi depth measurements from research cruises. Expect correlation $>$0.7 based on prior BC studies.
+
+    \item \textbf{Indirect validation}: If context features are wrong, the LA should perform poorly because similar ``contexts'' would have inconsistent performance. Good LA performance is indirect evidence of reasonable context quality.
+
+    \item \textbf{Sensitivity analysis}: Will test framework with deliberately perturbed context features to assess robustness.
+\end{enumerate}
+
+\textbf{Q28: What about sun glint? It's a major problem for coastal optical remote sensing.}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{The problem}: Specular reflection of sunlight off water surface creates bright artifacts that mask kelp signal.
+
+    \item \textbf{When it occurs}: Primarily when sun angle and viewing geometry align---varies with latitude, time of day, season.
+
+    \item \textbf{Mitigation in preprocessing}:
+    \begin{itemize}
+        \item Sentinel-2 Level-2A includes glint flags in Scene Classification
+        \item Can filter tiles with severe glint
+        \item Compute glint probability from sun/sensor geometry
+    \end{itemize}
+
+    \item \textbf{Context-aware handling}: Include solar zenith angle as context feature. LA can learn that certain heuristics (e.g., NIR-based indices) are more affected by glint than others (e.g., red-edge indices).
+
+    \item \textbf{Temporal compositing}: For extent mapping (not real-time), can composite multiple acquisitions to fill glint-affected areas.
+\end{enumerate}
+
+\textbf{Q29: The 5km resolution of SST is very coarse for 10m kelp detection. How is this useful?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Acknowledged limitation}: Yes, 5km SST cannot capture sub-kilometer thermal gradients (e.g., upwelling zones, river plumes).
+
+    \item \textbf{Why it's still useful}:
+    \begin{itemize}
+        \item Regional SST indicates whether we're in warm (stressful) or cool (favorable) conditions
+        \item Kelp stress at 18-20°C is a regional phenomenon, not pixel-level
+        \item SST helps distinguish summer from winter, heatwave years from normal years
+    \end{itemize}
+
+    \item \textbf{Higher resolution alternatives} (potential extensions):
+    \begin{itemize}
+        \item MODIS SST: 1km but more gaps due to clouds
+        \item Landsat thermal: 100m but 16-day revisit
+        \item Sentinel-3 SLSTR: 1km, better coverage
+    \end{itemize}
+
+    \item \textbf{Empirical test}: Ablation study will remove SST feature. If performance drops significantly, SST is useful despite coarse resolution. If not, can deprioritize.
+
+    \item \textbf{Key insight}: The framework is robust to imperfect context features. If SST doesn't help, the LA will learn to ignore it (by having similar performance across SST values).
+\end{enumerate}
+
+% ----------------------------------------------------------------------------
+\subsection{Deep Technical Questions (Expect from Dr. Stanley - Machine Learning)}
+% ----------------------------------------------------------------------------
+
+\textbf{Q30: Your k-NN retrieval assumes Euclidean distance in feature space is meaningful. Have you validated this?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Valid concern}: Euclidean distance treats all features equally and assumes isotropic relevance.
+
+    \item \textbf{Mitigation 1 - Normalization}: Z-score normalization ensures all features have comparable scale. Without this, high-variance features would dominate.
+
+    \item \textbf{Mitigation 2 - Feature selection}: Ablation studies will identify which features are most informative. Can weight or remove uninformative ones.
+
+    \item \textbf{Alternative distances}:
+    \begin{itemize}
+        \item Mahalanobis distance: Accounts for feature correlations. Requires covariance estimation.
+        \item Learned metric: Train a Siamese network to learn similarity. More data-hungry.
+        \item Weighted Euclidean: Learn per-feature weights via cross-validation.
+    \end{itemize}
+
+    \item \textbf{Empirical validation}: Compare k-NN retrieval quality using different metrics. If Euclidean works well, no need to complicate.
+
+    \item \textbf{Fallback}: If k-NN doesn't help (ablation shows context-aware $\approx$ global-only), then distance metric is moot anyway.
+\end{enumerate}
+
+\textbf{Q31: How do you set the blending coefficient $\alpha$? This seems like a critical hyperparameter.}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{The role of $\alpha$}: Controls global vs. local policy influence. $\alpha=1$ means pure global; $\alpha=0$ means pure local.
+
+    \item \textbf{Adaptive $\alpha$ based on confidence}:
+    \[
+    \alpha(\mathbf{c}) = \frac{1}{1 + \exp(-\beta \cdot (\bar{d} - d_{\text{thresh}}))}
+    \]
+    where $\bar{d}$ is mean distance to $k$ neighbors. Far from any memory entry $\Rightarrow$ high $\alpha$ (trust global). Close to many entries $\Rightarrow$ low $\alpha$ (trust local).
+
+    \item \textbf{Hyperparameters}: $\beta$ (steepness) and $d_{\text{thresh}}$ (transition point) tuned via validation.
+
+    \item \textbf{Simple alternative}: Fixed $\alpha = 0.5$ as starting point. Let experiments determine if adaptive $\alpha$ helps.
+
+    \item \textbf{Ablation}: Compare fixed $\alpha \in \{0, 0.3, 0.5, 0.7, 1.0\}$ vs. adaptive. Report sensitivity.
+\end{enumerate}
+
+\textbf{Q32: What prevents the LA from getting stuck in a local optimum where one heuristic dominates?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{L$_{\text{R-I}}$ behavior}: Theoretically converges to optimal action with probability approaching 1 as $\lambda \to 0$. But in non-stationary environments, ``optimal'' changes.
+
+    \item \textbf{Context-aware rescue}: Even if global policy converges to one heuristic, local adaptation can still favor others for specific contexts. This is why Component 2 is critical.
+
+    \item \textbf{Exploration mechanisms} (if needed):
+    \begin{itemize}
+        \item $\epsilon$-greedy: With probability $\epsilon$, select random heuristic
+        \item Softmax temperature: $p_i \propto \exp(q_i / T)$ with temperature $T$ controlling exploration
+        \item Pursuit algorithms: Maintain estimates of all heuristics, explore under-sampled ones
+    \end{itemize}
+
+    \item \textbf{Non-stationarity helps}: Seasonal changes mean no single heuristic is always optimal. LA must maintain diversity.
+
+    \item \textbf{Monitoring}: Track entropy of probability distribution $H(\mathbf{p}) = -\sum_i p_i \log p_i$. Alert if $H \to 0$ (premature convergence).
+\end{enumerate}
+
+\textbf{Q33: How do you handle the cold start problem? Initially, you have no memory bank entries.}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Phase 1 - Pure exploration}: With empty memory bank, $\alpha \to 1$, so we use global policy only. Global policy starts uniform, so all heuristics get tried.
+
+    \item \textbf{Bootstrapping options}:
+    \begin{itemize}
+        \item Run all 12 heuristics on historical labeled data, populate memory bank with results
+        \item Use published literature to set initial priors (e.g., ``NDVI works well in clear water'' from Schroeder 2020)
+        \item Transfer memory bank from similar geographic region if available
+    \end{itemize}
+
+    \item \textbf{Warm-up period}: First N tiles (e.g., N=1000) use uniform random selection to ensure all heuristics are tried across diverse conditions.
+
+    \item \textbf{Convergence analysis}: Report how many labeled tiles needed before context-aware adaptation provides benefit over global-only.
+\end{enumerate}
+
+\textbf{Q34: Your reward is IoU, but IoU is undefined when both prediction and ground truth have zero kelp pixels. How do you handle this?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{The edge case}: If $|\hat{\mathbf{y}}| = 0$ and $|\mathbf{y}| = 0$, then IoU = 0/0 = undefined.
+
+    \item \textbf{Interpretation}: Both predicted ``no kelp'' and ground truth is ``no kelp.'' This is a \textbf{correct} prediction!
+
+    \item \textbf{Solution}: Define IoU for this case as 1.0 (perfect agreement):
+    \[
+    \text{IoU} = \begin{cases}
+    1.0 & \text{if } |\hat{\mathbf{y}} \cup \mathbf{y}| = 0 \\
+    \frac{|\hat{\mathbf{y}} \cap \mathbf{y}|}{|\hat{\mathbf{y}} \cup \mathbf{y}|} & \text{otherwise}
+    \end{cases}
+    \]
+
+    \item \textbf{Alternative}: Use F1-score with similar handling, or use accuracy for no-kelp tiles.
+
+    \item \textbf{Class imbalance consideration}: Most tiles may have little/no kelp. Ensure evaluation stratifies by kelp presence to avoid misleading metrics.
+\end{enumerate}
+
+\textbf{Q35: With 29 context features, aren't you at risk of overfitting with limited labeled data?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Valid concern}: High-dimensional context + sparse labels = potential overfitting in k-NN.
+
+    \item \textbf{k-NN is non-parametric}: Unlike neural networks, k-NN doesn't have parameters to overfit. It just memorizes and retrieves.
+
+    \item \textbf{Regularization via $k$}: Larger $k$ means more neighbors averaged, smoother estimates, less overfitting. Will tune $k \in \{3, 5, 10, 20\}$.
+
+    \item \textbf{Dimensionality reduction} (if needed):
+    \begin{itemize}
+        \item PCA: Reduce to top 10 principal components
+        \item Feature selection: Keep only features with demonstrated predictive value
+        \item Autoencoder: Learn compressed context representation
+    \end{itemize}
+
+    \item \textbf{Ablation evidence}: If full 29-feature context doesn't outperform reduced feature sets, simplify.
+
+    \item \textbf{Memory bank size}: With 10,000+ labeled tiles, 29 features is reasonable. Curse of dimensionality is more severe with fewer samples.
+\end{enumerate}
+
+\textbf{Q36: How do you ensure reproducibility given the stochastic nature of LA?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Sources of randomness}: Heuristic selection is sampled from probability distribution. Different runs may select different heuristics.
+
+    \item \textbf{Seed control}: Fix random seeds for all experiments. Report exact seeds used.
+
+    \item \textbf{Multiple runs}: Report mean $\pm$ std over 5+ random seeds for all metrics.
+
+    \item \textbf{Deterministic mode}: For deployment, can use argmax selection (always pick highest probability heuristic) instead of sampling. Loses exploration but ensures reproducibility.
+
+    \item \textbf{Code release}: Will release all code, data splits, and trained models for reproducibility.
+\end{enumerate}
+
+% ----------------------------------------------------------------------------
+\subsection{Fundamental/Philosophical Questions}
+% ----------------------------------------------------------------------------
+
+\textbf{Q37: Why should we believe LA is better than simpler baselines for this problem?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Honest answer}: We don't know yet. This is an empirical research question.
+
+    \item \textbf{Hypothesis}: LA's theoretical properties (sparse feedback handling, convergence guarantees, context-aware adaptation) make it \textit{plausibly} better for this problem.
+
+    \item \textbf{Rigorous comparison}: Will compare against:
+    \begin{itemize}
+        \item Random selection (lower bound)
+        \item Best single heuristic (strong baseline)
+        \item Majority vote ensemble (simpler adaptive approach)
+        \item Contextual bandit (standard RL baseline)
+        \item Supervised meta-learner (if enough labeled data)
+    \end{itemize}
+
+    \item \textbf{Negative result is valid}: If LA doesn't outperform baselines, that's a publishable finding. We'd analyze why and what this tells us about the problem structure.
+
+    \item \textbf{Contribution regardless}: Even if LA ties with baselines, the data fusion framework, sparse label handling mechanism, and heuristic complementarity analysis are standalone contributions.
+\end{enumerate}
+
+\textbf{Q38: Is this really a PhD-level contribution, or is it ``just'' applying existing methods?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Novel application}: LA has never been applied to satellite-based environmental monitoring. Novel application to important domain is valid contribution.
+
+    \item \textbf{Methodological extensions}:
+    \begin{itemize}
+        \item S-model continuous rewards (extending P-model theory)
+        \item Memory-based context adaptation (novel GLA implementation)
+        \item Temporal decay for delayed feedback (new mechanism)
+        \item Multi-source data fusion with quality flags (methodological contribution)
+    \end{itemize}
+
+    \item \textbf{Empirical science}: Characterizing heuristic performance across environmental conditions is new knowledge.
+
+    \item \textbf{Practical impact}: A working kelp monitoring system for BC's 26,000 km coastline would be significant.
+
+    \item \textbf{Multiple papers}: The work supports 5 distinct publications (see contribution section), indicating sufficient depth.
+\end{enumerate}
+
+\textbf{Q39: What if the heuristics themselves are not good enough? The LA can only select; it can't improve a bad heuristic.}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Correct observation}: LA is a meta-algorithm. If all heuristics fail for some condition, LA fails too.
+
+    \item \textbf{Mitigation 1 - Diverse pool}: Three tiers with fundamentally different approaches. Unlikely all fail simultaneously.
+
+    \item \textbf{Mitigation 2 - Pool expansion}: If systematic failure mode identified, add new heuristic targeting that condition.
+
+    \item \textbf{Mitigation 3 - Confidence flagging}: Track variance across heuristics. High variance = uncertain. Flag for human review.
+
+    \item \textbf{Mitigation 4 - Fine-tuning}: Deep learning heuristics can be fine-tuned on new labeled data from failure cases.
+
+    \item \textbf{Upper bound analysis}: Oracle baseline (per-tile best heuristic) shows achievable performance. Gap between LA and oracle indicates room for better selection. Gap between oracle and 100\% indicates need for better heuristics.
+\end{enumerate}
+
+\textbf{Q40: How does this relate to foundation models / large pretrained models that are dominating ML now?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Complementary, not competing}: Foundation models could be added as a heuristic in the pool. LA then decides when to use the expensive foundation model vs. simpler methods.
+
+    \item \textbf{Cost-aware selection}: Foundation models are computationally expensive. Multi-objective reward could favor simpler heuristics when they suffice, use foundation model only when needed.
+
+    \item \textbf{Domain adaptation}: Foundation models trained on general imagery may not work well on coastal satellite data without fine-tuning. LA can learn this empirically.
+
+    \item \textbf{Emerging opportunity}: Segment Anything Model (SAM), CLIP for remote sensing, etc. These could be future heuristics.
+
+    \item \textbf{Thesis scope}: Focus is on LA framework, not on developing new detection models. Foundation models are potential extension.
+\end{enumerate}
+
+% ----------------------------------------------------------------------------
+\subsection{Data Fusion Specific Questions}
+% ----------------------------------------------------------------------------
+
+\textbf{Q41: The data fusion you describe (satellite + SST + tide + ocean color) seems like a significant contribution on its own. Is this a separate paper?}
+
+\textbf{A:}
+
+\textbf{Yes, absolutely. This is now planned as a core paper in the thesis.}
+
+\begin{enumerate}
+    \item \textbf{Paper scope}: ``Multi-Source Environmental Data Fusion for Coastal Ecosystem Monitoring: A Framework with Principled Missing Data Handling''
+
+    \item \textbf{Novel contributions}:
+    \begin{itemize}
+        \item Systematic methodology for fusing data at 5 different resolutions (10m to 5km)
+        \item Hierarchical fallback strategy for missing data (temporal $\to$ spatial $\to$ climatology $\to$ imputation)
+        \item Quality-aware feature vectors that track data provenance
+        \item Validation framework for multi-source alignment
+    \end{itemize}
+
+    \item \textbf{Generalizability}: The fusion framework applies beyond kelp---any coastal monitoring (seagrass, coral, water quality) faces same challenges.
+
+    \item \textbf{Target venue}: Remote Sensing of Environment, ISPRS Journal of Photogrammetry, or similar.
+
+    \item \textbf{Standalone value}: Even if LA doesn't outperform baselines, the data fusion paper stands alone as methodological contribution.
+\end{enumerate}
+
+\textbf{Q42: How do you validate that the fused data actually improves prediction compared to using imagery alone?}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Ablation study design}:
+    \begin{itemize}
+        \item Baseline: Imagery features only (spectral + texture)
+        \item +Temporal: Add DOY, days since last observation
+        \item +Environmental: Add SST, tide, chlorophyll, turbidity
+        \item +Geographic: Add lat, lon, distance to shore, fetch, depth
+        \item Full: All 29 features
+    \end{itemize}
+
+    \item \textbf{Metrics}: Compare context-aware LA performance with each feature subset.
+
+    \item \textbf{Feature importance}: Analyze which context features most affect k-NN retrieval and LA performance.
+
+    \item \textbf{Hypothesis}: Environmental features (SST, tide, turbidity) will provide most benefit because they capture conditions not visible in imagery alone.
+
+    \item \textbf{Negative result handling}: If imagery-only performs equally well, report this as finding---simpler is better.
+\end{enumerate}
+
+\textbf{Q43: What about uncertainty propagation? Each data source has measurement errors that should propagate to predictions.}
+
+\textbf{A:}
+
+\begin{enumerate}
+    \item \textbf{Valid point}: SST has $\pm$0.5°C error, tide predictions have $\pm$15cm, etc. These uncertainties compound.
+
+    \item \textbf{Current approach}: Quality flags indicate data source reliability, but don't quantify exact uncertainty.
+
+    \item \textbf{Potential extension - Bayesian treatment}:
+    \begin{itemize}
+        \item Model each context feature as distribution, not point estimate
+        \item Propagate uncertainty through k-NN (uncertain neighbors get lower weight)
+        \item Output prediction with confidence interval
+    \end{itemize}
+
+    \item \textbf{Scope limitation}: Full uncertainty quantification is beyond current thesis scope. Acknowledge as future work.
+
+    \item \textbf{Practical mitigation}: Quality flags and multiple fallback levels implicitly handle uncertainty by distinguishing reliable vs. unreliable data.
+\end{enumerate}
+
+% ============================================================================
+\section{Key Equations to Know}
+% ============================================================================
+
+\textbf{L$_{\text{R-I}}$ Update (P-model):}
+\begin{align}
+p_i(n+1) &= p_i(n) + \lambda[1 - p_i(n)] && \text{(reward for action } i\text{)}\\
+p_j(n+1) &= (1-\lambda) p_j(n), \quad j \neq i && \text{(all other actions)}
+\end{align}
+
+\textbf{L$_{\text{R-I}}$ Update (S-model):}
+\begin{align}
+p_i(n+1) &= p_i(n) + \lambda \cdot R \cdot [1 - p_i(n)] \\
+p_j(n+1) &= p_j(n) - \lambda \cdot R \cdot p_j(n), \quad j \neq i
+\end{align}
+
+\textbf{IoU Reward:}
+\[
+R = \text{IoU}(\hat{\mathbf{y}}, \mathbf{y}) = \frac{|\hat{\mathbf{y}} \cap \mathbf{y}|}{|\hat{\mathbf{y}} \cup \mathbf{y}|}
+\]
+
+\textbf{Local Probability (k-NN):}
+\[
+\mathbf{p}_{\text{local}}(\mathbf{c}) = \frac{\sum_{j \in \mathcal{N}_k(\mathbf{c})} w_j \cdot R_j \cdot \mathbf{p}_j}{\sum_{j \in \mathcal{N}_k(\mathbf{c})} w_j \cdot R_j}
+\]
+
+\textbf{Distance Weights:}
+\[
+w_j = \exp\left(-\frac{\|\mathbf{c} - \mathbf{c}_j\|_2^2}{\sigma^2}\right)
+\]
+
+\textbf{Global-Local Blending:}
+\[
+\mathbf{p}_{\text{final}}(\mathbf{c}) = \alpha(\mathbf{c}) \cdot \mathbf{p}_{\text{global}} + (1 - \alpha(\mathbf{c})) \cdot \mathbf{p}_{\text{local}}(\mathbf{c})
+\]
+
+\textbf{Temporal Decay:}
+\[
+R_{\text{effective}} = R \cdot \gamma^{\delta}, \quad \delta = t_{\text{label}} - t_{\text{prediction}}
+\]
+
+\textbf{Optimality Criterion:}
+\[
+\lim_{n\to\infty} E[M(n)] = c_\ell \quad \text{where } c_\ell = \min_i c_i
+\]
+
+% ============================================================================
+\section{Key References to Cite}
+% ============================================================================
+
+\textbf{Kelp Ecology \& BC Context:}
+\begin{itemize}
+    \item Starko et al. (2024): BC kelp decline patterns, 11 subregions
+    \item Mora-Soto et al. (2024): 4 environmental clusters in Salish Sea
+    \item Schroeder et al. (2020): Kelp detection methods, image quality scoring
+\end{itemize}
+
+\textbf{Learning Automata:}
+\begin{itemize}
+    \item Narendra \& Thathachar (1989): Foundational LA textbook
+    \item Thathachar \& Sastry (2002): Modern LA theory
+    \item Bisong \& Oommen (2019--2021): My prior OMA publications
+\end{itemize}
+
+\textbf{Remote Sensing Methods:}
+\begin{itemize}
+    \item Gendall et al. (2023): Multi-satellite kelp mapping
+    \item Timmer et al. (2024): Tides, currents, morphology for kelp detection
+    \item Cavanaugh et al. (2021): UAV kelp mapping
+\end{itemize}
+
+\textbf{Machine Learning:}
+\begin{itemize}
+    \item Drake et al. (2020): Hyper-heuristics survey
+    \item Savargiv et al. (2021): LA for Random Forest optimization
+    \item Sutton \& Barto (2018): Reinforcement learning textbook
+\end{itemize}
+
+% ============================================================================
+\section{The Data Fusion Paper - A Core Thesis Contribution}
+% ============================================================================
+
+\textbf{This section elaborates on the multi-source data fusion methodology as a standalone, significant contribution warranting its own publication.}
+
+\subsection{Why Data Fusion is a Core Contribution}
+
+The context-aware adaptation mechanism (Component 2) requires fusing data from \textbf{5+ heterogeneous sources} with vastly different characteristics:
+
+\begin{center}
+\begin{tabular}{lrrll}
+\toprule
+\textbf{Source} & \textbf{Spatial Res.} & \textbf{Temporal Res.} & \textbf{Coverage} & \textbf{Primary Challenge} \\
+\midrule
+Sentinel-2 imagery & 10m & 5 days & Global & Cloud gaps \\
+NOAA CoralTemp SST & 5 km & Daily & Global & Coarse resolution \\
+Sentinel-3 OLCI & 300m & 1-2 days & Global & Coastal contamination \\
+CHS Tide Predictions & Station-based & 6-minute & BC only & Sparse stations \\
+CHS Bathymetry & 100m & Static & BC only & Survey gaps \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{The resolution mismatch problem:} A 10m $\times$ 10m satellite pixel must be associated with environmental context derived from sources ranging from 5 km (SST) to point measurements (tide stations). This is a \textbf{500$\times$ to $\infty$ resolution ratio}.
+
+\textbf{The missing data problem:} Ocean color products have 30-50\% missing data due to clouds. How do you build a context vector when half the features might be unavailable?
+
+\textbf{These are not trivial preprocessing steps---they are methodological contributions.}
+
+\subsection{Proposed Paper: Multi-Source Environmental Data Fusion}
+
+\textbf{Title:} ``Multi-Source Environmental Data Fusion for Coastal Ecosystem Monitoring: A Framework with Principled Missing Data Handling''
+
+\textbf{Target Venues:}
+\begin{itemize}
+    \item Remote Sensing of Environment (IF: 13.5)
+    \item ISPRS Journal of Photogrammetry and Remote Sensing (IF: 12.7)
+    \item International Journal of Applied Earth Observation and Geoinformation (IF: 7.5)
+\end{itemize}
+
+\textbf{Paper Structure:}
+
+\begin{enumerate}
+    \item \textbf{Introduction}: The challenge of coastal monitoring with multi-source data
+    \item \textbf{Related Work}: Review of data fusion methods in environmental remote sensing
+    \item \textbf{Methodology}:
+    \begin{itemize}
+        \item Spatial alignment strategies (bilinear interpolation, nearest station, IDW)
+        \item Temporal alignment (exact match, windowed search, climatology fallback)
+        \item Hierarchical missing data handling (4-level cascade)
+        \item Quality-aware feature vectors with provenance tracking
+    \end{itemize}
+    \item \textbf{Case Study}: Application to BC kelp monitoring with 5 data sources
+    \item \textbf{Validation}:
+    \begin{itemize}
+        \item Comparison of alignment strategies
+        \item Sensitivity to missing data rates
+        \item Impact on downstream prediction accuracy
+    \end{itemize}
+    \item \textbf{Discussion}: Generalizability to other coastal ecosystems
+    \item \textbf{Code/Data Release}: Open-source fusion toolkit
+\end{enumerate}
+
+\subsection{Novel Contributions of the Data Fusion Paper}
+
+\textbf{Contribution 1: Systematic Resolution Harmonization}
+
+No existing paper provides a complete methodology for harmonizing 10m satellite imagery with 5km oceanographic products. Our approach:
+\begin{itemize}
+    \item Bilinear interpolation for gridded products (SST, Chl)
+    \item Nearest-station + temporal interpolation for point data (tide)
+    \item Precomputed rasters for static layers (bathymetry, fetch)
+    \item Validation of interpolation accuracy against independent measurements
+\end{itemize}
+
+\textbf{Contribution 2: Hierarchical Missing Data Cascade}
+
+A principled 4-level fallback strategy:
+\begin{enumerate}
+    \item Exact temporal match
+    \item Temporal window search ($\pm$N days)
+    \item Climatological fallback (seasonal average)
+    \item Imputation with quality flag
+\end{enumerate}
+
+This is more principled than ad-hoc gap-filling and more practical than complex imputation models.
+
+\textbf{Contribution 3: Quality-Aware Feature Vectors}
+
+Augmented context vectors that track data provenance:
+\[
+\mathbf{c}^{\text{aug}} = [\mathbf{c}, q_1, q_2, \ldots, q_m]
+\]
+where $q_i \in \{0, 1, 2, 3\}$ indicates data quality level. This enables downstream models to weight features by reliability.
+
+\textbf{Contribution 4: Validation Framework}
+
+Methods to validate fusion quality:
+\begin{itemize}
+    \item Cross-validation against withheld in-situ measurements
+    \item Sensitivity analysis with artificially increased missing data
+    \item Ablation studies showing which data sources provide most value
+\end{itemize}
+
+\textbf{Contribution 5: Generalizable Toolkit}
+
+Open-source Python package for coastal data fusion:
+\begin{itemize}
+    \item Modular design for adding new data sources
+    \item Configuration-driven (YAML) for different study regions
+    \item Integration with Google Earth Engine for scalability
+    \item Documentation and tutorials
+\end{itemize}
+
+\subsection{Why This Paper Stands Alone}
+
+\begin{enumerate}
+    \item \textbf{Independent of LA}: The fusion methodology is useful regardless of downstream model. Could be used with any ML approach.
+
+    \item \textbf{Addresses real gap}: Coastal remote sensing literature often glosses over data fusion as ``preprocessing.'' We make it explicit and rigorous.
+
+    \item \textbf{Immediate practical value}: Any researcher working with coastal satellite data + oceanographic context can use this framework.
+
+    \item \textbf{Replicable}: Unlike methods requiring proprietary data, our approach uses freely available data (Sentinel, NOAA, CHS).
+
+    \item \textbf{Extensible}: Framework can incorporate new data sources (e.g., Landsat thermal, GOES SST, wave buoys).
+\end{enumerate}
+
+\subsection{Connection to Thesis Narrative}
+
+The data fusion paper supports the overall thesis in multiple ways:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Thesis Component} & \textbf{How Data Fusion Supports It} \\
+\midrule
+RQ1 (Adaptation) & Context features enable site-specific adaptation \\
+RQ2 (Heterogeneity) & Environmental context distinguishes coastal environments \\
+RQ3 (Sparse Labels) & Quality flags inform reward weighting \\
+RQ4 (TEK) & Framework can incorporate TEK-derived features \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Key message for committee:} The data fusion work is not peripheral preprocessing---it is a \textbf{core methodological contribution} that enables the entire context-aware adaptation mechanism and warrants publication in a top remote sensing venue.
+
+% ============================================================================
+\section{Final Checklist Before Presentation}
+% ============================================================================
+
+\begin{itemize}
+    \item[$\square$] Know all key statistics (26,000 km coastline, $>$70\% decline, 18--20$^\circ$C threshold)
+    \item[$\square$] Can explain L$_{\text{R-I}}$ update equations from memory
+    \item[$\square$] Can walk through methodology flow for one tile
+    \item[$\square$] Know differences between P-model, Q-model, S-model
+    \item[$\square$] Can explain why LA over standard RL
+    \item[$\square$] Know all 12 heuristics in the pool
+    \item[$\square$] Can explain context-aware adaptation mechanism
+    \item[$\square$] Can explain temporal decay and why it's needed
+    \item[$\square$] Know evaluation protocols (A, B, C) and what each tests
+    \item[$\square$] Can defend timeline and acknowledge risks
+    \item[$\square$] Have backup answers for challenging questions
+    \item[$\square$] Know key references by author name
+    \item[$\square$] \textbf{Can articulate why data fusion is a core paper contribution}
+    \item[$\square$] \textbf{Can explain the 5-paper publication plan}
+\end{itemize}
+
+\end{document}

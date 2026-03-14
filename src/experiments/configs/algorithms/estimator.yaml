@@ -1,0 +1,15 @@
+# Estimator (SERI) Algorithm Configuration
+# Bayesian estimator with Beta distribution posteriors
+
+experiment:
+  name: "estimator_seri"
+  description: "Stochastic Estimator Reward-Inaction with Bayesian posteriors"
+
+automaton:
+  type: "Estimator"
+  alpha: 0.01
+  prior_strength: 1.0   # Strength of Beta prior (higher = more conservative)
+  initial_prob: "uniform"
+
+training:
+  num_epochs: 20

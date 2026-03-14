@@ -1,0 +1,82 @@
+# Learning Automata Kelp Detection Prototype
+# Base Configuration - Shared defaults for all experiments
+
+experiment:
+  name: "base"
+  description: "Base configuration for LA kelp detection"
+  seed: 42
+
+# Standard seeds for multi-seed experiments
+seeds: [42, 123, 456, 789, 1011]
+
+# Data Configuration
+data:
+  data_path: "../data_bc"
+  tile_size: 512
+  bands:
+    B2: 0   # Blue (490nm)
+    B3: 1   # Green (560nm)
+    B4: 2   # Red (665nm)
+    B5: 3   # Vegetation Red Edge (705nm)
+    B6: 4   # Vegetation Red Edge (740nm)
+    B7: 5   # Vegetation Red Edge (783nm)
+    B8: 6   # NIR (842nm)
+    B8A: 7  # Vegetation Red Edge (865nm)
+    B11: 8  # SWIR (1610nm)
+    B12: 9  # SWIR (2190nm)
+  split_ratio:
+    train: 0.7
+    val: 0.15
+    test: 0.15
+  stratify_by_scene: true
+
+# Default Learning Automata Configuration
+automaton:
+  type: "LR-I"
+  alpha: 0.01
+  initial_prob: "uniform"
+
+# Heuristic Pool Configuration
+heuristics:
+  enabled:
+    - "ndvi"
+    - "fai"
+    - "gndvi"
+    - "ensemble"
+  ndvi:
+    threshold_method: "otsu"
+    fixed_threshold: 0.3
+  fai:
+    threshold_method: "otsu"
+    fixed_threshold: 0.0
+  gndvi:
+    threshold_method: "otsu"
+    fixed_threshold: 0.3
+  ensemble:
+    voting_method: "majority"
+
+# Training Configuration
+training:
+  num_epochs: 20
+  log_interval: 50
+  shuffle: true
+
+# Reward Configuration
+reward:
+  type: "continuous"
+  iou_threshold: 0.3
+
+# Evaluation Configuration
+evaluation:
+  metrics:
+    - "iou"
+    - "precision"
+    - "recall"
+    - "f1"
+
+# Output Configuration
+output:
+  save_plots: true
+  plot_format: "png"
+  plot_dpi: 150
+  save_predictions: false

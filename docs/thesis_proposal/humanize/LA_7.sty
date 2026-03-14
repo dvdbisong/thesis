@@ -1,0 +1,219 @@
+\section{Learning Automata Theory}
+\label{sec:lit-la}
+
+\subsection{Historical Development and Foundations}
+\label{subsec:la-foundations}
+
+Learning Automata (LA) emerged in the Soviet Union in the 1960s through the pioneering work of Tsetlin \citep{Tsetlin1961}, who proposed computational adaptive schemes for learning optimal actions in stochastic environments. The field evolved out of the combination of automata theory, stochastic processes, and behavioral psychology - especially conditioning and associative learning theories formalized computationally by \citet{BushMosteller1955}. LA share conceptual interfaces with reinforcement learning, multiagent systems and control theory, but provide different theoretical guarantees that are particularly relevant to decision-making under uncertainty \citep{Narendra1989, ThathacharSastry2002, Bisong2018}.
+
+The LA model works in a feedback loop between the automaton (decision-maker) and an unknown environment. This formulation is especially well suited for situations where little or no information is known \textit{a priori} about environmental response characteristics. This LA framework resembles kelp monitoring very closely, where detection algorithm performance varies unpredictably across environmental situations.
+
+\subsection{Mathematical Framework}
+\label{subsec:la-math-framework}
+
+The LA framework has two interacting parts, the \textbf{Environment} and the \textbf{Automaton} \citep{Narendra1989, Bisong2018}.
+
+\textbf{Environment.} The environment is an abstract stochastic environment represented as a triple $E = \{\alpha, c, \beta\}$ where:
+\begin{itemize}
+    \item $\alpha = \{\alpha1, \alpha2, \ldots, \alphar\}$ is the set of $r$ input actions
+    \item $\beta$ is the feedback response. Three models exist:
+    \begin{itemize}
+        \item \textit{P-model:} Binary response $\beta \in \{0, 1\}$ (reward/penalty)
+        \item \textit{Q-model:} Discrete finite values in $[0,1]$
+        \item \textit{S-model:} Continuous random variable, in $[0,1]$
+    \end{itemize}
+    \item $c = \{c1, c2, \ldots, cr\}$ are penalty probabilities where $ci = P(\beta(n) = 1 \mid \alpha(n) = \alphai)$
+\end{itemize}
+The S-model is especially relevant to the proposed framework, because performance metrics, such as F1-score and the IoU, are continuous values in $[0,1]$ that are natural feedback signals.
+
+\textbf{Automaton.} The automaton is defined as a quintuple $A = \{\Phi, \alpha, \beta, F(\cdot,\cdot), G(\cdot,\cdot)\}$ where:
+\begin{itemize}
+    \item $\Phi = \{\phi1, \phi2, \ldots, \phis\}$ is the finite state space of internal states
+    \item $\alpha$ and $\beta$ are defined as for the environment
+    \item $F: \Phi \times \beta \rightarrow \Phi$ is the state transition function: $\phi(n+1) = F[\phi(n), \beta(n)]$
+    \item $G: \Phi \rightarrow \alpha$ is the output mapping which determines action selection
+\end{itemize}
+
+\subsection{Performance Criteria and Optimal Performance}
+\label{subsec:la-performance}
+
+The quality of an LA is measured by a comparison of its expected penalty $M(n) = E[\beta(n) P(n)] = \sum{i=1}^{r} ci pi(n)$ with a pure-chance automaton $M0 = \frac{1}{r}\sum{i=1}^{r} ci$ that picks actions uniformly at random \citep{Narendra1989}. The following performance criteria are set:
+
+\begin{itemize}
+    \item \textbf{Expedient:} $\lim{n\to\infty} E[M(n)] < M0$ (better than pure chance)
+    \item \textbf{Optimal:} $\lim{n\to\infty} E[M(n)] = c\ell$ where $c\ell = \mini ci$
+    \item \textbf{$\epsilon$-optimal:} $\lim{n\to\infty} E[M(n)] < c\ell + \epsilon$ for arbitrary $\epsilon > 0$
+    \item \textbf{Absolutely Expedient:} $E[M(n+1) P(n)] < M(n)$ (continually decreasing)
+\end{itemize}
+
+These criteria give theoretical guarantees which are crucial for the proposed framework: An $\epsilon$-optimal LA will asymptotically select the best-performing heuristic with arbitrarily high probability.
+
+Subsection Fixed and Variable Structure Automata
+\label{subsec:fssa-vssa}
+
+LA are classified in two families according to their transition characteristics \citep{Narendra1989, Bisong2018}:
+
+Fixed Structure Stochastic Automata of Fixed Structure (FSSA). In FSSA, the state transitions are deterministic, given the current state and feedback. The Tsetlin automaton $L{2N,2}$ has $N$ memory states per action, with rewards moving the automaton towards deeper states in the memory of the action and penalties moving it towards boundary states where action changes take place \citep{Tsetlin1961}. \citet{Krinsky1964} and \citet{Krylov1964} created $\epsilon$-optimal versions of FSSA that converge near-optimally for any environment where $\mini(ci) < 0.5$.
+
+\textbf{Variable Structure Stochastic Automata (VSSA). VSSA update action probabilities directly based on reinforcement schemes \citep{Varshavskii1963}. The automaton keeps a probability vector $\mathbf{p}(n) = [p1(n), \ldots, pr(n)]$ updated according to:
+\begin{equation}
+    P(n+1) = T[P(n), \alpha(n), \beta(n)]
+\end{equation}
+where $T$ is the reinforcement scheme. VSSA have a better analytical tractability and form the foundation of modern LA applications \citep{ThathacharSastry2002}.
+
+\subsection{Reinforcement Schemes}
+\label{subsec:reinforcement-schemes}
+
+The update rule $T$ is the reinforcement scheme'' of the automaton. Some important schemes are \citep{Narendra1989, Lakshmivarahan1973}:
+
+\textbf{Linear Reward-Inaction (L$\text{R-I}$):} If action $\alphai$ is taken and reward ($\beta = 0$):
+\begin{align}
+    pi(n+1) &= pi(n) + a[1 - pi(n)] \\
+    pj(n+1) &= (1-a) pj(n), \quad j \neq i
+\end{align}
+When penalty is received ( $\beta = 1$ ) probabilities are not changed (inaction). The parameter $a \in (0, 1)$ is the learning rate. L$r-i$ is represented by an absorbing Markov chain and converges to one of the $r$ absorbing states (unit vectors) with probability 1. The probability of converging to the optimal action is closer to 1 with a $a \rightarrow 0$ ($\epsilon$-optimality) \citep{Narendra1989}.
+
+\textbf{Linear Reward-Penalty (L$\text{R-P}$):} Updates on both reward and penalty:
+\begin{align}
+    \text{Reward: } & pi(n+1) = pi(n) + a[1 - pi(n)] \\
+    \text{Penalty: } & pi(n+1) = (1-b) pi(n) \\
+    & pj(n+1) = \frac{b}{r-1} + (1-b) pj(n), \quad j \neq i
+\end{align}
+The parameter $b$ regulates the size of the penalty. L$\text{R-P}$ is expedient when $a = b$ and is $\epsilon$-optimal as $a \to 0$ and $b \ll a$. \citet{Savargiv2021} found that L$\text{R-P}$ with $a = b = 0.5$ outperformed L$\text{R-I}$ in classifier selection experiments.
+
+\textbf{Linear Inaction-Penalty (L$\text{I-P}$):} Updates only on penalty; proven expedient but never $\epsilon$-optimal. Represented by ergodic Markov chain \citep{Narendra1989}.
+
+\textbf{Pursuit Algorithms:} Maintain running maximum likelihood estimates of penalty probabilities $\hat{c}i$ and move the probability mass to the action with the lowest estimated penalty \citep{ThathacharSastry2002}. Pursuit schemes are faster converging than standard schemes if estimates are reliable, and discretized versions are $\epsilon$-optimal with better empirical performance. For problems with huge action spaces, hierarchical pursuit LA organize actions into tree structures for efficient exploration \citep{Yazidi2018}.
+
+\subsection{Non-Stationary Environments}
+\label{subsec:nse}
+
+Non-Stationary Environments (NSEs) are defined by penalty probabilities $\{ci(n)\}$ that vary with time - the condition most pertinent to kelp monitoring where environmental contexts change seasonally and interannually \citep{Bisong2018, Varshavskii1965}. Two NSE models are of special interest:
+
+\textbf{Markovian Switching Environment (MSE):} The automaton is in a finite set of environments $\{E1, E2, \ldots, Ed\}$ which are states of a Markov chain \citep{Cogburn1984}. If $qj(n)$ is the probability of being in environment $Ej$ and $ci^j$ is the penalty probability for action $\alphai$ in environment $Ej$, the average penalty is:
+\begin{equation}
+    M(n) = \frac1T\sum{i=1}^r pi(n) \sum{j=1}^d qj(n) ci^j
+\end{equation}
+MSEs model scenarios in which environmental state transitions are not perfectly predictable but are controlled by underlying dynamics--in our case, the annual-to-interannual variability of kelp environmental states due to stochastic climate processes.
+
+
+Then, in the periodic switching environment, the system becomes evolved by $k$ states according to round robin scheduling. Specifically, after every $T$ discrete events the environment changes from state $Qi$ to state $Q{i+1 \mod k}$. As a result, any contiguous sequence of $T$ events is distributed under the same distributional parameters. The Periodic Switching Environment (PSE) offers a natural abstraction for modelling the seasonal dynamics of kelp phenology given their inherently cyclic nature of kelp life cycles and the environmental drivers controlling them. Kelp forests, especially \textit{Macrocystis pyrifera} (giant kelp), show strong seasonal patterns in growth, canopy cover and senescence, as a result of periodic variations in sea surface temperature, light availability, nutrient concentrations and wave disturbance regimes~\cite{Schiel2015, Reed2008}. Within the PSE framework, $k$ discrete phenological states are defined for seasonal phases. For example, given $k = 4$: winter (high nutrients, storm-induced disturbance, minima of canopy), spring (increasing light, rapid vegetative growth), summer (nutrient depletion, peak canopy development) and autumn (maximum canopy cover, onset of senescence, canopy thinning).
+
+
+\textbf{Periodic Switching Environment (PSE):} The environment is periodically switching through $d$ stationary states with period $T$ \citep{Varshavskii1965}. When the time $T$ is known, the $T$ automata can be deployed one after the other, each one operating in its assigned time slot. When $T$ is unknown, two-level hierarchical LA architectures are needed. PSEs model seasonal patterns in kelp phenology where detection conditions are predictable throughout the annual cycle.
+
+The difference between MSE and PSE is relevant to the proposed framework design, because seasonal adaptation can use known periodicity (PSE-like behavior), whereas interannual adaptation has to deal with unpredictable regime shifts (MSE-like behavior).
+
+\subsection{Object Migration Automata as a Solution to the Object Partitioning Problem}
+\label{subsec:oma}
+
+The Object Partitioning Problem (OPP) is concerned with how to partition a set of $W$ elements into $R$ disjoint groups, so that often co-accessed elements are grouped together. The OOP problem is an NP-hard problem with applications in cloud computing, distributed databases, image retrieval and cryptanalysis \citep{OomenMa1988, FayyoumiOommen2006, OomenZgierski1993, OomenFothergill1993}.
+
+The Object Migration Automaton (OMA) is an LA-based solution to the problem where actions are groups and objects ``migrate'' between groups based on feedback from queries \citep{OommenMa1988, Shirvani2018}. When queried objects reside in the same group, the automaton is rewarded, and when in different groups, objects move towards group boundaries, and may migrate. The OMA family has been developed through several improvements \citep{Bisong2018, ShirvaniOommen2017, BisongOommen2020a, BisongOommen2021}:
+
+\begin{itemize}
+    \item \textbf{Enhanced OMA (EOMA):} Overcomes deadlock situations in original OMA \citep{BisongOommen2019b, BisongOommen2020a}
+    \item \textbf{Pursuit EOMA (PEOMA):} Uses pursuit paradigm; improves on EOMA in MSEs by order of magnitude \citep{BisongOommen2019a}
+    \item \textbf{Transitive PEOMA (TPEOMA):} Uses transitive relationships; better in MSEs, instable in PSEs \citep{BisongOommen2020b, BisongOommen2021}
+\end{itemize}
+
+The OMA paradigm is conceptually relevant to the proposed framework: Just as OMA groups often co-accessed elements, the proposed learning automata framework needs to learn which heuristics have good synergy under similar environmental contexts.
+
+\subsection{Applications in Adaptive Systems}
+\label{subsec:la-applications}
+
+Learning automata have been used in a wide range of fields, and thus show the versatility of automata in adaptive decision making:
+
+\textbf{Image segmentation:} \citet{Cuevas2011} involved continuous action reinforcement learning automata (CARLA) for multi-threshold image segmentation, which was shown to be better than expectation-maximization and Levenberg-Marquardt optimization in terms of convergence speed and robustness to local minima.
+
+\textbf{Classifier/algorithm selection:} \citet{Savargiv2021} use LA for optimizing random forest, in which each decision tree is an action and the automaton is learning which trees to weight for each input. This is exactly analogous to the proposed heuristic selection mechanism.
+
+\textbf{Sensor placement:} \citet{BenZvi2018} proposed a LA framework for sensor placement techniques in dynamic maritime environments that takes environment observations into account as a means to predict the probabilities of target appearances. The dual sensors concept (environmental sensors + target sensors) has direct parallels to the proposed context-aware adaptation.
+
+\textbf{Wireless networks:} \citet{Nicopolitidis2011} surveyed LA applications in adaptive wireless networks, which are shown to be effective for medium access control, routing, and spectrum access problems with unknown, time-varying environments.
+
+\textbf{Adaptive data structures:} \citet{Bisong2018}, \citet{BisongOommen2020a}, and \citet{BisongOommen2021} used OMA-family algorithms to self-organizing lists in NSEs and demonstrated that EOMA, PEOMA, and TPEOMA augmented hierarchical schemes have state-of-the-art performance for query optimization under locality of reference. The PEOMA-augmented schemes had order-of-magnitude improvements over EOMA in terms of MSEs \citep{BisongOommen2019a} whereas TPEOMA delivered superior performance in terms of MSEs but instability in terms of PSEs - a finding that has direct relevance to the design of the proposed framework for seasonal (PSE-like) versus interannual (MSE-like) adaptation \citep{BisongOommen2020b, BisongOommen2021}.
+
+\section{Adaptive Monitoring Systems}
+\label{sec:lit-adaptive}
+
+\subsection{Online Learning and Concept Drift}
+\label{subsec:online-learning}
+
+Environmental monitoring systems are subject to ``concept drift''. This is the non-stationarity of the relationship between inputs (imagery) and outputs (kelp presence) over time. Sources of drift include:
+
+\textbf{Seasonal variation:} Kelp phenology varies throughout the year with different spectral characteristics during the growth, maturity and senescence phases.
+
+\textbf{Climate anomalies:} Marine heatwaves affect the kelp distribution and the spectral properties, which may render models calibrated on ``normal'' conditions invalid.
+
+\textbf{Sensor drift:} Gradual changes in sensor calibration can affect consistency of spectral measurements.
+
+Online learning methods that continuously update the models as new data arrives provide a possible solution, but they usually need to be given labelled examples at each time step. This is something that does not happen in sparse feedback scenarios.
+
+\subsection{Ensemble Selection and Meta-Learning Techniques}
+\label{subsec:ensemble-selection}
+
+Rather than adapt a single model, ensemble selection approaches have a pool of models, and dynamically select or weight the models based on expected performance. This relates to hyper-heuristic research \citep{Ganaie2022}:
+
+\textbf{Selection hyper-heuristics:} \citet{Drake2020} survey methods to choose between low-level heuristics based on the state of the problem. Key components are heuristic selection mechanisms (often based on reinforcement learning) and acceptance criteria for proposed solutions.
+
+\textbf{Reinforcement learning for hyper-heuristic design:} \citet{Choong2018} showed an example of automatic design of hyper-heuristics by Q learning where states are problem features and actions are heuristic choices. Deep reinforcement learning is an extension of these approaches to high dimensional state spaces \citep{SuttonBarto2018, Lapeyrolerie2022}.
+
+The proposed LA framework can be seen as a specific version of selection hyper-heuristics in which the selection mechanism is grounded in learning automata theory as opposed to general reinforcement learning. This link to the wider meta-learning literature gives us theoretical underpinnings and existing benchmarks for evaluation.
+
+\subsection{Sparse and Delayed Feedback Learning}
+\label{subsec:sparse-feedback}
+
+There are theoretical and practical challenges with learning from sparse, delayed feedback:
+
+\textbf{Credit assignment:} When feedback is received long after actions, it is far from trivial to figure out which actions caused the outcome. Standard LA theory assumes immediate feedback; extensions to delayed feedback less developed.
+
+\textbf{Experience replay:} Methods from deep reinforcement learning, specifically experience replay buffers (for storing and resampling previous experiences), provide one way of learning from little feedback \citep{SuttonBarto1998}.
+
+\textbf{Importance sampling:} In the case of feedback distribution that is different from the distribution of actions (e.g., validation focuses on uncertain predictions), importance sampling corrections may be required in order to get unbiased learning signals.
+
+\section{Indigenous Knowledge in Environmental Monitoring}
+\label{sec:lit-tek}
+
+\subsection{Traditional Ecological Knowledge (TEK)
+\label{subsec:tek}
+
+Traditional Ecological Knowledge is cumulative knowledge of ecological relationships that has been built up over generations of indigenous observations and practices. For kelp forests, TEK may encode for:
+
+\textbf{Long-term baselines:} Indigenous communities have been observing kelp dynamics for millennia, offering temporal depth far beyond scientific monitoring.
+
+\textbf{Local detail:} Knowledge of specific sites, seasonal patterns and relationships to other species that may not be captured in satellite-based monitoring.
+
+\textbf{Indicator relationships:} Knowledge of the relationships between the presence of kelp and other environmental and ecological factors.
+
+\subsection{Integration Frameworks}
+\label{subsec:tek-frameworks}
+
+Integrating TEK with quantitative monitoring requires attention to:
+
+\textbf{Data sovereignty:} Knowledge remains with Indigenous communities; integration must happen through proper protocols with consent and benefits sharing with communities.
+
+\textbf{Knowledge systems compatibility:} TEK and scientific monitoring may be based on different epistemologies; frameworks for integration must not force commensuration but respect differences.
+
+\textbf{Two-eyed seeing:} The concept of Two-Eyed Seeing'' (Etuaptmumk) as proposed by Mi'kmaw Elder Albert Marshall is a framework for drawing on the strengths of both indigenous and Western knowledge systems.
+
+\section{Research Gap}
+\label{sec:research-gap}
+
+The literature review shows an intersection of needs and opportunities:
+
+\begin{enumerate}
+    \item \textbf{Environmental monitoring needs adaptation:} BC kelp forests experience heterogeneous and non-stationary conditions that pose a challenge to fixed detection methods \citep{Starko2024, MoraSoto2024, Hollarsmith2022}. Existing approaches either tolerate suboptimal performance, or require impractical amounts of site-specific calibration. Scale-specific drivers have different impacts on kelp forest communities at different spatial scales \citep{Lamy2018} and require adaptive approaches.
+
+    \item \textbf{Learning automata provide principled adaptation:} LA theory provides a mathematically grounded framework for learning optimal actions based on sparse feedback, with convergence guarantees under well-specified conditions \citep{Narendra1989, ThathacharSastry2002}. Yet LA has not been used in the case of remote sensing-based environmental monitoring, despite successful applications found in other adaptive systems \citep{BenZvi2018, Nicopolitidis2011}.
+
+    \item \textbf{Sparse feedback is the operational reality:} Ground-truth validation for kelp detection comes irregularly and with delay, but most ML approaches assume dense, contemporaneous labels \citep{Ma2019}. Methods that are explicitly built for sparse feedback learning are needed. Experience replay and delayed reward propagation methods from reinforcement learning provide possible solutions \citep{SuttonBarto2018}.
+
+    \item \textbf{Context-aware generalization is critical:} Because of the diversity of environmental conditions along BC's coast, detection methods must generalize across contexts \citep{BeasLuna2020, Schroeder2020}. Global studies show that processes that are important in structuring kelp assemblages at small scales may not be generalizable to larger scales because of intrinsic spatial and temporal variability \citep{Marzinelli2015, UnderwoodPetraitis1993}. 
+    
+    Kelp detection challenges vary dramatically in geographical context \citep[Bischof2019] to Atlantification and UV stress; \citep[Marzinelli2015, ConnellIrving2008] to temperature and substrate availability; to Atlantic poleward range contractions \citep[Voerman2013, Wernberg2012]. These regional differences in kelp species composition, depth distributions and environmental drivers suggest that there is no universal detection model that will work optimally in all contexts. Generalized Learning Automata (GLA) provide a theoretical basis for the context-dependent action selection, but practical implementations are still limited.
+
+    \item \textbf{Indigenous knowledge underutilized:} TEK provides complementary perspectives and temporal depth that could improve automated monitoring, yet frameworks for respectful integration are still evolving. Archeological evidence reveals millennia of human-kelp interactions \citep{Steneck2002, Jackson2001}.
+\end{enumerate}
+
+This thesis addresses the gap at the intersection of these needs: the development of a learning automata framework for adaptive kelp forest monitoring that deals with sparse feedback, is generalizable across environmental contexts, and that creates pathways for the integration of indigenous knowledge.

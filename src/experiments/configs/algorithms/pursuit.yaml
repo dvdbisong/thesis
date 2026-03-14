@@ -1,0 +1,14 @@
+# Pursuit Algorithm Configuration
+# Pursues action with highest estimated reward - 10-20x faster than LR-I
+
+experiment:
+  name: "pursuit_baseline"
+  description: "Pursuit automaton with reward estimation"
+
+automaton:
+  type: "Pursuit"
+  alpha: 0.01
+  initial_prob: "uniform"
+
+training:
+  num_epochs: 20

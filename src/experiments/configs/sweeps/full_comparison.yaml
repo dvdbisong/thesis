@@ -1,0 +1,58 @@
+# Full Algorithm Comparison
+# Compares all LA algorithms with their best parameters
+
+experiment:
+  name: "full_comparison"
+  description: "Comprehensive comparison of all LA algorithms"
+
+seeds: [42, 123, 456, 789, 1011]
+
+algorithms:
+  - name: "lri_slow"
+    type: "LR-I"
+    alpha: 0.001
+
+  - name: "lri_default"
+    type: "LR-I"
+    alpha: 0.01
+
+  - name: "lri_fast"
+    type: "LR-I"
+    alpha: 0.05
+
+  - name: "lrp_symmetric"
+    type: "LR-P"
+    alpha: 0.01
+    beta: 0.01
+
+  - name: "lrp_light_penalty"
+    type: "LR-P"
+    alpha: 0.01
+    beta: 0.005
+
+  - name: "lrp_heavy_penalty"
+    type: "LR-P"
+    alpha: 0.01
+    beta: 0.02
+
+  - name: "vsla_adaptive"
+    type: "VSLA"
+    alpha_max: 0.1
+    alpha_min: 0.001
+
+  - name: "pursuit"
+    type: "Pursuit"
+    alpha: 0.01
+
+  - name: "discretized_pursuit"
+    type: "DiscretizedPursuit"
+    alpha: 0.01
+    resolution: 100
+
+  - name: "estimator"
+    type: "Estimator"
+    alpha: 0.01
+    prior_strength: 1.0
+
+training:
+  num_epochs: 20

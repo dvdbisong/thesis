@@ -1,0 +1,366 @@
+
+And there are various courses for these thermal stresses. Maybe increasing temperature of the sea surface temperature? Um, the loss of other biodiversity like the sea author that is giving rise to, um, the origin that feeds on on kelp. Now we have a monitoring challenge. A perfect performs optimally across all conditions, and I'm talking about environmental conditions.
+
+Uh, so how can you have some sort of a monetary regime? To monitor help. Of course. When we think of monitoring you think about first detection. And then. You don't. You can answer the larger question of monitoring. But for a monetary kind of situation, labels are as passed. That's the the ground truth.
+
+When we talk about laborers, I'm talking about ground truths. Jaspas, and they may arrive in an esocrinos Manner and not on time. Opposed to how you do a? A supervised learning problem with the labels are there, and then you can use it to make your influence. So, we want we need to have an adaptive system that can learn from limited feedback.
+
+So, this leads us to codify a couple of problems one. How can we develop an automated Care monitoring system that will adapt? To the heterogeneous environmental conditions. And that will learn effectively be able to choose the best heuristic, even when we have limited labeled data. Also, how can it handle?
+
+Um, pass and delete ground truth validation. The fourth challenge is to deal with the of a multi-source data. Can refuse the data Fusion challenge. And then. What are the ways in which we can integrate traditional ecological knowledge? Kelp also has high value for indigenous communities along the coast. Now with this, we we framed four research questions of five actually.
+
+One is I, what is the first is an adaptation question? Can we effectively use? And Ella framework. To adapt to regions with limited level examples. The second is for Theta, I mean environmental. A heterogeneity. Can we have a context aware heuristic selection regime? That can probably improve accuracy. Across the different parameter environmental conditions.
+
+The third is a challenge of past labels. Where you are learning from? The environment. The the response will be delete. Which is the ground truth to know if you actually? Made a good choice would be delayed. So, how can we incorporate this delayed and sparse ground truth feedback into learning?
+
+And the thought is the data Fusion challenge? Heterogeneous natural sources diffused for context aware adaptation. And then the third. The fifth is, what protocols can enable integration of tek traditional ecological knowledge? Forest monitoring. Do not to spend so much time on the theory of learning automata, but the big idea is we want to have an agent.
+
+That can select and think about this from in an abstract set that can select actions. A particular probability. Noun so, so you have a feedback loop where? An environment is interacting with an agent. Based on the information the agent gets from the environment. The agent makes an action. And then the environment either penalizes or rewards the Egypt that gives some feedback on how, what the agent is performing.
+
+I would come back to this in the conversation. And. Landlotometer has properties in which it is. Think about it a skinny reinforcement line, but not quite. You're not maintaining this sort of table or so on. You are simply. Adjusting probabilities of selection. So? Memory, but you're not storing a cute table of something or storing policies.
+
+That's not what we are doing in 11 automated framework. Okay, yeah, so this captures the quest succinctly where you have an environment. You have an automaton, and they are learning this sort of feedback loop, and we will see shortly how this is applied. Idea is applied to four and kelp Forest monitoring.
+
+I will. There are three components that ground. The methodology that? This work is adapt. I have adopted. One is. Can we learn, um, sorry? Can we now one is learning a global policy? Now, the global policy how it works is. The choice of a heuristic and heuristic in this case is the.
+
+Models that can be used to. Detect help. So, remember, in an early framework in this framework, we are not trying to build a better model for detecting curb, but we are trying to have. Better selection. And that can over time give us even more interesting ideas of how? People research just want to go about more the health beauty where we have better selection that can make.
+
+Constantly proof, its ability to to select the best model. That will give the best segmentation for a particular tile. Now, so we so to do that. We have this global policy learning. And this second is the context away. Adaptation. The global policy learning is simple in. It is an imputile coming comes in.
+
+Model, the uh, the the agent or the automaton will select a heuristic for processing the tile. Heuristic will possess the tile. And then give a. A prediction. And we store that in the memory buffer. When a ground truth? Um, ground truth arrives. It will be able to compare the prediction and the ground truth and then have an IOU.
+
+Intersection of a union. That would then be the reward signal back to the automaton, and it will update its Global policy. Don't know, did it make it back? Did it make a good choice? The heuristic that will give, you know, that will process the tile. To assist that we are going to have a blending.
+
+Formulation here with with component 2, which is a context aware local adaptation. Now, it's same for every Tire we want to know more about the tile we want to know. Understand environmental contexts about that tile that we would use. In the selection process of that we use in selecting a heuristic.
+
+So they are about 29. Features that we have outlined, but we will talk about that, but I want to give the big idea of component 2. So, this memory bank is expanded to. Um, to stall the various contexts, which will be, for example, there are about five context spatial context, um, spectral context, rather spatial texture, context, temporal context, and some other environmental and geographic context, but we would see that later on.
+
+With this, we would then be able to. So, when a tile comes in? The mother. Uh, in order it would. We would do some sort of similarity. To see which order information, what other information do we have? Based on context in the? In the memory prophet that is similar to the Tower that just came in.
+
+None is a science to that, and all sorts of other experimentation, but at a high level. What information do we have in the memory buffer that is similar to the tire that just came in? If some choices into a sort of heuristic. Will be preferred, so let's see that for a particular tile where we had high turbility and maybe.
+
+A particular degree of sea surface temperature. We know that heuristic form was chosen. And if a new tire comes in and there is a nearness? The likelihood that heuristic 4 would be a better heuristic for it. Will be a better choice of a model to process data so that information will be used and Blended with the global policy.
+
+To have that context aware adaptation to possibly give a better. Uh, policy update. So that is what that is? And the third component with the third pillar for this framework is pass label. Level handing now to enable if, in order for? Blend automate about the local policy and the and the context aware adaptation for them to get a response.
+
+We need to have a. A ground truth. In a sense has to come in, but we know that. These labels arrive late. They may never even arrive. Or they arrive. Yeah, yeah, they arrived late, or they don't even arrive. So, how do we handle that sparse labor is the third component, and there are a couple of strategies already will be proposed here?
+
+For handling that.
+
+This for the experimental design. We there is a strong data Fusion component of this work, which is of course, which is part of the research questions and also part of the call deliverables. But we will have to have satellite imagery. Uh, we could talk more about this. But okay, so we sentinel to image dream may not mean maybe better options out there.
+
+And then, how do we get ground truths? I see part of this work as having as much experiment as we can. Get from real data. I mean as much information I can get from real data to test it. Test this at an operational level. I also think that in any case, the technique itself is promising and can cause researchers and other sort of people who are implementing who are interested in Forest monitoring to begin to think about what they are building.
+
+November ways. Once we can prove experimentally that this technique and the algorithms work. For choosing the best heuristic. Um, given a particular environmental condition. So, I see possibilities whether the data real data exists or not, but for a very rigorous scientific empirical study. And to show that the technique itself works.
+
+So in any case. So some of the expected contributions is a another framework for environmental monitoring. The context of where you take selection methodology. The spas level learning with temporary key. This is really interesting. Actually, quite novel. And then the multisource data Fusion framework. For coaster monitoring. And the fifth one is okay.
+
+It's sort of a x x. Exploratory in in nature. Um, protocols for integrating. Uh, indigenous knowledge. And. Yeah, so that is the yeah. That is the the. What is? What my proposed. I will support the the direction that we are thinking for, uh, the thesis, and also for the research in general.
+
+Yeah, thank you. Okay, let's uh, open it up to questions from the committee. We've talked a lot, so I won't, yes, or anything, but? Maybe my Sarah, do you want to go? Sure, yeah, I can you guys hear me, yes? Yeah, so. Am I saying your name properly? It's a very I've heard.
+
+I've heard all sorts of variations you call yourself. But Iqba?
+
+Um, so, yeah, thank you. That was, that is very interesting and. There's a few questions. First of, all that maybe? You know, because the U.S also co-supervised more sun, right, which who you met, and I'm just trying to understand how this is building up how this is. A new idea, right?
+
+And how we can? How can help to enrich your idea, obviously, right? That will be my role here, right? So, because you know, as you and, and you definitely know, there is this process that we're putting together now for this? Learning approach, right? Yes, with Morrison, and I'm not sure if you you had the opportunity to meet him, and I'm not sure if you have the burden to meet him separate to understand a little bit more.
+
+What he is to me or the model that he put together with labeling and and so on, right? So, I'm sure you guys are attached to that, because ideally there will be building up or complementary or new approaches or something that would be, uh, hopefully, uh, improved from what mohsen is doing, which would be good for everybody at the end, right?
+
+So, but besides that, and, and you can comment that maybe in a minute, but besides that, I was wondering. On, you know, even simple things when you say? Adaptive kelp monitoring, right? So, I'm learning system framework for adaptive kelp Forest monitoring, um, so kelp Forest monitoring is it's big.
+
+It's not just producing the maps, right? So I think in one way it correct me if I'm wrong. Going to do a mapping framework for kelp for floating kelp, and it's important to be clear about that because there are other species of kelp, unless you're trying to do all kinds of kelps, which gets even more complicated and sometimes even impossible, right?
+
+Because you feel you're going to be using satellite as your main source of data, right? So, so just make sure you understand it when you say monitoring it there, it's much more complex than just producing the maps. The maps, it's one component of a monitoring framework, right? That is going to be one piece of the puzzle basically, right?
+
+Because you know, for, for assessment or monitoring of the system. You're gonna look at what's happened in terms of biodiverse. What's happened under the water, the different commits? So there's the entire complex of the the forest, uh, the cow Forest itself that it's part of a monitoring system, so?
+
+The end because it gives you as the arrow extent of the kelp right, and depending on the type of data that you use, you can even go to density, not if Sentinel, too. But with higher resolution platforms, right? So, just keep that in mind that I think what your proposal is doing floating kelp and what you're proposing to do is map.
+
+Am I right? In a from a practical perspective in a sense, but? The approach, and this is why I'm excited about this approach. Hope it's part of me if I close my eyes. I, I'm just dialing into what exceptional body supports myself is that I see the approach as.
+
+It's almost more like a meta approach in the sense that it can be used for thinking. Think about it for any sort of. Ecological. A monitoring problem. Maybe you want to monitor?
+
+Eugrass, or even if you want to go to terrestrial monitoring forests, monitor it or any kind of ecological monitoring. So, the downstream application? Yeah, I'm applying it practically to to help, but the more I think about it, it doesn't. It doesn't really matter. So, whatever? The framework is is sort of an agnostic framework to think about operational monitoring in an environment in the context that is highly stochastic.
+
+There are many variables that change, with time having the global model will be very difficult. We're very difficult to have a global model that will be able to give high performance predictions for. And even if you're able to do it. And of course, today, the Baseline models are increasingly very powerful.
+
+Okay, you have a penalty with costs. You have a penalty. How? How easy? How is it to operationalize this model? For example, how many people can reasonably deploy deepseaq model or coin model? Is CS business? So, can we have? Regime. Some tile instances. That is spectral index will probably give you, and again, I'm bringing it back to the context of mapping.
+
+It may not be mapping. So, Peak angular type of monitoring challenge. Within LDSC, carbonditional challenge are not quite knowledgeable about the various you know challenges of monitoring help. What? Techniques. That can possibly be used. These are heuristics. The monitoring goal. Is what it is, I can call that Alpha.
+
+It could be mapping. It could be any type of monitoring goal. What are the various ways in which you can do it? Those are the heuristics. How can you choose? In real time in other personal manner. Paste heuristic. For the job. That is learning to improve. Optimize its choices.
+
+So, he's understanding the Oracle. The Oracle years and the environment is understanding the Oracle with time and is improving based on the information received from the Oracle, which I call context aware of Global policy or whatnot. It's improving its ability to make. Um, optimal of better judgments. So that is the that is the agnostic framework?
+
+For which, in this case, we are probably testing it in a practical manner. Using C kelp mapping. But it can be more powerful than it can be used in other contexts if. You know if the research go through at all the application studies and we see something very beautiful in the results?
+
+Yeah, so in in a in a I'm I'm a very practical person and. And, uh, I appreciate, you know, all these kind of system that you're talking about, but in a practical way. What is the end game here. Are you gonna have an application, a two, or it's kind of a flow chart that you know if you're gonna do this, you bring this?
+
+If you're gonna do this, is it a a very hypothetical, uh, output at the end? So, does it have a, uh? One will be able to actually use. I'm just trying to really understand what what we're dealing with here. It's. Is a very good question, and I anticipated this question, and I suggest.
+
+Receive that I might be under too much tension, so I had some questions. I wrote some things down because the Lord, I think I took a lot of it if a question comes off of the Practical? Uh. Okay, this is, that's the second one I see. Oh no, that's okay.
+
+Oh, you know what? Let me just speak to it. Yeah, like now, at the end of the day. What do you? What are you gonna is it? It's just so I can actually help with, uh, with comments, right. So, are you gonna do an application, an app, a classification machine.
+
+Are you gonna do something that? What? What? Practically, what are you gonna have at the end. I'm not. This is not clear for me. Okay, so, uh, there are some. There are some contributions. Okay, let me spell this out now. The the contributions of the work? This is how I wrote it trustful.
+
+This, there's a scientific. Contribution. Dm methodological contributions. And then there's a practical application aspect if you know you want to go there. The first is that we have a a novel early application to environmental monitoring. The second. This is for scientific contribution. We have an empirical. And particle now.
+
+Characterization of? Of heuristics complementarity. Now that that is saying that, can we were providing evidence for and against? The hypothesis that diverts heuristic pools without perform a specialized approach, which is a one Global model like the kind of ml model that people can train, give data, train it to your test, train split, and then try to your goal standard.
+
+Scientific contribution is to understand sparse feedback Dynamics. How would they have leading efficiency degrade when ground truth labels is scarce? One week, six months, how? Lighting efficiency. Um, degree, now the methodological contribution. Is the. Like, I'm gonna stop you there for a second. So, yeah, what efficiency of what?
+
+What kind? If he says, you said something like this learning deficiencies? Yeah. Because you are able the probability Vector that chooses the best heuristic. You need to have it, I want to. I want to be practical now. Okay, let's go to the Practical tourist or the realistic things. So, in a practical way, what does degrade, you know, it's like the ability to predict something?
+
+Yes, the ability to choose? A, a model. To do a segmentation. I mean, the ability to choose the best model? That will provide the most accurate segmentation map for a given tile. That is the. That is the, um, the efficiency, the light and efficiency that made great with labor scarcity.
+
+Okay, now I will skip the methodological because I had the question is very specific. What else about the Practical applications of this work? One is that you, we could have a. Early warning. Of kelp Forest decline. Because you are, you are not going to wait. To collect data. Clean the data.
+
+And trade a model. So to speak. And then, in this, yeah, you have as Styles I saw, you could build a sort of platform. And it gives, you know, opportunities for Downstream applications to think about how to leverage this. You could be the type of platform. That is. As tells us as, let's see, let me just speak that hypothetical level.
+
+A satellite takes a map. That map is downloaded. Don't the basic preprocessing? Have your bands? Um, pass it into a pipeline that. And shut it, maybe 25 656. Pass it into this framework. And it is selects. It has a pool of models. It will select the best model, give you a segmentation map, you're able to.
+
+The areas kept or no help? Immediately. Yes, in an operational manner. Because remember, over time, your ability to select is improving. It's not static. It's improving in real time. You don't have to do it. You're retraining regime. As you have to do in an ml mloops kind of framework, so there's an early warning of calc Forest decline.
+
+Now, you are able to use this. This framework is transferable. Things like sea grass, even quarries of terrestrial vegetation. That's another particular application. The transferability of the framework the order is to have some if you want to have. Real time, in a sense, help extend Maps. The extent of floating help?
+
+Maybe you want to have weekly or monthly updates? And. Also, if when there is? Yeah, those are some of the applications I can think of. Oh yeah, so let's talk at me. I mean back to the practicality, even even blue blue carbon accounting. If you want to go and use that information for other downstreams.
+
+Yeah, so let's talk a college now, right? So when you're putting all the ideas together, you start to have a little bit of a feeling of if if one of your topics is going to be addressing calc, right? So it could be, as you said corals, your grasses, and each of these kind of, uh, uh, ecological systems.
+
+They have their own Dynamics and complexities, right, both in terms of the environment that they belong to and how they change during the year, right? So, for kelp, if you're just talking about floating helping bridge Colombia, you're gonna encounter. As you probably know by now, two species in what in which one?
+
+But still for this species, the the maximum growth happened during the summer time. So, the maximum air extent for what we call the giant kelp happens during the peak of the summer or the very end of the summer, right? Yeah, and for the bulk help, it comes and goes every year, right?
+
+So you're gonna have these kind of system that behave a little bit different in terms of the the phenology that we call of the species. Yes, at the same time. Uh, when you say a cow to bed or a kelp forest system, they they occupy slightly. It's the overlapping Niche in environmental conditions that they use where they grow the best, but they are also a little bit distinct, right?
+
+And I think it's important to consider that because that really, uh, impedes. For example, Sentinel 2, at 10 meters resolution. Able to detect, so sometimes it's not a question of which kind of fat, different model to be used, but what, what kind of satellite platform you should be using for different reasons in British Columbia because they have different kelp systems kelp forests, right?
+
+So if you have bulk help in the cellular sea, for example, they tend to be very. Close the course very narrow. Sentinel 2 does not pick up that properly, so we do have to use very high resolution satellite, at least at three meters or higher two or one meter to be able to detect those properly right in, uh, Northern DC, or the West Coast of Vancouver Island, you can do well with, uh, with 10 meters resolution.
+
+Um, so you've got to be really careful with that. So, maybe one suggesting for you is this ability of, depending on, uh? The the bactemetry of the region or the slope of the region because the the habitat itself is pretty much defined by the slope of the coast, right?
+
+So we have, there is low P coasts. Your kelp can only grow very close to the coast, so nothing. Normally, they're very narrow beds, so those kind of kind of, uh, you know, uh, geomorphological features of the course maybe can dictate which side, which model will pick up which satellite imagery to be used.
+
+Given that those data sets are available, right? Because sent it out, too, is free. Planet is not yes, right? So, we don't have high resolution a satellite very, very high resolution freely available, and but for example, you, you, you, you, you said something about five kilometers. Yeah, uh, unless you're thinking about using ocean temperature, but it does.
+
+Uh, indicates where calc globally can grow right, and where kelp is going to be mostly resilient in British Columbia, because your temperatures when they are low, including in the summer time, then those are the very resilient kelp bags. Yeah, right? Like, when your temperature gets to 20 degree 19 23 degrees.
+
+That's when your calc doesn't like too much. That happens, happens a lot in the inlets in the sailor seed. There are some areas along the coast, so that gets very warm in the summer. So unless the seven kilometers unless you're going to introduce some environmental data that it's very coarse.
+
+It's not gonna even pick up the cost very much because it's five kilometers resolution, definitely not for Calping, Rich Colombia. Five kilometers wouldn't do the job at all, right? Because 10 is already not picking up a lot, it has, you know?
+
+I think. Go ahead. I think the, as I understand it, the idea is that all of those become inputs to your automaton, right? Yes, uh, yeah, you tell it what you're looking for, and it balances data availability and considerations, like resolution. And you know, maybe Sentinel is cloudy at that time, so we need to look for some other type of imagery.
+
+Dynamically, you will adapt to the most, the best model, and best set of parameters to try and maximize the quality of the output. Is that right, yes, that? That is, that is correct, and uh, and actually, I see a way by speaking you just. It's easy to. Different and rights geography.
+
+Right, best university geography? Yeah, yeah, yeah. From somebody who is there I am, she's a world expert on kelp. So, yeah, so I'm shaking in my boots. I just got up. Like, uh, I am so happy to. Yeah, you speak because it is confirming to all the things I read because I'm everything I'm hearing after that.
+
+I've to start track a little bit. I've never heard of kelp in my life until I met you. I don't know what that is. It might be good for all I need. So, so I'm diving into oceanography, and uh trying to, I think Kevin asked the deaf since really, right?
+
+Okay, maybe Kevin has a few things? Okay, yeah, I will come back to this, let's kind of go the other direction. What is the output of your model?
+
+That's how you think about outputs. The output of the model. Is this is, this is, uh, okay, okay. The output of the model would be a probability Vector. That is being updated. Um. And the update process is probability model of what? Is a probability probability model that? That. It's sort of if, like, if you think them explain the probability factor in a sense.
+
+Think of how? Because then not to beta is not something that is very well known, but think of your final soft marks in the neural network. Sure, you have a probability vector for which you have an argument. Pick the best so. Is the output in the sense that is what is stored and what is kept?
+
+Updating based on the? The feedback. That that we get from the heuristics. That actually does the processing of the time? What does the probability Vector probabilities of what probabilities that probabilities that a particular? Heuristic based on the imputes. Is the best. At providing. That particular heuristic is the best.
+
+Providing the? In the sense, the most. Correct segmentation map. Okay. Segmentation map of what off count?
+
+So you're looking at now? An image? Yes, so this is but the model. I would argue that your model is the probability vector. Yes, and the output is actually that image. That's the thing that you're going to. You're not going to give a probability Vector to the kelp scientist.
+
+You're going to give her an answer, yes. Okay, so that image is going to be essentially binary kelp. No kelp. Is that, yes, you're generating. Okay, so you're trying to generate a kelp. No kelp patch from a very wide source of data. Fine, okay, uh? Is the purpose of the model.
+
+Up, sampling, interpolation, or prediction.
+
+That that? From a downstream application point of view. And if gold can be chosen? The issue is how you design the learning framework. Okay, so for the proof of concept you intend to build, yes, what is the what? Which of those three segmentation segmentation? Yeah. Okay, so. If I wanted to do segmentation, I wouldn't need one of these, right?
+
+I could just go get a CNN. Yes, it would do segmentation? Yes, fine, yeah. So, my assumption is, you're doing more than just segmentation. Oh, absolutely. No, you know, this work is not even project segmentation. Like, I'm not if I have my way, and I hope I do. I won't build a single CNN network.
+
+I'm not touching markets. Okay, yeah, that's what most the district is. Yes, postdoc with my Sarah. Yeah, that's what he's yeah, which is, if you just wanted to segment kelp, that was the correct way too. Yes, um, or if it's really easy because, quite frankly, um, in DVI.
+
+Threshold on there or ballistic threshold, but you don't even need the CNN. Okay, so if I were doing something like this, right, I would be either trying to take a coarse grade image and predict what the kelp actually looks like in a fine range that's not sampling right, or I would be trying to do either spatial or temporal interpolation.
+
+So, what's happening when the satellite's not there, or yes or what's happening?
+
+Kind of dynamically between satellite measurements, right? Or you're trying to do prediction. So you're trying to build a forecasting system where, uh, if things continue the way they are in 10 years, the kelp will be X percent more or less, right? So, you really have to pick one of these targets.
+
+You can't be Target agnostic in your optimization, or your optimization won't Converge on it. Yes. Some of this. I can't go into too many tips here, but some of those things that are captured in sense that, say, that's step four. In this case. Having an agreement, so we have about 12 heuristics, both simple trash hoodie and the VI FBI, the floating algae index.
+
+You have your random forest, and it's a simpler so. The idea. At the end of the day, the model can the goal of the model of the framework. Make a choice at every instance. Oh, this is a mixture of experts model you could think of that in that way.
+
+Like, if, for somebody, somebody who came from the somebody who came from a reinforcement learning community would call it something differently. Now, I there is, I. A man from Ottawa. Name is John in the Lenotometer theory of learning. It came out from the Russian Sciences from Mount Concepting so.
+
+They have their similarities, but they're also distinctively different. You don't even think about it, sure. And I'm sure the the symbols are different and but the math is probably very similar. I mean, that's at the end of the day. It's all weighted sums so. Okay, so you're trying to build a mixture of experts?
+
+Or something, very like that. Okay. Do you have a single automaton, or are you running an ensemble?
+
+Okay.
+
+Ethay, I don't know yet. Yeah. Are we forced to discuss more about Lenotometer in terms? It's, uh, it's. It is not single in any sense because? Ah, yeah, just say, I don't know yet. Okay, I don't know to get up, but I will come back to this. Yeah, yeah.
+
+Very important to look at like I would. I would suggest that if you're running a single autonomous in in the construction you've got, it's going to boil down to. Something almost identical to a mixture of experts model, and then when you get to your ex girl, they're going to be like.
+
+Isn't this just next mixture of experts model and then it's going to be a very long awkward period of questioning? Think about ensembles, um, the other thing I would really encourage you to do in this? It's a shame because? Look into data assimilation. Uh, because this is. The weather prediction is based on there, exactly this, right?
+
+They are highly complicated. Updates, multivariate data updates. You know, you've got things that are the color of the grass and the temperature of the column up to the stratosphere, right? So? This is not necessarily a solved problem, but there are definitely other approaches that want a. Difference than this because?
+
+Um, the other piece. I think you want to work on, is I? I think this is. The other number was was kind of getting at was, you know? It's, and this is. This is a classic software engineering failure mode, in my opinion. Sorry. Uh, you get so enamored with the overall structure you forget about the thing that you're actually building.
+
+Uh, and so I would actually suggest given where you are now taking a bottom-up thing. Pick a proof of concept that you want to build based on this idea. Go build it and then be able to show us this is what it does as opposed to kind of having this very high level.
+
+Where everything is still kind of left to to. Frameworky diagramming kind of thing like, don't build us a thing that does interpolation of Kelvin. Very simple experiment you can do where you can just delete every second satellite image. And use that as your ground truth. Doesn't work, right? Um, and then we'll be like, okay, yes, this is a thing that you can use to interpolate called when satellite.
+
+Or, you could go buy some three meter data. And be like, can we interpolate the three meter from the 10 meter based on these heuristics, right? Like, pick, pick a proof of concept. Go do it. Um, and I think that will like help focus things in in. A very real way.
+
+Okay. Well, thank you very much that feedback. I think we've talked about this. Yes, yes, yes. And we began something, but I had to, uh, I did. What I'm happy about is in a sense, is that? In the past few weeks or months, rather not weeks, months. We've done quite an extensive literature work.
+
+So? I feel I don't know. Well, I don't want to speak, but. I'm speaking with fiance, but please take my words lightly. I feel in the sense that there is. There is a real promise that is something beautiful that there is that that? Um. An Adaptive. Monitoring framework. Can be very useful.
+
+In the rule was in the real world setting as mashiah was trying to drive to. So, when the electric choice was able to establish very clear gaps? And a lot of work has been done for me, you guys. If you're trying to segment and all those things, those techniques are well and do, but there is this Gap.
+
+That research questions where. So, the next step now would be if we it it looks just based on I was waiting actually for this meeting. To know that I'm not you, you have something. Promising, so I can delve into more to more of an engineering kind of thing. Now, with a lot of experimentation, and I do think you need that because the other thing with these mixtures of experts?
+
+Is, if you have shitty experts, you get shitty results. I don't know why I am. I will come back to you, Kevin, but my body, my body is, I feel like a nail is scratching my body when I hear mixture of experts. Yeah, it's just, but I would look into a picture of experts and establish the difference between that I learned, not better.
+
+I mean, I'm pretty sure they are not biggest differences as far as I can see. Is the learning structure right so, uh? Experts would be trained and used right in effect is closer to reinforcement than if you think about it. Well, I mean, it's more of an online learning Paradigm, right.
+
+But then there are lots about on online learning paradigms that okay, employee mixtures and experts that, you know, and but basically, what you're doing is you're like, I've got these different ways of analyzing it. Okay, and I want to decide which one is the best one, yes, or come up with a weighted output based on how good I think they all are okay, and that's really kind of at the highest levels do.
+
+That's a whole bunch of other things that are built on this idea. If we don't exactly know what the right answer is different lenses and then try and lays it together, right? This is.
+
+With the data. With the algorithms, you'll find you'll really be able to engage with it in a much better level than you can with the arrows and the block diagrams, um. Software engineer is very cool, but at the end of the day, when you're doing modeling, you have to actually have a model.
+
+Yeah, yeah, and it would again caution when you're doing it. You call whatever you want, but if you've got this kind of thing where you're waiting a bunch of different ways of understanding the output, right? Your limited, ultimately, by the quality of the best of those ways. You can't be any better than?
+
+Slightly better than the best, right? And that really depends on the error structure of, because if you're best. If if you're worse, heuristics are just giving you the same answer at lower resolution. Then the best is the best. You only get Improvement in a mixture of experts if they're giving you different information about what's going on, and you confuse that in.
+
+That make sense, he does. Yeah, so. Think very hard about, like? When you come to the actual practical implementation, the quality of your heuristics. More than the quality of your agent is going to determine success.
+
+That would be. That would be something to establish. We have come up from our from our research and experiment. We can see that this is, you know, it's not something to established because?
+
+As as of now, I don't know. Any of this type of framework at least has been applied in an environmental monitoring context. I don't know that it's as far as for sure in agriculture, I mean, maybe not exactly the one you're doing, but definitely there have been. Again, mixture expert style things done in agriculture.
+
+There's lots of work in agriculture because it's worth lots of money. Like, predicting grain yields from satellite images is how you make money on the Futures market, right? So, there's lots of work around that. Interesting. Yeah, anyway, I have to run. Yeah, it was happy to meet you.
+
+Yes, thank you very much, of course. Yes.
+
+Yeah, I knew, uh, and um, yeah, I'm still, like, uh, you know, because Boston, you know, I'm still confused, because my understanding, it's like, is it the idea? So how does this building upon the CNN model that most of them put together? Is there anything that it's used for that.
+
+Yeah, cuz there will be other models in the system has to optimize to capture, where where each mod is working the best. Is that the idea, yes, where? Where would?
+
+Is model or models would would be a heuristic of, of course, a set will be part of the heuristics. For which this work would be. Optimizing for in a sense so that that's one aspect. The other aspect, which, and I think a big part of? This. Is the data Fusion?
+
+Noun this part. I'm still thinking about it because it's in and of itself. It's, it's large. How can we and we acquaint? It is, how can we? Um. Bring in! Monitoring with multi-source data, so we need to have. And I have. I've already put down some approaches for special data special alignments.
+
+So, for example, SST with patimetry and for a particular type in location, any time. How do you align this? How do you do the temporal alignments, um, and then? Somebody's strategies to handle. Missing data. What you Cascade and fall back to for each tile? The strength of a of a world thought out method, um?
+
+Data alignment protocol regime. Will really be critical to how? Uh. Adaptive automatal lens because part of a component of that adaptive automaton is the context a? Um, features, and that context of where features can only be gotten. When? Different data sources have been fused together. Down, and then for any in an operational setting.
+
+This Fusion technique would be part of the pipeline when the tile comes in is able to get the context for that particular tile and then use it. How we select and how it makes a choice of the heuristic that that tile should be sent to to create the map.
+
+Now, for the data for this data Fusion part. Going down this route. I would have to play with data very closely, and that could be a. A measuring points to. Leverage motions work or work closely with motion on this. Because, uh, I'm sure Neo has mentioned to you, but?
+
+Like, mohsen merged the petimetry and the substrate as part of the spectral. And indices, and bands of Sentinel 2 and. And it, so he's. Parents came up with what would be the more important, you know, information, right? I mean, maybe he didn't do that for each different kind of geomorphological, you know, system in British Columbia.
+
+He did it overall, right? What would be the the layers that it should be used as input of his CNN model. So, um, I'm I'm, uh, I'm I'm, I'm sure that it's going to be a lot of really cool, interesting work, Akbar, but I'm I'm I'm. I'm happy that Kevin right, the the other, yeah, the member.
+
+I'm happy with Kevin's idea that you know it's. Can we see a prototype of that so we can comment so, uh?
+
+You're building, and how this differ. From what motion did I read or is doing, or how this is going to improve, right? Because a lot of the issues that we know now happen because of labeling, right, which is. Problem, right? So, it needs a lot of labeling to get it proper, and the limitations of the satellite itself because of the spatial resolution, right?
+
+So, these are the big things right, and then there are other things associated with all of these, which is, for example, depending on the position of the satellite and the the coast. Yes, the orientation of the coast of Rich Colombia, you may have shadowing right of the trees in the water, uh, and that can cause mess segmentation.
+
+Is that what we call the the solar angle?
+
+Collection of the water, the trees, all the water, or the shadow of the trees in the water that has a signal that can be mixed with the signal of the kelp as well, right? So? There's, you know, there's other kind of, uh, very, you know, very specific, uh, conditions which cause an arrow in the prediction, right?
+
+And right now, we're not solving for that. I don't think Mausam is going to solve for that. I think he reached a level saying I can't go beyond of this anymore, and we know this is an error because we had a few people in the lab testing, and this is giving arrows, uh, other thing is, you know, if there is an image suddenly, there's an algae bloom of, for example, uh, there's a type of balloon that happens along the coast now and then in this sporadic.
+
+In the summertime, Coco liters forward, right? That cause is very high signal coming from the water. If the cow pads are not very big it, it gets it wrong. Because the turbidity also increased the reflectance and everything mess up. So, so those are kind of, uh, events that are.
+
+It's kind of.
+
+Geographically exotic, and the signal difference is it temporarily episodic, right? So there's a lot of things that we reach up area right now, right? That, uh, one of the things that maybe you want to include in your model is what Piper, which I think you met her in the league.
+
+Yeah, right. She's producing this line for the entire Coast, which is a low water line, which moisture doesn't think it's needed at all, right? But I truly believe that if you add that as to constrain where you're gonna do your analysis. I think you had much less errors, right?
+
+And she is. She is really doing really amazing with that model. It's another machine learning model. Well, it's it's very well edited material, and I, I would love to have you or any of what you appoint me to on on speed dial? Yeah, I'll put you in.
+
+Time. Okay, and now she tests the prototyped all the models. I think she tested three or four different models different labeling Global labels, British Columbia labeling and, and then she built a full prototype. And now she's gonna come. She came out with the best approach. The role, the entire framework, and she is escalating it for British Columbia right to produce a line for the entire course of British Columbia.
+
+So she definitely did a prototype, right? Uh, and the similar to what Kevin suggests for you to do. And he, there's many provement that can happen in what Mohisanna did, including your idea of having this kind of different models acting differently to improve the to decrease uncertainties of the prediction, right?
+
+Yes, and one can be, you know, again, can be something related to okay this region. Here, you have to come up with a different satellite right, and the model automatically has to be fed a different type of image to deal with that region. But in all of this, uh, from what I've learned with all you guys, because I'm definitely not a?
+
+That's what I do, but what I've learned from this model that you guys are playing a lot with labeling is the is the utmost important thing, right? If you cannot do enough label and you cannot trust your labeling? That is the issue right here. Yeah, please. I, I'm working on the assumption that you have.
+
+Less than how I wonder what percentage I put in here, but you would have? Less than 10 percent of labels. At any point in time. So, the assumption I'm working on is, how can you? How can we have? A system. That is able to. To learn. Even when? We don't have labels.
+
+Now, you must have an interesting. You must have the way, not the trustee, but have a way of learning. From. What has already been there? And this is where some of these context are where becomes very useful. So that you have a sense, for example. You train a model for BC?
+
+You take this same model to California. For example, the difference is there. You may not work very well, but. When you are learning policies? The global policy. Are you learn in the context? You could say this style coming in. Has behaviors and characteristics that I have seen before. That is similar to a particular environmental situation.
+
+For which model? Did? On, that is the likelihood that with this map. For which I wasn't trained on and of all these models, several of them. We don't have a model yet trade specifically to that area over these several models model a would give you your best bet. And then, when the labor finally comes in.
+
+The policy updates it has learned. So ground truths. Generate and perform researchers doing ground surveys doing. Are useful to this, um, then automatologist. This adaptive model. In. That was, the groundhog comes in. Model learns how well it did. And so, each of those eight models, like Kevin, said, well, you are only as good as the borders who pick.
+
+Yes, fine, but in an operational sense of the models that we have the best of the walls. For each of this, move eight models once the ground to comes in the model lands and say, okay, none. I've seen in real life, um, mapping. I can tell better. What if I see this again?
+
+I can tell better what? Which of these H should be used? Either have a penalized or I update the reward probability for any of the other heuristics. So this is where I think that so that not having labia is the challenge of ground truth of good labels.
+
+Research works on, but it needs to keep. Better than doing nothing? But what we call better than expedience going on. Yeah, yeah, yeah, and it will sort out a lot of Downstream climate challenges to know things and have some. Don't bother this perfect, but can we be improving with time?
+
+Then fine, or can people think on how to build heuristics? Maybe we don't build these Global models anymore. People will build the model that worked that predicted care perfectly in low tide. We build a model that predicted care perfectly with in a particular condition. So, you have smaller, perfect directed modules and then bring them all together and select.
+
+So, we are thinking differently on how we are even doing the machine learning. Yeah. I think, sounds cool. Yeah, let's see, let's see a little prototype in this. So, I, I, I think you should take a look. I'm sure you look at the literature. As you said, you have been reading a lot, but um.
+
+You know? The 70 laws of California, British Columbia. That's not really what we see, right? So, it wasn't a particular, you know, it was in a particular region, I think, was a paper by very particular. Yeah, yeah, yes, yeah, no, it's not, not, not, not generally. Yeah, yeah, we have to be careful with those generalities because, you know, like when you put things in the context when we start to read.
+
+I think there's a lot of, uh, literature about BC these days that does see a lot of Health resilience around. The other thing is, I would suggest you to take a look on the, you know, what kelp watch is? Yes, self. Watch yes, so because they're they're using a machine learning system and they're trying.
+
+I mean, the BC system that the S4 landsat right is not working well, but I know Tom Bell and his team with Kyle Kavanagh are, and I think.
+
+Right, as we we did for BC, but they're trying to do it Global and what we know now is if you don't train with, uh, Regional data. It doesn't produce good data, right? So, that's why we came up with the idea of doing the BC thing, and, um, yeah, and, uh, you know, there are all these things happening right now on this machine learning, right?
+
+Uh, for corals, there's, uh, merging of, uh, you know, machine learning with eyes like Sentinel 2 with isat data, right, with lighter and coming up with something for corals we are doing with, uh, this company Hatfield we're doing for your grass with Sentinel 2, and with planet right, another kind of architecture.
+
+Big there, the Hatfield, the kind of the a guy in Hatfield came up with the different architecture, which use phenology now, right? We did we did for braid with SAR data with radar sat, one using calcinology, and one of our postdoc has a paper submit on that. I can send it to you later if you want to read as.
+
+Whole selection of data. It does produce good data, but it has to be very careful selection, but there is a lot going on on this kind of kelp mapping, right, that I think a very Global speaking. So it's very important to do. I think there was a paper recently if I'm not wrong, for I don't think it's floating kelp, but it's kelp, uh, using Sentinel 2 for Greenland, and I think they came up with a global.
+
+Gee, blah, blah, blah, Matt. I don't know how good it is right. People who are working with sargassum that we are working as well, right, are doing all kind of AI models for sargasso, which is floating macros not but fruity microbes. So there's a lot of literature on that, right?
+
+So I think when you say, oh, I don't think anyone has done that this multi model, maybe not, but I think you should really read the literature because in the last five six years, it's just an explosion.
+
+I want to take more of it. Thanks so much. All the best, Delray. Thank you so much. And Sierra, you're welcome, guys. Yeah, yeah, and uh, yeah, so I'll be back in March and at the end of February, and then we can meet, uh, face to face, and that it would.
+
+That would be a joy. I wanna I wanna do that today, but uh, let me let you come back. Yes, yeah. Okay, guys. Take care. Okay, okay, bye.
+
+You for putting this together. Yeah, I know something was good. Um, is just, uh, draft an email to the three of us, like with the next steps, uh, summarizing whatever in my Sierra we're asking for and some of the tips they had. I mean, I think some of their generic, like, keep up with the literature, don't ignore agriculture all that kind of stuff.
+
+Working on the, you know, some kind of proof of concept so that we can start looking at the tangible? Thing that you're trying to do. The architecture approach you're taking seems fine, but it's hard for people to kind of sink their teeth into it. Yes. So, if you could send that around, and then you know, I think we can, once you've finished out.
+
+A prototype. We can have a meeting and start. Okay, yes. 100, okay? And, uh, well, thank you very much, Neil. I appreciate thank you very much. These people are on your side. Yeah, and they ask tough questions. It's so that you don't get tough questions from outside when you submit a paper, or you go to the defense with the external, like so?
+
+For sure, knows a lot more than I do about the learning side. So, thank you very much good resource. And then there is. I would like to if I could. Maybe, maybe you may be the best to help me get a contact by Syria. Herself will be very busy, but I have some data questions to ask.
+
+Custom of these features. Come from different data sources. I've done some research, and I know the data basis to check, but I want to ask some questions, so I don't know who the right person would be a good starting place. He knows my Sears lab pretty well, and then once, uh.
+
+Ask him, he's in Iran. I think he's coming back. Oh, lucky, or so. So any the internet? I don't know what's going on there right now, but anyway, but? Not a blocker anyway, but I can go on. Yeah, I think to start with Liam, he's going to be around until September, and then he can point you to the other people in the lab who have a lot like Piper or whoever.
+
+Identify specific data needs, like, plan it, then, we, you know, we should just work out how much it costs or how to get access to it, and you know, go ahead. And because that I think would be a good? Proof of concept to be able to show, you know, motion's model doesn't work here, but your version of this mixture of experts automata, whatever you want to call, it does account for that.
+
+Somehow, I think, would be a good. Right. So, the question my Sarah had, I think, was like, how is this better than what motion's already doing because she doesn't understand the technical details, and I think Kevin's question is more, like, okay, this technique is, you know, it's known. So, what is it that you're doing.
+
+What exactly are the experts? What are the inputs, you know? What are the heuristics? Yeah, the prototype, those things clearly exactly. Well, I keep draft people if you will. Yeah, yeah.
+
+And, uh, yeah. But stay tuned for more. Yes, I'm still around. I have class tomorrow, so tonight. Yeah, yeah, it's too bad it's not. He's not doing it, of course. I think that was just before we started because he's the chairs. This is mine, right? That's nice. Yes, thank you very much.
+
+I think that's it.
+
+Uh, not sure what your plans are, but that's when the group meeting would be okay. Have people online, so we, you know, what the students do is just give a here's what I've done this last week because I come in on topic. Yeah, so if you're, if you are here Wednesdays, you know, we're happy to have you promotely.
+
+Can you send me advice? Yeah, yeah, thank you. Okay, thank you. Okay, yes.

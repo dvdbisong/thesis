@@ -1,0 +1,307 @@
+# =============================================================================
+# PhD Thesis - Comprehensive .gitignore
+# LA Kelp Detection Project
+# =============================================================================
+
+# =============================================================================
+# LARGE DATA FILES (tracked via DVC)
+# =============================================================================
+
+# Satellite imagery and masks
+data/
+
+# Trained models
+models/
+
+# Backups and archives
+zipped/
+
+# Large raw experiment results (processed results in results/papers/ are tracked)
+results/raw/
+
+# =============================================================================
+# DVC
+# =============================================================================
+
+# DVC cache and tmp
+.dvc/cache
+.dvc/tmp
+.dvc/config.local
+
+# =============================================================================
+# CREDENTIALS AND SECRETS
+# =============================================================================
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# API keys and credentials
+credentials.json
+secrets.yaml
+secrets.json
+*.pem
+*.key
+service-account*.json
+
+# =============================================================================
+# PYTHON
+# =============================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# Profiling
+*.prof
+profile_output/
+
+# =============================================================================
+# JUPYTER NOTEBOOKS
+# =============================================================================
+
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+*.ipynb_checkpoints
+
+# Jupyter notebook metadata
+.jupyter/
+
+# =============================================================================
+# ML/DEEP LEARNING
+# =============================================================================
+
+# Model checkpoints (large files)
+*.pt
+*.pth
+*.h5
+*.hdf5
+*.onnx
+*.pkl
+*.joblib
+*.safetensors
+checkpoints/
+
+# TensorBoard
+runs/
+logs/
+tensorboard/
+lightning_logs/
+
+# Weights & Biases
+wandb/
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Hugging Face
+.cache/huggingface/
+
+# =============================================================================
+# IDE AND EDITORS
+# =============================================================================
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# PyCharm / JetBrains
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Vim / Neovim
+*.swp
+*.swo
+*.swn
+*~
+.netrwhist
+tags
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Spyder
+.spyderproject
+.spyproject
+
+# =============================================================================
+# OS-SPECIFIC
+# =============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# =============================================================================
+# LATEX (for papers)
+# =============================================================================
+
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.synctex.gz
+*.toc
+*.nav
+*.snm
+*.vrb
+*.bcf
+*.run.xml
+*-blx.bib
+
+# =============================================================================
+# TEMPORARY AND CACHE FILES
+# =============================================================================
+
+# General
+*.tmp
+*.temp
+*.log
+*.bak
+*.backup
+*.old
+*.orig
+
+# Crash logs
+crash.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =============================================================================
+# MISCELLANEOUS
+# =============================================================================
+
+# Archives (if not in zipped/)
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Large image/video files (if not in data/)
+# Uncomment if needed:
+# *.tif
+# *.tiff
+# *.mp4
+# *.avi
+
+# Node.js (if any JS tooling)
+node_modules/
+
+# Docker
+*.log
+docker-compose.override.yml
+/data
+/models
+/zipped

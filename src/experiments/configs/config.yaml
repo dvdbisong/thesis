@@ -1,0 +1,85 @@
+# Learning Automata Kelp Detection Prototype
+# Experiment Configuration
+
+experiment:
+  name: "continuous_reward"
+  description: "LA with continuous reward (IoU as reward signal)"
+  seed: 42
+
+# Data Configuration
+data:
+  data_path: "../data_bc"
+  tile_size: 512
+  # Sentinel-2 band indices (0-indexed in the loaded array)
+  bands:
+    B2: 0   # Blue (490nm)
+    B3: 1   # Green (560nm)
+    B4: 2   # Red (665nm)
+    B5: 3   # Vegetation Red Edge (705nm)
+    B6: 4   # Vegetation Red Edge (740nm)
+    B7: 5   # Vegetation Red Edge (783nm)
+    B8: 6   # NIR (842nm)
+    B8A: 7  # Vegetation Red Edge (865nm)
+    B11: 8  # SWIR (1610nm)
+    B12: 9  # SWIR (2190nm)
+  split_ratio:
+    train: 0.7
+    val: 0.15
+    test: 0.15
+  stratify_by_scene: true
+
+# Learning Automata Configuration
+automaton:
+  type: "LR-I"  # Linear Reward-Inaction
+  alpha: 0.01   # Learning rate (reward parameter) - reduced for gradual convergence
+  initial_prob: "uniform"  # or list like [0.25, 0.25, 0.25, 0.25]
+
+# Heuristic Pool Configuration
+heuristics:
+  enabled:
+    - "ndvi"
+    - "fai"
+    - "gndvi"
+    - "ensemble"
+
+  # Threshold configuration for each heuristic
+  ndvi:
+    threshold_method: "otsu"  # or "fixed"
+    fixed_threshold: 0.3      # used if threshold_method is "fixed"
+
+  fai:
+    threshold_method: "otsu"
+    fixed_threshold: 0.0
+
+  gndvi:
+    threshold_method: "otsu"
+    fixed_threshold: 0.3
+
+  ensemble:
+    voting_method: "majority"  # majority voting of other heuristics
+
+# Training Configuration
+training:
+  num_epochs: 10
+  log_interval: 50  # Log every N tiles
+  shuffle: true
+
+# Reward Configuration
+reward:
+  type: "continuous"  # "binary" or "continuous" - continuous uses IoU directly
+  iou_threshold: 0.3  # for binary reward: reward=1 if IoU > threshold (unused with continuous)
+
+# Evaluation Configuration
+evaluation:
+  metrics:
+    - "iou"
+    - "precision"
+    - "recall"
+    - "f1"
+
+# Output Configuration
+output:
+  save_plots: true
+  plot_format: "png"
+  plot_dpi: 150
+  save_predictions: false  # Save predicted masks (can be large)

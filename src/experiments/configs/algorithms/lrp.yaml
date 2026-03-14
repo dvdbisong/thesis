@@ -1,0 +1,15 @@
+# LR-P (Linear Reward-Penalty) Configuration
+# Updates on both reward and penalty - faster but potentially less stable
+
+experiment:
+  name: "lrp_baseline"
+  description: "LR-P automaton with symmetric reward/penalty"
+
+automaton:
+  type: "LR-P"
+  alpha: 0.01    # Reward rate
+  beta: 0.01     # Penalty rate (symmetric)
+  initial_prob: "uniform"
+
+training:
+  num_epochs: 20

@@ -1,0 +1,399 @@
+% ============================================================================
+% CHAPTER 3: Suggested Methodology
+% ============================================================================
+\chapter{Proposed Methodology}
+\label{ch:methodology}
+
+\section{Conceptual Framework}
+\label{sec:conceptual-framework}
+
+The proposed framework conceptualizes adaptive kelp forest monitoring as a learning automata problem in which the system has to choose from a variety of heuristics for detection based on performance feedback. The general architecture is shown in Figure~\ref{fig:framework-overview}.
+
+The framework discusses the important research questions through three interlinked components:
+
+\begin{enumerate}
+    \item \textbf{Global Policy Learning:} Maintains and updates a probability distribution over detection heuristics by using Linear Reward-Inaction (L$\text{R-I}$) updates, which allows for convergence towards optimal heuristic selection (addresses RQ1, RQ2).
+
+    \item \textbf{Context-Aware Local Adaptation:} Extracts features of the environmental context and applies memory-based similarity matching to fuse global and local heuristic preferences to generalize in heterogeneous regions (addresses RQ2).
+
+    \item \textbf{Sparse Label Handling:} Preserves prediction buffers and backpropagates delayed rewards on receipt of validation labels, facilitating learning from the sparse feedback nature of operational monitoring (addresses RQ3).
+\end{enumerate}
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+        box/.style={rectangle, draw, rounded corners, minimum width=3cm, minimum height=1cm, center align},
+        arrow/.style={->, thick},
+        node distance=1.5cm
+    ]
+    % Input
+    \node[box] (input) {Input Tile\\+ Context Features};
+
+    % Component 2
+    \node[box, below=of input] (context) {Component 2:\\Context-Aware\\Local Adaptation};
+
+    % Component 1
+    \node[box, right=3cm of context] (global) {Component 1:\\Global Policy\\Learning};
+
+    % Blending
+    \node[box, below=of context] (blend) {Probability\\Blending};
+
+    % Heuristic Pool
+    \node[box, below=of blend] (pool) {Heuristic Pool\\(12 Methods)};
+
+    % Selection
+    \node[box, below=of pool] (output) {Selected Heuristic\\+ Prediction};
+
+    % Component 3
+    \node[box, right=3cm of output] (sparse) {Component 3:\\Sparse Label\\Handling};
+
+    % Arrows
+    \draw[arrow] (input) -- (context);
+    \draw[arrow] (context) -- (blend);
+    \draw[arrow] (global) -- (blend);
+    \draw[arrow] (blend) -- (pool);
+    \draw[arrow] (pool) -- (output);
+    \draw[arrow] (output) -- (sparse);
+    \draw[arrow] (sparse) -- node[right, xshift=0.5cm] {Delayed Reward} (global);
+
+    \end{tikzpicture}
+    \caption{Overview of proposed Learning Automata framework for adaptive kelp forest monitoring.
+    \label{fig:framework-overview}
+\end{figure}
+
+\section{Problem Formulation}
+\label{sec:problem-formulation}
+
+Formally, we define the adaptive monitoring problem as follows:
+
+\textbf{Input space:} Let $\mathbf{x}t \in \mathbb{R}^{B \times H \times W}$ be a tile of a satellite image at time $t$, where $B$ is the number of spectral bands, and $H \times W$ is the spatial resolution. Associated with each tile is a context vector $\mathbf{c}t \in \mathbb{R}^{D}$ encoding environmental conditions (e.g. sea surface temperature (SST), turbidity, solar geometry).
+
+\textbf{Heuristic pool:} A pool of $r$ detection heuristics $\mathcal{H} = \{h1, h2, \ldots, hr\}$, where each heuristic $hi: \mathbf{x} \rightarrow \{0, 1\}^{H \times W}$ generates a binary segmentation map of kelp/non-kelp.
+
+\textbf{Ground truth:} Validation labels $\mathbf{y}t \in \{0, 1\}^{H \times W}$ with label for time $t$ arriving eventually at time $t + \delta$ where $\delta$ varies from days to months.
+
+\textbf{Performance metric:} A reward function R : ( hat {y}, y ) -> [0, 1] that measures the quality of detection, such as Intersection over Union (IoU) or F1-score.
+
+\textbf{Objective:} Learn a policy $\pi:(\mathbf{x}, \mathbf{c})\to\Delta^{r-1}$ that takes inputs and context and outputs a probability distribution over heuristics such that the expected reward is maximized:
+\begin{equation}
+    \pi^* = \argmax\pi\mathbbE{(\mathbf{x}, \mathbf{c}, \mathbf{y})\sim \mathcalD} \left[ \sum_{i=1}^r \pi(\mathbf{x}, \mathbf{c})i \cdot R(hi(\mathbf{x}), \mathbf{y})\right]
+\end{equation}
+
+\section{Automata Framework Design for Learning}
+\label{sec:la-framework}
+
+\subsection{Component 1: Global Policy Learning}
+\label{subsec:component1}
+
+The global policy keeps a probability vector $\mathbf{p} = [p1, p2, \ldots, pr]$ over the $r$ heuristics, which is updated by a modified Linear Reward-Inaction scheme.
+
+\textbf{Initialization:} Uniform distribution $pi(0) = 1/r$ where $i$ is for all $i$.
+
+\textbf{Action selection:} At each time step, sample heuristic $hi$ with probability $pi$ (possibly changed using context-aware blending, see Section~\ref{subsec:component2}).
+
+\textbf{Reward computation:} When validation label $\mathbf{y}t$ arrives for a prediction made at time $t$ using heuristic $hi$:
+\begin{equation}
+    Rt = \text{IoU}(hi(\mathbf{x}t), \mathbf{y}t) = \frac{ hi(\mathbf{x}t) \cap \mathbf{y}t }{ hi(\mathbf{x}t) \cup \mathbf{y}t }
+\end{equation}
+
+\textbf{S-model environment:} Instead of binary P-model feedback, in S-model environment, we use S-model (continuous) rewards where $R \in [0, 1]$. The update equations become:
+\begin{align}
+    pi(n+1) &= pi(n) + \lambda \cdot R \cdot [1 - pi(n)] \\
+    pj(n+1) &= pj(n)-(\lambda \cdot R \cdot pj(n)), \quad j \ne i
+\end{align}
+where $\lambda \in (0, 1)$ is the learning rate. This preserves the Lr-I property of only updating on positive feedback (when R > 0), scaled by the magnitude of the reward.
+
+\textbf{Multi-objective extension:} Apart from segmentation accuracy, the reward can also include other objectives:
+\begin{equation}
+    R\text{total} = w1 \cdot R\text{IoU} + w2 \cdot R\text{speed} + w3 \cdot R\text{uncertainty} + w4 \cdot R\text{carbon}
+\end{equation}
+where $R\text{speed}$ is computational speed rewards, $R\text{uncertainty}$ is well-calibrated confidence rewards, $R\text{carbon}$ is computational carbon footprint penalties. Weights $wi$ can be set according to application priorities.
+
+\subsection{Component 2: Context-Aware Local Adaptation}
+\label{subsec:component2}
+
+To allow generalization under the heterogeneous environmental conditions of the coastline of BC, Component 2 implements context-dependent heuristic selection based on the principles of Generalized Learning Automata (GLA).
+
+\textbf{Context feature extraction:} From each input tile and corresponding metadata extract a $D$ dimensional context vector $\mathbf{c}$ encoding:
+\begin{itemize}
+    \item Spectral statistics (mean, variance of each band)
+    \item Features of spatial texture (entropy, homogeneity)
+    \item Temporal context (day of year, time since last valid observation)
+    \item Environmental conditions (SST from auxiliary data, tide height, solar zenith angle)
+    \item Geographical location (latitude, longitude, distance to shore)
+\end{itemize}
+
+\textbf{Memory bank:} Keep a memory bank $\mathcal{M} = \{(\mathbf{c}j, \mathbf{p}j, Rj)\}{j=1}^{M}$ of past context vectors, associated local probability distributions, and observed rewards.
+
+\textbf{k-NN retrieval:} For new context vector $\mathbf{c}$, fetch $k$ most similar entries from $\mathcal{M}$ using FAISS (Facebook AI Similarity Search) for efficient approximate nearest neighbor search:
+\begin{equation}
+    \mathcal{N}k(\mathbf{c}) = \text{arg-}k\text{-min}{\mathbf{c}j \in \mathcal{M}} \ \mathbf{c} - \mathbf{c}j\ 2
+\end{equation}
+
+\textbf{Local probability estimation:} Calculate local heuristic preferences as the reward-weighted average over the retrieved entries:
+\begin{equation}
+    \mathbf{p}\text{local}(\mathbf{c}) = \frac{\sum_{j \in \mathcal{N}k(\mathbf{c})} wj \cdot Rj \cdot \mathbf{p}j}{\sum_{j \in \mathcal{N}k(\mathbf{c})} wj \cdot Rj}
+\end{equation}
+where $wj = \exp(- \mathbf{c} - \mathbf{c}j\ 2^2 / \sigma^2)$ are distance-based weights.
+
+\textbf{Global-local blending:} The final selection probability is a combination of the global and local estimates:
+\begin{equation}
+    \mathbf{p}\text{final}(\mathbf{c}) = \alpha(\mathbf{c}) \cdot \mathbf{p}\text{global} + (1 - \alpha(\mathbf{c})) \cdot \mathbf{p}\text{local}(\mathbf{c})
+\end{equation}
+where $\alpha(\mathbf{c})\in[0, 1]$ is an adaptive blending coefficient. When the memory bank contains few similar entries (low confidence in local estimate), $\alpha \rightarrow 1$ favors the global policy; when have many similar entries with consistent performance, $\alpha \rightarrow 0$ favor local adaptation.
+
+\subsection{Component 3: Sparse Labels Handling}
+\label{subsec:component3}
+
+To deal with the asynchronous arrival of validation labels, Component 3 has a buffering and delayed reward propagation mechanism.
+
+\textbf{Prediction buffer:} Keep a FIFO buffer $\mathcal{B} = \{(tj, \mathbf{x}j, \mathbf{c}j, ij, \hat{\mathbf{y}}j)\}$ for storing timestamps, inputs, contexts, selected heuristic indices, and predictions for tiles waiting to be validated.
+
+\textbf{Hash map lookup:} Use a hash map $\mathcal{L}: \text{(location, time)} \rightarrow \text{buffer\index}$ for O(1) lookup in case validation labels arrive.
+
+\textbf{Label arrival processing:} When validation label $\mathbf{y}$ arrives for location $\ell$ and time $t$:
+\begin{enumerate}
+    \item Look up entry in buffer using $\mathcal{L}(\ell, t)$
+    \item Calculate reward R = IoU(hat y, y)
+    \item Update Component 1 global policy by $(i, R)$
+    \item Update Component 2 memory bank with $(\mathbf{c}, \mathbf{p}\text{final}, R)$
+    \item Clear entry from buffer
+\end{enumerate}
+
+\textbf{Buffer management:} Entries older than a threshold $T\textmax$ (e.g., 6 months) are removed without being updated, assuming that conditions have changed too much for the reward to be informative.
+
+\textbf{Temporal decay (optional):} The rewards of older predictions can be discounted:
+\begin{equation}
+    R\texteffective} = R \gamma^{\delta}
+\end{equation}
+where $\delta = t\text{label} - t\text{prediction}$ is a delay in days and $\gamma < 1$ is a decay factor.
+
+\section{Heuristic Pool Design}
+\label{sec:heuristic-pool}
+
+The heuristic pool contains 12 detection methods with three levels of complexity:
+
+Tier 1 Spectral Indices (4 heuristics)
+
+Simple, interpretable approaches from spectral band ratios:
+\begin{enumerate}
+    \item \textbf{NDVI threshold:} $\text{NDVI} = (B\text{NIR} - B\text{Red}) / (B\text{NIR} + B\text{Red}) > \tau\text{NDVI}$
+    \item \textbf{FAI threshold:} Floating Algae Index (red-edge bands) $> \tau\text{FAI}$
+    \item \textbf{GNDVI threshold:} Green NDVI using green instead of red $> \tau\text{GNDVI}$
+    \item \textbf{Multi-index ensemble:} Majority vote of above 3 indices
+\end{enumerate}
+
+Thresholds $\tau$ can be fixed (based on literature) or learned as continuous actions via CARLA-type continuous automata \citep{Cuevas2011}.
+
+Tier 2: Classical Machine Learning (4 heuristics)
+
+Methods that combine the multiple features using learned decision boundaries:
+\begin{enumerate}
+    \setcounter{enumi}{4}
+    \item \textbf{Random Forest:} 100 tree ensemble on spectral features, pre-trained on labeled BC data
+    \item \textbf{Gradient Boosting:} XGBoost classifier with same features
+    \item \textbf{SVM with RBF kernel:} SVM with radial basis function kernel
+    \item \textbf{K-means clustering:} Unsupervised clustering + class assignment using spectral centroids
+\end{enumerate}
+
+Tier 3: Deep Learning (4 heuristics)
+
+Neural network architectures for semantic segmentation:
+\begin{enumerate}
+    \setcounter{enumi}{8}
+    \item \textbf{U-Net (basic):} Standard U-Net architecture, using ResNet-18 encoder
+    \item \textbf{U-Net (deep):} U-Net + ResNet-50 encoder, more parameters
+    \item \textbf{DeepLab v3+:} Atrous spatial pyramid pooling for multi scale context
+    \item \textbf{Lightweight U-Net:} MobileNet encoder for speedy inference
+\end{enumerate}
+
+Deep learning models are trained on the available labeled BC data beforehand and are fine-tuned on validation labels as they become available.
+
+\section{Experimental Design}
+\label{sec:experimental-design}
+
+\subsection{Dataset: BC Bull Kelp}
+\label{subsec:dataset}
+
+\textbf{Imagery:} Sentinel-2 Level-2A (surface reflectance) imagery tiles for BC coastal waters 2017--2024. Preprocessing includes:
+\begin{itemize}
+    \item Cloud/shadow masking - Scene Classification Layer
+    \item Land masking from vector shoreline data
+    \item Tile extraction at 256x256 pixels (2.56 km2 at 10m resolution)
+    \item Band selection: B2 (blue), B3 (green), B4 (red), B5 (red-edge), B8 (NIR)
+\end{itemize}
+
+\textbf{Labels:} Ground truth kelp extent maps from:
+\begin{itemize}
+    \item ShoreZone oblique photography interpretations
+    \item WorldView high resolution classifications (where available)
+    \item In-situ surveys (research partners)
+    \item Citizen science observations (iNaturalist, kelp specific observations)
+\end{itemize}
+
+\textbf{Environmental context:} Auxiliary data such as:
+\begin{itemize}
+    \item Sea surface temperature, from NOAA CoralTemp
+    \item Height of tide from CHS tidal predictions
+    \item Ocean color products (Chlorophyll, turbidity) from Sentinel-3 OLCI
+\end{itemize}
+
+\subsection{Evaluation Protocol}
+\label{subsec:eval-protocol}
+
+We design 3 evaluation protocols to evaluate different aspects of adaptation:
+
+\textbf{Protocol A: Temporal adaptation}
+\begin{itemize}
+    \item Train on 2017--2020 data
+    \item Validate on 2021--2022 data
+    \item Test on 2023--2024 data
+    \item Evaluate performance over interannual variability
+\end{itemize}
+
+\textbf{Protocol B: Adaptation to space}
+\begin{itemize}
+    \item Train on subset of regions (e.g. southern Vancouver Island)
+    \item Validate on held out regions from same general area
+    \item Test on separate regions (e.g. central coast, northern coast)
+    \item Evaluate generalization along geographic and environmental gradients
+\end{itemize}
+
+\textbf{Protocol C: Sparse label simulation}
+\begin{itemize}
+    \item Withhold different percentages of labels (10%, 50%, 90%)
+    \item Introduce variable delay (1 day to 6 months)
+    \item Measure learning efficiency as a function of label availability
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+\label{subsec:metrics}
+
+\textbf{Detection performance:}
+\begin{itemize}
+    \item Intersection over Union (IoU): $\frac{ P \cap G }{ P \cup G }$
+    \item F1-score: $\frac{2 \cdot \text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}$
+    \item Precision and Recall separately
+    \item Area Under ROC Curve (AUC), for probabilistic outputs
+\end{itemize}
+
+\textbf{Adaptation metrics:}
+\begin{itemize}
+    \item Regret: cumulative difference from oracle that always chooses best heuristic
+    \item Convergence rate: Number of labels required to reach 90\% of asymptotic performance
+    \item Stability: variance in the heuristic selection probabilities over time
+\end{itemize}
+
+\textbf{Computational efficiency:}
+\begin{itemize}
+    \item Inference time per tile
+    \item Memory footprint
+    \item Carbon cost estimation using CodeCarbon
+\end{itemize}
+
+\subsection{Ablation Studies}
+\label{subsec:ablation}
+
+Component contributions to system: systematic ablations:
+
+\begin{enumerate}
+    \item \textbf{Without Component 2:} Use only global policy, no context aware adaptation
+    \item \textbf{Without Component 3:} Suppose immediate labels, no delayed reward handling
+    \item \textbf{Without pursuit/estimator extensions:} Basic L$\text{R-I}$ only
+    \item \textbf{Heuristic pool ablations:} Remove each tier to measure contribution
+    \item \textbf{Context feature ablations:} Subset of context features to identify most informative
+\end{enumerate}
+
+\section{Conceptual Models of Research Questions}
+\label{sec:conceptual-models}
+
+\subsection{RQ1 Conceptual Model: Limited Labels Adaptation}
+\label{subsec:rq1-model}
+
+\textbf{Hypothesis:} Effective adaptation using 10-100* fewer labels is possible using the L$\text{R-I}$ learning automata scheme with respect to supervised approaches.
+
+\textbf{Mechanism:} Unlike supervised learning which necessitates dense labels to approximate gradients, L$_\text{R-I}$ only requires sparse binary/continuous feedback to redistribute probability mass in favor of better performing heuristics. The ``inaction'' property is that missing labels don't change probabilities at all, and gracefully handle sparse feedback.
+
+\textbf{Validation:} Compare label efficiency curves (performance vs.\ number of labels) between:
+\begin{itemize}
+    \item Proposed LA framework
+    \item Supervised CNN using different sizes of training set
+    \item Online learning baseline with random updates in case of missing labels
+\end{itemize}
+
+\subsection{RQ2 Conceptual Model: Heterogeneous Region Covered}
+\label{subsec:rq2-model}
+
+\textbf{Hypothesis:} Adaptive heuristic selection performs better coverage across the environmental conditions than any fixed method.
+
+\textbf{Mechanism:} There is a complementarity between different heuristics failure modes. Spectral indices do not work under turbid conditions but are robust to atmospheric variation; deep learning models capture complex patterns but can overfit to training distribution. The LA framework learns to choose the appropriate tool for the job.
+
+\textbf{Validation:} Stratify test set by environmental conditions (e.g. turbidity quartiles, SST ranges) and compare:
+\begin{itemize}
+    \item LA framework performance across the strata
+    \item Best single heuristic performance within strata
+    \item Oracle (best per-stratum heuristic) as upper bound
+\end{itemize}
+
+\subsection{RQ3 Conceptual Model: Sparse Label Learning}
+\label{subsec:rq3-model}
+
+\textbf{Hypothesis:} The buffering and the delayed reward propagation mechanism allows effective learning in the face of asynchronous feedback.
+
+\textbf{Mechanism:} By retaining predictions until labels come in, the system is able to give good reward signals, regardless of delay. The temporal decay term downweights very old feedback that may no longer be relevant due to environmental change.
+
+\textbf{Validation:} Simulate different delay distributions and compare:
+\begin{itemize}
+    \item LA framework learning curves
+    \item Baseline with discarding delayed feedback
+    \item Baseline that considers delayed feedback as immediate
+\end{itemize}
+
+\subsection{RQ4 Conceptual Model: Integrating Indigenous Knowledge}
+\label{subsec:rq4-model}
+
+\textbf{Hypothesis:} TEK can improve automated monitoring based on (a) historical baseline provision, (b) cultural significance identification for prioritized monitoring, and (c) traditional observation validation of automated detections.
+
+\textbf{Mechanism:} Integration is by way of partnership with coastal First Nations with specific protocols developed through partnership. Some possible integration points include:
+\begin{itemize}
+    \item TEK-derived site importance weights for evaluation metrics
+    \item Traditional seasonal calendars telling us about temporal analysis
+    \item Elder validation of ambiguous automated detection
+\end{itemize}
+
+\textbf{Validation:} Qualitative (community feedback) quantitative (TEK-weighted vs.\ uniform metrics)
+
+\section{Indigenous Knowledge Integration Protocol}
+\label{sec:tek-protocol}
+
+Respectful integration of Traditional Ecological Knowledge requires careful consideration of indigenous data sovereignty and community protocols. We propose a phased approach:
+
+\textbf{Phase 1: Relationship building}
+\begin{itemize}
+    \item Establish relations with coastal First Nations communities through proper channels
+    \item Introduce research goals and solicit feedback on relevance to community priorities
+    \item Understand protocols for sharing knowledge within the community
+\end{itemize}
+
+\textbf{Phase 2: Co-design}
+\begin{itemize}
+    \item Together identify possible integration points
+    \item Develop data governance agreements that ensure community control
+    \item Design mechanisms for sharing benefits
+\end{itemize}
+
+\textbf{Phase 3: Implementation}
+\begin{itemize}
+    \item Incorporate agreed upon TEK elements in framework
+    \item Sustain community engagement and feedback
+    \item Attribution and acknowledgment in all outputs
+\end{itemize}
+
+\textbf{Phase 4: Evaluation and iteration}
+\begin{itemize}
+    \item Community led evaluation of integration success
+    \item Iterative improvement according to feedback
+    \item Documentation of process for replication in other contexts
+\end{itemize}
+
+This protocol acknowledges that TEK integration is not a technical problem to be solved, but a relational process to be nurtured.

@@ -1,0 +1,1083 @@
+Ecology, 89(9), 2008, pp. 2493–2505
+Ó 2008 by the Ecological Society of America
+
+BIOMASS RATHER THAN GROWTH RATE DETERMINES VARIATION
+IN NET PRIMARY PRODUCTION BY GIANT KELP
+DANIEL C. REED,1,3 ANDREW RASSWEILER,2 AND KATIE K. ARKEMA2
+1
+Marine Science Institute, University of California, Santa Barbara, California 93111 USA
+Department of Ecology, Evolution, and Marine Biology, University of California, Santa Barbara, California 93111 USA
+
+2
+
+Abstract. Net primary production (NPP) is inﬂuenced by disturbance-driven ﬂuctuations
+in foliar standing crop (FSC) and resource-driven ﬂuctuations in rates of recruitment and
+growth, yet most studies of NPP have focused primarily on factors inﬂuencing growth. We
+quantiﬁed NPP, FSC, recruitment, and growth rate for the giant kelp, Macrocystis pyrifera, at
+three kelp forests in southern California, USA, over a 54-month period and determined the
+relative roles of FSC, recruitment, and growth rate in contributing to variation in annual NPP.
+Net primary production averaged between 0.42 and 2.38 kg dry massm2yr1 at the three
+sites. The initial FSC present at the beginning of the growth year and the recruitment of new
+plants during the year explained 63% and 21% of the interannual variation observed in NPP,
+respectively. The previous year’s NPP and disturbance from waves collectively accounted for
+80% of the interannual variation in initial FSC. No correlation was found between annual
+growth rate (i.e., the amount of new kelp mass produced per unit of existing kelp mass) and
+annual NPP (i.e., the amount of new kelp mass produced per unit area of ocean bottom),
+largely because annual growth rate was consistent compared to initial FSC and recruitment,
+which ﬂuctuated greatly among years and sites. Although growth rate was a poor predictor of
+variation in annual NPP, it was principally responsible for the high mean values observed for
+NPP by Macrocystis. These high mean values reﬂected rapid growth (average of ;2% per day)
+of a relatively small standing crop (maximum annual mean ¼ 444 g dry mass/m2) that replaced
+itself approximately seven times per year. Disturbance-driven variability in FSC may be
+generally important in explaining variation in NPP, yet it is rarely examined because cycles of
+disturbance and recovery occur over timescales of decades or more in many systems.
+Considerable insight into how variation in FSC drives variation in NPP may be gained by
+studying systems such as giant kelp forests that are characterized by frequent disturbance and
+rapid rates of growth and recruitment.
+Key words: biomass; disturbance; giant kelp; growth; Macrocystis pyrifera; net primary production;
+nutrients; recruitment; resource supply; standing crop.
+
+INTRODUCTION
+Primary production by photosynthetic organisms
+provides the energetic and material basis for the vast
+majority of life on earth (Lieth and Whittaker 1975).
+Most ecological studies of primary production have
+focused on ‘‘net primary production’’ (NPP), which is
+that portion of gross primary production from photosynthesis that remains after plant respiration. Net
+primary production may represent different processes
+depending upon the methods used to measure it, but in
+most cases it signiﬁes the dry mass of plant matter (or
+plant carbon) produced per unit area of the earth’s
+surface per unit time (Reichle et al. 1975, Webb et al.
+1983, Fahey and Knapp 2007). It is the product of the
+density of actively growing plant mass (hereafter foliar
+standing crop [FSC]) and its rate of increase due to
+growth and recruitment. Foliar standing crop is
+Manuscript received 6 July 2007; revised 19 November 2007;
+accepted 27 November 2007. Corresponding Editor: D. R.
+Schiel.
+3 E-mail: reed@lifesci.ucsb.edu
+
+determined by morphological properties of the vegetation (e.g., plant size, meristem density) and the
+proportion of habitat area that it occupies, whereas
+rates of growth and recruitment are functions of the
+intrinsic physiological properties and life-history characteristics of the component species and their responses
+to extrinsic environmental conditions (e.g., resource
+availability, temperature).
+To date, most research aimed at identifying sources of
+interannual variation in NPP has focused on environmental conditions that affect the rate of growth.
+Temporal and spatial variation in NPP in many systems
+has been causally linked to meteorological variables that
+inﬂuence the availability of water, nutrients, and light,
+which frequently limit plant growth (Brylinsky and
+Mann 1973, Runyon et al. 1994, Jobbagy and Sala 2000,
+Knapp and Smith 2001). Disturbance may also affect
+plant growth (and hence NPP) by altering resource
+availability (Sprugel 1985, McNaughton et al. 1989,
+Hobbs and Mooney 1995, Knapp et al. 1998).
+In addition to its effects on growth rate, disturbance
+may dramatically alter the landscape and cause large
+
+2493
+
+2494
+
+DANIEL C. REED ET AL.
+
+reductions in the standing crop of primary producers
+(Sprugel and Bormann 1981, Dayton and Tegner 1989).
+However, the contribution of disturbance to temporal
+variation in NPP via the reduction in FSC has rarely
+been investigated. Such effects are likely to be most
+dramatic when NPP is examined over timescales that are
+long enough to capture multiple cycles of disturbance
+and recovery. Few published data sets on NPP are long
+enough to capture these cycles, as the return times for
+large disturbances are relatively long (e.g., on order of
+decades in the case of most wildﬁres, hurricanes,
+mudslides, and outbreaks of disease or grazing; Sousa
+1984, Pickett and White 1985). Consequently, ecosystem
+modeling has been the primary means for investigating
+how disturbance affects vegetation dynamics to inﬂuence variability in NPP (Chen et al. 2000, Li et al. 2003).
+Submarine forests of giant kelp (Macrocystis pyrifera)
+offer a promising system for ﬁeld-based investigations of
+the relative importance of vegetation dynamics and
+growth rate to interannual variation in NPP. Not only
+are giant kelp forests believed to be one of the most
+productive systems on earth (Mann 2000), but frequent
+disturbance from a variety of sources causes substantial
+temporal and spatial variation in the standing crop of
+giant kelp at both local and regional scales (Graham
+et al. 1997, Dayton et al. 1999, Edwards 2004).
+Moreover, giant kelp forests are a tractable system to
+study because rapid growth coupled with a high
+propensity for recruitment following disturbance allows
+most Macrocystis populations to recover from disturbance within a couple of years (Reed et al. 2006).
+In contrast to the wealth of information on patterns
+and causes of Macrocystis population dynamics, surprisingly little is known about temporal and spatial
+variation in Macrocystis growth and NPP and the
+factors that control them. Our knowledge of the
+environmental processes that control growth in Macrocystis is derived largely from short-term studies of small
+juvenile plants (Dean and Jacobsen 1984) and of
+individual blades and stipes of large mature plants
+(van Tussenbroek 1989, Brown et al. 1997, Hepburn and
+Hurd 2005). Data from such studies are difﬁcult to
+extrapolate to entire populations that have spatially and
+temporally variable age and size structures. Similarly,
+most empirical studies of primary production in Macrocystis have been relatively short term, of limited spatial
+scale, and difﬁcult to compare either because they used
+methods that measured different processes or because
+they expressed NPP in different metrics (reviewed in
+Coon 1982, North 1994). Such eclectic information has
+limited value when attempting to understand and
+predict patterns and causes of spatial and temporal
+variation in the growth and production of giant kelp
+forests.
+In this study we documented patterns of temporal
+variation in NPP of Macrocystis at three kelp forests in
+southern California over 4.5 years. We measured the
+vital rates underlying NPP (i.e., growth, biomass loss,
+
+Ecology, Vol. 89, No. 9
+
+and recruitment) and the extent to which variation in
+them was inﬂuenced by abiotic factors, such as ocean
+swell height (the primary source of physical disturbance), ocean temperature (a surrogate for nitrate,
+which is the nutrient thought to most frequently limit
+growth), and biological processes such as density
+dependence (inferred from FSC). We used these data
+to determine the relative contributions of disturbancedriven ﬂuctuations in FSC and resource-driven ﬂuctuations in rates of recruitment and growth to variation in
+annual NPP of giant kelp.
+SPECIES DESCRIPTION AND STUDY SITE CHARACTERISTICS
+The giant kelp, Macrocystis pyrifera, is the world’s
+largest alga. An individual (hereafter referred to as a
+plant) consists of a bundle of fronds (often totaling more
+than 100) anchored by a common holdfast. Each frond
+consists of a cylindrical rope-like stipe along which
+many leaf-like blades are attached via small gas bladders
+that serve to buoy the frond. Unlike land plants, kelp
+has no belowground parts and nutrient uptake and
+photosynthesis occur throughout the organism. New
+fronds originate in the basal foliage just above the
+holdfast, grow vertically in the water column, and form
+a dense canopy at the sea surface. They routinely attain
+lengths over 20 m, and the stipes commonly elongate at
+rates of 50 cm/d, which is among the fastest elongation
+rates on record for any terrestrial or marine autotroph
+(Clendenning 1971). The average life span of a frond in
+southern California is three to ﬁve months, and adult
+plants live an average of two to three years (North 1994;
+D. C. Reed, A. Rassweiler, and K. K. Arkema,
+unpublished data).
+Data for this study were collected at three kelp forests
+located off the coast of Santa Barbara, California, USA:
+Mohawk Reef (34823 0 4000 N, 119843 0 4800 W), Arroyo
+Burro (34824 0 00 00 N, 119844 0 40 00 W), and Arroyo
+Quemado (34828 0 0800 N, 120807 0 1700 W). These forests
+occur on low-relief bedrock reefs whose dimensions
+range from ;300 m (Mohawk and Arroyo Burro) to
+1500 m (Arroyo Quemado) in length (alongshore
+dimension) and ;200 m to 300 m in width (cross-shore
+dimension). All data on kelp were collected in permanent plots located in the middle of each forest at 6–8 m
+depth using scuba.
+METHODS
+Net primary production calculations
+We investigated spatial and temporal variation in
+NPP of Macrocystis pyrifera using ﬁeld measurements
+and a simple model of kelp dynamics, which assumed
+that, within a sampling period, biomass was produced
+and lost at rates proportional to existing FSC. Using this
+model we calculated the NPP and speciﬁc growth rate
+(i.e., rate at which new kelp tissue is produced per unit of
+existing kelp tissue) for each month that accounted for
+the observed change in FSC given independently
+measured loss rates. We calculated mean daily NPP
+
+September 2008
+
+NET PRIMARY PRODUCTION BY GIANT KELP
+
+and mean daily speciﬁc growth rate of giant kelp at the
+three study sites for each season (i.e., winter, spring,
+summer, and autumn as deﬁned by the winter solstice,
+spring equinox, summer solstice, and autumnal equinox)
+from spring 2002 through autumn 2006 (see Rassweiler
+et al., in press, for detailed description of the methods).
+Net primary production and speciﬁc growth were
+expressed as daily rates to account for slight variations
+in the length of the sampling intervals.
+At each site we sampled M. pyrifera plants in a
+permanent plot that was either 200 m2 (Arroyo
+Quemado and Mohawk) or 480 m2 (Arroyo Burro) in
+area. Our estimates of the FSC of giant kelp at the
+beginning and end of each monthly sampling interval
+were based on measurements taken of all individuals .1
+m tall in each plot. We characterized each individual
+that we measured using three distinct plant sections: (1)
+the ‘‘subsurface’’ section consisted of fronds that did not
+reach the surface, (2) the ‘‘water column’’ section was the
+subsurface portion of fronds that reached the surface,
+and (3) the ‘‘canopy’’ section was the portion of the
+fronds at the sea surface. For each plant within the
+permanent plots we counted the number of fronds 1 m
+above the holdfast (N1m), and the number of fronds at
+the surface (Nsrfc), and we measured the water depth at
+the top of the holdfast (D) and the length of the canopy
+portion of the longest frond (MAX). We use these
+measurements to calculate the length of each plant
+section, according to the following equations:
+subsurface length ¼ ðN1m  Nsrfc Þ½1 þ 0:5ðD  1Þ
+
+ð1Þ
+
+water column length ¼ ðNsrfc ÞðDÞ
+
+ð2Þ
+
+canopy length ¼ ðNsrfc Þð0:5MAXÞ:
+
+ð3Þ
+
+We tested the accuracy of Eqs. 1, 2, and 3 in
+estimating the total frond length by comparing estimates
+of length obtained using these equations to actual
+lengths. To do this we collected 55 plants between June
+2002 and June 2003 from our three study sites. In the
+laboratory we measured the length of all fronds on each
+plant and compared the sum of these lengths to the total
+frond length obtained by summing the values given by
+Eqs. 1, 2, and 3. Total frond length estimated using Eqs.
+1, 2, and 3 was an excellent predictor of actual total
+frond length (r2 ¼ 0.993, slope ¼ 1.02).
+Relationships generated from length and mass measurements of the 55 adult M. pyrifera collected from our
+study sites were used to convert the total length of each
+of the three plant sections measured in the permanent
+plots to total wet mass. Holdfasts and basal sporophylls
+were not included in measurements of total wet mass.
+The ratio of frond wet mass (in kilograms) to frond
+length (in meters) was 0.117 for the subsurface section,
+0.105 for the water column section, and 0.259 for the
+canopy section. The wet mass of each plant was
+converted to dry mass based on the ratio of wet/dry
+
+2495
+
+mass of blades collected from 10–15 plants at each site
+during each survey to obtain an estimate of FSC in units
+of kelp dry mass. A 5-cm2 disk was taken from the
+central portion of each blade and used to form a
+composite sample that was dried and analyzed using an
+elemental analyzer to estimate the percentage of carbon
+and percentage of nitrogen of the FSC for each site
+every month. Values were adjusted to account for
+differences in the carbon and nitrogen content of stipes
+and blades (Rassweiler et al., in press).
+During each monthly sampling interval we also
+calculated instantaneous loss rates for entire plants
+and for fronds on surviving plants using 10–15 tagged
+plants at each site. Loss rates of plants were based on the
+fraction of tagged plants that survived from one
+sampling date to the next. New plants were tagged to
+replace plants that were lost during the previous
+sampling interval to maintain a sample size of 10–15
+plants. Loss rates of fronds were based on the fraction of
+tagged fronds on tagged plants that survived during
+each sampling interval. Estimating losses resulting from
+the removal of parts of a frond and from the excretion of
+dissolved substances was beyond the scope of this study.
+Thus we estimated the total instantaneous loss rate l as
+the sum of the loss rates of plants and fronds.
+Using our estimates of the initial and ﬁnal FSC (S0,
+St) and loss rate (l) for each monthly sampling interval
+we calculated the mean growth rate (g) of M. pyrifera as
+ 
+1
+St
+þl
+ð4Þ
+g ¼ ln
+T
+S0
+where T is the number of days in the sampling interval.
+This calculation was based on an exponential growth
+model, but using a linear or logistic growth model to
+calculate NPP produced nearly identical results (Rassweiler et al., in press). This exponential model implies
+that NPP at any moment is the product of g and S. We
+assumed that growth was constant over the monthly
+sampling interval and expressed S at any time t as a
+function of initial FSC, growth rate, and loss rate (St ¼
+S0e(gl )t ). Daily NPP for each monthly sampling interval
+was obtained by integrating instantaneous NPP over the
+interval and dividing by T:
+Z T
+gSt dt:
+ð5Þ
+NPP ¼
+0
+
+Mean daily NPP and mean daily growth rate of M.
+pyrifera for each season were calculated as the mean
+NPP and mean growth rate for all days in the season.
+Each of the variables included in our calculations of
+growth rate and NPP has an error associated with its
+measurement. We accounted for observer error, sampling error, and regression error for each variable in our
+calculations of NPP and growth rate using a Monte
+Carlo approach that drew randomly from the distributions of each of the component variables (Harmon et al.
+2007). These distributions were derived from actual data
+
+2496
+
+DANIEL C. REED ET AL.
+
+and from independent estimates of the error associated
+with each variable. The standard error for each value of
+NPP and growth rate was based on values observed in
+1000 Monte Carlo simulations. We used this same
+approach to estimate errors associated with our
+measurements of FSC and loss rate.
+Environmental data
+We used seawater temperature as a surrogate for the
+ambient concentration of nitrate to investigate the
+relationship between nutrient availability and speciﬁc
+growth rate in giant kelp. Temperature and nitrate are
+inversely correlated at our sites and at other locals in
+southern California (Jackson 1977, Zimmerman and
+Kremer 1984, McPhee-Shaw et al. 2007). We measured
+temperature every 10 min using loggers (Stowaway
+Onset tidbits, accuracy 60.28C; Onset Computer,
+Bourne, Massachusetts, USA) fastened to the bottom
+at each site. The ambient concentration of dissolved
+inorganic nitrogen (DIN ¼ nitrate þ nitrite) was
+calculated from temperature using a relationship reported in McPhee-Shaw et al. (2007) that was based on 3137
+data points collected at Arroyo Quemado (DIN ¼
+0.00628747Temp4 þ 0.32811Temp3  5.7165Temp2 þ
+33.833Temp  9.7322 for Temp , 15.58C, with DIN ¼
+0.22 for Temp . 15.58C; total error 6 0.79 lmol/L).
+Dissolved inorganic nitrogen values were averaged to
+obtain a mean DIN concentration for each season.
+We investigated the relationship between wave height
+and loss rates of Macrocystis plants and fronds (as a
+fraction of FSC) using wave data from the Goleta Point
+Buoy (Coastal Data Information Program station 107,
+data available online)4 located 11 km offshore of our
+study sites in the Santa Barbara Channel (34820 0 0000 N,
+119848 0 1300 W). We used the maximum value of the
+signiﬁcant wave height (HS) recorded during each
+monthly sampling interval to examine the relationship
+between wave disturbance and monthly estimates of the
+two different types of biomass loss (i.e., fronds and
+plants). Signiﬁcant wave height is commonly used to
+describe wave height and represents the mean of the
+largest one-third of the waves recorded during a 30-min
+sampling period.
+Statistical analyses
+We examined whether annual NPP was related to the
+FSC at the start of the growth year (hereafter initial
+FSC), the density of plants that recruit during the year,
+and the annual rate of kelp growth. We considered the
+start of the growth year to be the winter solstice since
+this is the time of year when FSC is most commonly at
+or near its minimum (see Results, Fig. 1). The density of
+recruits for each month was estimated as the increase in
+plant density from the previous month. Recruitment was
+assumed to be zero in months when plant density did not
+4 hhttp://cdip.ucsd.edui
+
+Ecology, Vol. 89, No. 9
+
+increase. Recruitment can be greatly underestimated
+using this approach if the appearance of new plants
+largely coincides with the loss of established plants. Our
+independent estimates of plant loss indicate that this was
+not the case as the loss rate of established plants was
+typically lowest during months that showed the greatest
+increase in plant density (see Results, Fig. 2 vs. Fig. 3a).
+Annual growth and annual NPP were calculated as the
+sum of daily growth or daily NPP over the growth year.
+Single regressions were done to obtain the best
+independent estimates of the contributions of initial
+FSC, annual recruitment, and annual growth to
+variation in annual NPP using annual estimates from
+four years at each of the three sites. Stepwise multiple
+regression was used to estimate the relative contribution
+of each of the independent variables to variation in
+annual NPP. We tested for collinearity among the
+independent variables by evaluating tolerance variables
+(Quinn and Keough 2002) and condition indices (Belsley
+et al. 1980) and found that it was not signiﬁcant.
+RESULTS
+Foliar standing crop
+The FSC of giant kelp peaked at all three sites during
+the ﬁrst three months of the 54-mo study, with
+maximum values of 1.28, 1.12, and 1.66 kg dry mass/m2
+at Arroyo Burro, Arroyo Quemado, and Mohawk,
+respectively (Fig. 1). Maximum plant densities during
+this period averaged 0.3 plants/m2 at Arroyo Burro and
+0.61 plants/m2 at Arroyo Quemado and Mohawk. These
+peaks were followed by abrupt declines at all three sites
+beginning in November 2002. The initiation of this
+decline coincided with a period of large oceanic swells
+that led to a .90% reduction in FSC over the ensuing
+three months (November 2002 to January 2003). Kelp
+dynamics behaved differently at the three sites following
+this decline. Most notable was the lack of recovery by
+Macrocystis at Arroyo Burro where FSC rarely
+increased above 0.15 kg dry mass/m2 during the next
+four years. The sustained reduction in FSC at Arroyo
+Burro was due to a persistent decrease in the availability
+of reef habitat needed for kelp recruitment and growth.
+This decrease in reef habitat resulted from movement of
+sand during the November 2002 swells that buried
+.80% of the rocky habitat for the remainder of the
+study (D. C. Reed, A. Rassweiler, and K. K. Arkema,
+unpublished data). In contrast to Arroyo Burro, the reefs
+at Arroyo Quemado and Mohawk were not inundated
+by sand and the kelp forests at these sites recovered
+relatively quickly from the large swells of 2002 (Fig. 1).
+Nevertheless, the FSC at these sites never reached the
+high levels observed at the start of the study, in part
+because wave-induced disturbance occurred during each
+winter of the study. Substantial variability in giant kelp
+FSC was observed both within and among years at these
+two sites, with peaks generally occurring in late summer
+to autumn (August to November) and minima in winter
+(January to March). The FSC averaged 0.444 6 0.036
+
+September 2008
+
+NET PRIMARY PRODUCTION BY GIANT KELP
+
+2497
+
+FIG. 1. Monthly estimates (6SE) of the foliar standing crop (FSC) of giant kelp (Macrocystis pyrifera) at the three study sites
+located off the coast of Santa Barbara, California, USA. Horizontal dashed lines represent the time-averaged means for each site.
+
+and 0.408 6 0.051 kg dry mass/m2 (0.126 6 0.011 and
+0.115 6 0.014 kg C/m2; mean 6 SE) at Arroyo
+Quemado and Mohawk, respectively, over the 54-month
+study.
+Decreases in FSC reﬂected losses of entire plants and
+portions of plants (i.e., fronds) due to senescence and
+dislodgement. Frond loss occurred continuously
+throughout the year, though the rate of frond loss
+varied as much as ﬁvefold within any given year (Fig. 2).
+Highest loss rates were observed in the winter, with
+frond loss during some months averaging as much as 4%
+of the FSC per day. Unlike fronds, the loss of entire
+plants was relatively episodic, with most tagged plants
+disappearing in winter and early spring and little to no
+plant loss occurring in summer. Losses at each of the
+three sites were related to oceanic swells; the maximum
+signiﬁcant wave height observed during a given sampling interval explained a signiﬁcant amount of the
+variation in the loss rates of both fronds and plants
+
+during that sampling interval (Fig. 2). The lone
+exception to this pattern was at Arroyo Burro, where
+frond loss varied independently of wave height. Rates of
+frond loss and plant loss at each site were unrelated to
+the densities of fronds and plants at the site prior to the
+loss (r2 , 0.04 and P . 0.17 for both frond loss and
+plant loss at all three sites). While the loss rates of fronds
+and plants varied among sites during any given month,
+the 54-month means were similar across the three sites,
+averaging ;1.3% and 0.5% of the FSC per day, for
+fronds and plants, respectively (Fig. 2).
+Recruitment
+The recruitment of new plants to a size of at least 1 m
+tall occurred primarily in the summer (June through
+September; Fig. 3a). Recruitment rates differed greatly
+among sites and years. Relatively little recruitment was
+observed at Arroyo Burro during the study, whereas
+substantial recruitment was observed in four of the ﬁve
+
+2498
+
+DANIEL C. REED ET AL.
+
+Ecology, Vol. 89, No. 9
+
+FIG. 2. Instantaneous loss rates for giant kelp (Macrocystis pyrifera) fronds (top row) and plants (bottom row) and maximum
+signiﬁcant wave height (max HS) vs. time. Labels on the far right and far left y-axes apply to all panels within a row. Horizontal
+dotted lines represent the time-averaged means of frond and plant loss rates. Statistics are from the linear regressions examining the
+relationship between instantaneous loss rate (fronds or plants) during a sample period and the max HS during the sample period.
+
+summers at Mohawk (2002 being the exception) and in
+two summers (2004 and 2006) at Arroyo Quemado.
+Pulses in recruitment (i.e., periods when the density of
+recruits . 0.4 recruits/m2) occurred only when the initial
+FSC was ,0.4 kg dry mass/m2 (Fig. 3b), and peaks in
+recruitment were always followed by increases in FSC
+(Fig. 3a vs. Fig. 1).
+Growth
+Growth rates of giant kelp on a dry-mass basis
+averaged ;2% of the FSC per day at each of the three
+sites over the period of study (Fig. 4). At this rate the
+FSC had the potential to double every 34 d, assuming no
+biomass loss. Although mean growth was similar among
+the sites, patterns of temporal variation in growth
+differed among them. Seasonal variation in growth was
+most evident at Arroyo Quemado, where it cycled
+between high rates in winter and spring and low rates in
+summer and fall (Fig. 4b). This seasonal pattern in
+growth rate varied inconsistently among years at
+Mohawk, where it showed a winter/spring peak in
+2003 and 2005 and a spring/summer peak in 2004 and
+2006 (Fig. 4c). In contrast to Arroyo Quemado and
+Mohawk, growth rates at Arroyo Burro ﬂuctuated
+sporadically in time with no apparent seasonality
+(Fig. 4a). The large spike in growth at Arroyo Burro
+observed in summer 2004 occurred at a time when the
+low FSC consisted of a relatively high proportion of
+
+small young plants. Growth rates at this site reached a
+minimum the following winter (2005), when these young
+plants were lost during a large wave event (Fig. 1a).
+The highest growth rates were most frequently
+observed at times and locations when FSC was relatively
+low (i.e., ,0.5 kg dry mass/m2; Fig. 5a). A small
+standing crop, however, was not the sole requisite for
+rapid growth as slow growth was also frequently
+observed at low standing crops. Growth varied with
+the size structure of the standing crop as growth rate was
+positively related to the proportion of the FSC that
+consisted of small, young individuals, suggesting younger plants grew at a faster rate than older plants
+(Fig. 5b). Growth rate was positively related to the
+concentration of DIN at Arroyo Quemado, where
+seasonal trends in growth rate were most apparent
+(Fig. 6a). No such relationship was found at either
+Arroyo Burro or Mohawk. Moreover, growth rate was
+unrelated to the nitrogen content of the standing crop at
+all three sites (Fig. 6b). The nitrogen content of the
+standing crop followed a power function with DIN at
+each of the sites (Fig. 6c), indicating that the acquisition
+of nitrogen by kelp was generally dependent upon the
+concentration of nitrate in seawater.
+Net primary production and turnover
+The highest values of NPP were recorded at the
+beginning of the study prior to the large swells in
+
+September 2008
+
+NET PRIMARY PRODUCTION BY GIANT KELP
+
+2499
+
+FIG. 3. (a) Spatial and temporal variation in the density of newly recruited giant kelp (Macrocystis pyrifera) .1 m tall. (b)
+Relationship between the density of recruits at the end of the sampling interval and foliar standing crop (FSC) at the beginning of
+the sampling interval. Data are monthly values for Arroyo Burro (solid circles), Arroyo Quemado (open circles), and Mohawk
+(solid triangles).
+
+November 2002 (Fig. 7). The loss of kelp biomass
+caused an abrupt decline in NPP at all three sites. Net
+primary productivity remained relatively low at Arroyo
+Burro, averaging 2.0 g dry massm2 d1 (0.6 g
+Cm2d1) over the 54-month study, despite periods of
+rapid growth (Fig. 3a). In contrast, NPP varied
+sporadically at Arroyo Quemado and Mohawk, with
+no apparent seasonality. Overall, NPP was substantially
+higher at these two sites, averaging ;7.5 g dry
+massm2d1 (2.2 g Cm2d1; Fig. 7b, c). These
+relatively high mean values of NPP resulted from
+consistently high growth rates (Fig. 4) of a relatively
+small amount of kelp biomass (Fig. 1) that turned over
+on average 6.8 times per year (as estimated by the ratio
+of annual NPP to mean annual FSC). Annual rates of
+biomass turnover were similar among sites (mean annual
+turnover rate ¼ 7.3, 5.9, and 7.2 for Arroyo Burro,
+Arroyo Quemado, and Mohawk, respectively; F2,11 ¼
+3.37, P ¼ 0.081) and were largely independent of the
+mean annual FSC (F1,11 ¼ 3.60, r2 ¼ 0.265, P ¼ 0.087).
+
+Sources of variation in annual net primary production
+On an annual basis NPP averaged 0.42 kg dry
+massm2yr1 (0.12 kg Cm2yr1) at Arroyo Burro
+and 2.31 and 2.38 kg dry massm2yr1 (0.66 and 0.68
+kg Cm2yr1) at Arroyo Quemado and Mohawk,
+respectively. Annual NPP was positively related to both
+initial FSC (F1,11 ¼ 16.76, r2 ¼ 0.626, P ¼ 0.002) and
+annual recruitment (F1,11 ¼ 8.96, r2 ¼ 0.473, P ¼ 0.014).
+Surprisingly, no correlation was found between annual
+growth and annual NPP (F1,11 ¼ 0.21, r2 ¼ 0.021, P ¼
+0.653). Multiple regression analysis revealed that initial
+FSC and annual recruitment contributed 62% and 22%
+of the interannual variation in NPP, respectively
+(Table 1a). The greater inﬂuence of initial FSC and
+recruitment compared to growth rate resulted in large
+part from differences in the dynamic range of variation
+in these variables. Interannual variability in initial FSC
+and recruitment (as indicated by the coefﬁcient of
+variation among years) was 78.0% and 69.2%, respectively, compared to 19.2% for growth rate.
+
+2500
+
+DANIEL C. REED ET AL.
+
+Ecology, Vol. 89, No. 9
+
+FIG. 4. Estimates (6SE) of the speciﬁc growth rate of giant kelp (Macrocystis pyrifera) at the three study sites by season (Sum,
+summer; Win, winter). Horizontal dashed lines represent the time-averaged means for each site.
+
+Additional regression analyses revealed a positive
+feedback between initial FSC and NPP, as initial FSC
+(the primary determinant of NPP) was positively related
+to NPP in the previous year (F1,11 ¼ 13.67, r2 ¼ 0.578, P
+¼ 0.004) and negatively related to the loss rate of kelp
+biomass at the end of the previous year (i.e., autumn;
+F1,11 ¼ 5.29, r2 ¼ 0.346, P ¼ 0.044). Collectively, these
+two variables accounted for 79.5% of the interannual
+variation in initial FSC (Table 1b).
+DISCUSSION
+One of the most striking results of our study was the
+insigniﬁcance of growth rate in explaining variation in
+annual NPP. We believe that this was due in part to an
+oceanographic climate that was relatively favorable for
+kelp growth during our study. Nitrate has been
+identiﬁed as the nutrient that most frequently limits
+growth of giant kelp in many parts of the world, and
+variation in climatic factors that inﬂuence the supply of
+nitrate to giant kelp forests is believed to be a leading
+cause of variability in kelp growth (Jackson 1977,
+
+Zimmerman and Kremer 1986, van Tussenbroek 1989,
+Brown et al. 1997). For instance, in southern California
+nitrogen-limited growth in Macrocystis is most pronounced during extended periods of low nutrient
+availability, such as those that occur during El Niños
+(Gerard 1982, Zimmerman and Robertson 1985).
+However, kelp growth rates during more nutrient-rich
+conditions can be highly variable, with no clear
+correlation to ambient nitrate concentrations or tissue
+nitrogen content (Wheeler and North 1981). Our
+observations of continuously high nitrogen content in
+kelp (generally above 1%; Fig. 6b, c) coupled with our
+ﬁnding that growth was unrelated to the concentration
+of DIN in seawater at two of our three sites (Fig. 6a)
+suggest that growth was rarely nitrogen limited during
+our study. The contrasting results between our study
+and those done during prolonged conditions of nutrient
+stress (Gerard 1982, Zimmerman and Robertson 1985)
+lend support to the contention that the importance of
+intra-annual variation in nitrogen supply in determining
+
+September 2008
+
+NET PRIMARY PRODUCTION BY GIANT KELP
+
+2501
+
+FIG. 5. The relationship between the speciﬁc growth rate of giant kelp (Macrocystis pyrifera) and (a) the foliar standing crop
+(FSC) of kelp at the start of each season and (b) the proportion of the standing crop consisting of new recruits (recruit FSC/total
+FSC). The regression in (a) remained signiﬁcant (P , 0.0146) when the outlier at Arroyo Burro was excluded from the analysis.
+Recruits in (b) were deﬁned as subsurface plants with four or fewer fronds. Data are seasonal means for Arroyo Burro (solid
+circles), Arroyo Quemado (open circles), and Mohawk (solid triangles).
+
+kelp growth depends on the state of longer-term
+oceanographic conditions (Graham et al. 2007).
+The reduction in light due to density-dependent
+shading is widely regarded as a critical determinant of
+plant growth. Not surprisingly, light limitation is
+believed to be a very important constraint on growth
+in giant kelp (Jackson 1987), and it may have
+contributed to the seasonal variation in growth that
+we observed. The inverse relationship that we found
+between FSC and growth rate is similar to that detected
+by Gerard (1976) for Macrocystis in central California
+and suggests light limitation (via density-dependent
+shading) as an important factor in determining patterns
+of kelp growth. Consistent with this hypothesis is the
+seasonal growth pattern (high in winter and spring and
+low in summer and autumn) that we recorded at Arroyo
+Quemado and to a lesser extent Mohawk, which was
+completely out of phase with the seasonal pattern
+observed in FSC (i.e., low in winter and spring and
+high in summer and autumn). This reduced growth
+
+during seasons of high biomass tends to dampen withinyear variation in NPP.
+Light limitation via density-dependent shading cannot
+account for the variable growth rates observed at
+Arroyo Burro, where FSC remained low for most of
+the study. Instead, changes in the age structure of the
+population appeared to be the primary source of large
+ﬂuctuations in an otherwise relatively constant pattern
+of annual growth, as younger kelp plants appeared to
+grow faster than older kelp plants. Differences in age
+structure may also have accounted for the occasional lag
+in growth at Mohawk relative to Arroyo Quemado
+(Fig. 4) as the FSC at Mohawk consisted of a greater
+proportion of young, fast-growing individuals due to
+more frequent recruitment at this site. Changes in age
+structure are common following a disturbance and have
+been shown to be an important source of interannual
+variation in growth and NPP in other systems (Sprugel
+and Bormann 1980, Li et al. 2003).
+
+2502
+
+DANIEL C. REED ET AL.
+
+FIG. 6. The relationship between (a) speciﬁc growth rate
+and the ambient concentration of dissolved inorganic nitrogen
+(DIN) in seawater, (b) speciﬁc growth rate and nitrogen content
+of giant kelp (Macrocystis pyrifera), and (c) kelp nitrogen
+content and ambient DIN concentration. Data are seasonal
+means for Arroyo Burro (solid circles), Arroyo Quemado (open
+circles), and Mohawk (solid triangles) for the period June 2002
+to December 2006. The regression line in (a) is for Arroyo
+Quemado; the regression line in (c) is for all sites combined.
+
+The relatively high values of NPP by Macrocystis
+reported here (;2.3 kg dry massm2yr1) are nearly
+identical to those found by Gerard (1976) in central
+California (assuming a wet mass/dry mass ratio of 10)
+and support Mann’s (2000) contention that giant kelp
+forests are among the most productive systems in the
+world. It is worth noting that our measurements of
+Macrocystis NPP underestimate total forest production
+because they did not account for the partial loss of kelp
+fronds (due to grazing, breakage, senescence) or the loss
+of dissolved organic exudates, nor did they account for
+production by understory algae and phytoplankton,
+which contribute additional sources of primary produc-
+
+Ecology, Vol. 89, No. 9
+
+tion to kelp forests ecosystems. Although growth rate
+was a poor predictor of annual variation in Macrocystis
+NPP, it is principally responsible for giant kelp’s high
+mean rates of NPP, which result from rapid growth of a
+relatively small standing crop (usually ,1 kg dry
+mass/m2) that turns over an average of approximately
+seven times per year.
+Our results highlight the importance of viewing net
+primary production by a system as a suite of biotic and
+abiotic factors interacting with several key attributes of
+primary producers. We depict these interactions in a
+conceptual model in which the standing crop of primary
+producers and their rates of growth and recruitment
+combine to determine NPP (Fig. 8). Disturbance acts to
+directly reduce the standing crop of primary producers,
+whereas the delivery of resources enhances their vital
+rates (i.e., growth and recruitment). Disturbances may
+also have positive or negative effects on resource supply,
+depending of the nature of the disturbance (e.g., ﬁre vs.
+grazing) and the type of resource (e.g., light vs.
+nutrients). These concepts apply generally to most
+systems.
+Although many studies have examined one or more
+components of our model, few if any have explored
+them all simultaneously. By studying giant kelp at
+several sites over multiple years we were able to evaluate
+the relative strengths of most of the interactions depicted
+in Fig. 8 over a relatively broad range of conditions. We
+found that periodic wave disturbance led to large
+seasonal reductions in kelp standing crop at all three
+sites. However, we observed signiﬁcant among-site
+differences in standing crop dynamics as the loss of
+kelp biomass due to waves was much reduced at Arroyo
+Burro following persistent sand inundation (Fig. 1a).
+Our observations of reduced rates of recruitment and
+growth during seasons with initially high standing crops
+(Figs. 3b and 5a) coupled with the weak and inconsistent
+relationship between growth and nitrogen (Fig. 6)
+support the hypothesis that standing crop negatively
+affected recruitment and growth via density-dependent
+competition for light (shown by the negative effect of
+standing crop on recruitment, growth, and resource
+supply in Fig. 8). That increases in FSC always followed
+pulses in recruitment is in turn consistent with the
+positive effects of recruitment and growth on FSC
+depicted in the model. Our ﬁnding that loss rates and
+NPP accounted for nearly 80% of the observed annual
+variation in FSC at the beginning of the subsequent year
+(Table 1b) provides evidence for a positive feedback
+between NPP and FSC that was countered by losses in
+FSC due to disturbance. Lastly, our ﬁndings are
+consistent with the positive interactions between standing crop and NPP and between recruitment and NPP
+(Fig. 8), which collectively explained 84% of the
+variation in annual NPP of giant kelp at our sites
+(Table 1a). Surprisingly, the only interaction in our
+conceptual model of NPP that we failed to ﬁnd evidence
+for was a positive relationship between growth rate and
+
+September 2008
+
+NET PRIMARY PRODUCTION BY GIANT KELP
+
+2503
+
+FIG. 7. Estimates (6SE) of net primary production (NPP) of giant kelp (Macrocystis pyrifera) at the three study sites by season
+(Sum, summer; Win, winter). Horizontal dashed lines represent the time-averaged means for each site.
+
+TABLE 1. Results from stepwise multiple regression analyses investigating the relative
+contributions of (a) foliar standing crop at the start of the growing season [log(initial FSC)]
+and annual recruitment density of giant kelp (Macrocystis pyrifera) to variation in annual net
+primary production (NPP), and (b) previous year’s NPP and loss rate of kelp biomass in
+autumn of the previous year (loss) to initial FSC.
+df
+
+R2
+
+F
+
+P
+
+a) Dependent variable: annual NPP
+Model
+log(initial FSC)
+Recruitment
+Residual variation
+
+2
+1
+1
+9
+
+0.8418
+0.6263
+0.2155
+0.1582
+
+23.94
+21.00
+12.26
+
+0.0002
+0.0013
+0.0067
+
+b) Dependent variable: log(initial FSC)
+Model
+log(NPP)
+Loss
+Residual variation
+
+2
+1
+1
+9
+
+0.7951
+0.5774
+0.2177
+0.2049
+
+17.47
+19.73
+9.56
+
+0.0008
+0.0016
+0.0129
+
+Source
+
+Notes: Tolerance variables were .0.9, and condition indices were ,10 for each analysis,
+indicating no signiﬁcant collinearity among the independent variables in either (a) or (b). Data for
+this study were collected at three kelp forests located off the coast of Santa Barbara, California,
+USA.
+
+2504
+
+DANIEL C. REED ET AL.
+
+FIG. 8. Conceptual model of the factors inﬂuencing net
+primary production.
+
+NPP, which we attribute to the relatively low variability
+observed in growth rate relative to that observed for
+FSC and recruitment.
+The degree to which interannual variability in NPP of
+a system arises from disturbance-driven ﬂuctuations in
+standing crop (the upper portion of Fig. 8) vs. resourcedriven ﬂuctuations in growth (the lower portion of
+Fig. 8) depends on the vital rates of its primary
+producers, environmental conditions that inﬂuence rates
+of disturbance and the availability of resources, and the
+length of time that the system is studied. The tendency to
+date has been to focus on resource-driven ﬂuctuations in
+growth, perhaps because they are more amenable to
+study over the short term. However, the failure to
+account for disturbance-driven ﬂuctuations in standing
+crop can lead to overestimates of the mean and
+underestimates of the variance in NPP, particularly in
+systems consisting of relatively long-lived or slowgrowing perennials (Li et al. 2003). Systems such as
+giant kelp forests, which are characterized by frequent
+disturbance followed by rapid recovery via high rates of
+recruitment and growth, have the potential to provide
+considerable insight into the multitude of ways that
+biotic and abiotic factors interact with the standing crop
+and vital rates of primary producers to inﬂuence net
+primary production.
+ACKNOWLEDGMENTS
+We thank M. Anghera, B. Evans, S. Harrer, B. Mardian, and
+C. Nelson, as well as numerous others who spent many hours
+underwater in cold, uncomfortable conditions assisting us in
+data collection. The manuscript beneﬁted from discussion with
+and comments from M. Brzezinski, P. Raimondi, R. Zimmerman, and three anonymous reviewers. This material is based on
+support by the National Science Foundation under grant
+numbers OCE 9982105 and OCE 0620276.
+LITERATURE CITED
+Belsley, D. A., E. Kuh, and R. E. Welsch. 1980. Regression
+diagnostics: identifying inﬂuential data and sources of
+collinearity. John Wiley and Sons, New York, New York,
+USA.
+Brown, M. T., M. A. Nyman, J. A. Keogh, and N. K. M. Chin.
+1997. Seasonal growth of the giant kelp Macrocystis pyrifera
+in New Zealand. Marine Biology 129:417–424.
+Brylinsky, M., and K. H. Mann. 1973. An analysis of factors
+governing productivity in lakes and reservoirs. Liminology
+and Oceanography 18:1–14.
+Chen, W., J. Chen, and J. Cihlar. 2000. An integrated terrestrial
+ecosystem carbon-budget model based on changes in
+
+Ecology, Vol. 89, No. 9
+
+disturbance, climate, and atmospheric chemistry. Ecological
+Modelling 135:55–79.
+Clendenning, K. A. 1971. Photosynthesis and general development. Pages 169–190 in W. J. North, editor. The biology of
+giant kelp beds (Macrocystis) in California. Beihefte Zur
+Nova Hedwigia, Verlag Von J. Cramer, Lehre, Germany.
+Coon, D. 1982. Primary productivity of macroalgae in North
+Paciﬁc America. Pages 447–454 in O. R. Zaborsky, editor.
+CRC Handbook of biosolar resources. CRC Press, Boca
+Raton, Florida, USA.
+Dayton, P. K., and M. J. Tegner. 1989. Bottoms beneath
+troubled waters: benthic impacts of the 1982–1984 El Niño in
+the temperate zone. Pages 433–72 in P. W. Glynn, editor.
+Global ecological consequences of the 1982–83 El Niño–
+Southern Oscillation. Elsevier Oceanography Series Number
+52. Elsevier, Amsterdam, The Netherlands.
+Dayton, P. K., M. J. Tegner, P. B. Edwards, and K. L. Riser.
+1999. Temporal and spatial scales of kelp demography: the
+role of oceanographic climate. Ecological Monographs 69:
+219–250.
+Dean, T. A., and F. R. Jacobsen. 1984. Growth of juvenile
+Macrocystis pyrifera (Laminariales) in relation to environmental factors. Marine Biology 83:301–311.
+Edwards, M. S. 2004. Estimating scale-dependency in disturbance impacts: El Niños and giant kelp forests in the
+northeast Paciﬁc. Oecologia 138:436–447.
+Fahey, T. J., and A. K. Knapp. 2007. Principles and standards
+for measuring primary production. Oxford University Press,
+New York, New York, USA.
+Gerard, V. A. 1976. Some aspects of material dynamics and
+energy ﬂow in a kelp forest in Monterey Bay, California.
+Dissertation. University of California, Santa Cruz, California, USA.
+Gerard, V. A. 1982. Growth and utilization of internal nitrogen
+reserves by the giant kelp Macrocystis pyrifera in a lownitrogen environment. Marine Biology 66:27–35.
+Graham, M. H., C. Harrold, S. Lisin, K. Light, J. M.
+Watanabe, and M. S. Foster. 1997. Population dynamics of
+giant kelp Macrocystis pyrifera along a wave exposure
+gradient. Marine Ecology Progress Series 148:269–279.
+Graham, M. H., J. A. Vasquez, and A. H. Buschmann. 2007.
+Global ecology of the giant kelp Macrocystis: from ecotypes
+to ecosystems. Oceanography and Marine Biology: An
+Annual Review 45:39–88.
+Harmon, M. E., D. L. Phillips, J. Battles, A. Rassweiler, R. O.
+Hall, and W. K. Lauenroth. 2007. Quantifying uncertainty in
+net primary production measurements. Pages 238–260 in T. J.
+Fahey and A. K. Knapp, editors. Principles and standards
+for measuring primary production. Oxford University Press,
+New York, New York, USA.
+Hepburn, C. D., and C. L. Hurd. 2005. Conditional mutualism
+between the giant kelp Macrocystis pyrifera and colonial
+epifauna. Marine Ecology Progress Series 302:37–48.
+Hobbs, R. J., and A. Mooney. 1995. Spatial and temporal
+variability in California annual grassland: results from a
+long-term study. Journal of Vegetation Science 6:43–56.
+Jackson, G. A. 1977. Nutrients and production of giant kelp,
+Macrocystis pyrifera, off southern California. Limnology and
+Oceanography 22:979–995.
+Jackson, G. A. 1987. Modelling the growth and harvest yield of
+the giant kelp Macrocystis pyrifera. Marine Biology 95:611–
+624
+Jobbagy, E. G., and O. E. Sala. 2000. Controls of grass and
+shrub aboveground production in the Patagonian Steppe.
+Ecological Applications 10:541–549.
+Knapp, A. K., J. M. Briggs, J. M. Blair, and C. L. Turner. 1998.
+Patterns and controls of aboveground net primary production in tallgrass prairie. Pages 193–221 in A. K. Knapp, J. M.
+Briggs, D. C. Hartnett, and S. L. Collins, editors. Grassland
+dynamics: long-term ecological research in tall grass prairie.
+Oxford University Press, New York, New York, USA.
+
+September 2008
+
+NET PRIMARY PRODUCTION BY GIANT KELP
+
+Knapp, A. K., and M. D. Smith. 2001. Variation among biomes
+in temporal dynamics of aboveground primary production.
+Science 291:481–484.
+Li, Z., M. J. Apps, W. A. Kurz, and E. Banﬁeld. 2003.
+Temporal changes of forest net primary production and net
+ecosystem production in west central Canada associated with
+natural and anthropogenic disturbances. Canadian Journal
+of Forest Research 33:2340–2351.
+Lieth, H., and R. H. Whittaker. 1975. Primary productivity of
+the biosphere. Springer-Verlag, New York, New York, USA.
+Mann, K. H. 2000. Ecology of coastal waters. Blackwell,
+Malden, Masaschusetts, USA.
+McNaughton, S. J., M. Oesterheld, D. A. Frank, and K. J.
+Williams. 1989. Ecosystem-level patterns of primary productivity and herbivory in terrestrial habitats. Nature 341:142–
+144.
+McPhee-Shaw, E. E., D. A. Siegel, L. Washburn, M. A.
+Brzezinski, J. L. Jones, A. Leydecker, and J. Melack. 2007.
+Mechanisms for nutrient delivery to the inner shelf:
+observations from the Santa Barbara Channel. Liminology
+and Oceanography 52:1748–1766.
+North, W. J. 1994. Review of Macrocystis biology. Pages 447–
+527 in I. Akatsuka, editor. Biology of economic algae. SPB
+Academic, The Hague, The Netherlands.
+Pickett, S. T. A., and P. S. White. 1985. The ecology of natural
+disturbance and patch dynamics. Academic Press, Orlando,
+Florida, USA.
+Quinn, G. P., and M. J. Keough. 2002. Experimental design
+and data analysis for biologists. Cambridge University Press,
+London, UK.
+Rassweiler, A., K. K. Arkema, D. C. Reed, R. C. Zimmerman,
+and M. A. Brzezinski. 2008. Net primary production, growth,
+and standing crop of Macrocystis pyrifera in southern
+California. Ecology 89:2068.
+Reed, D. C., B. P. Kinlan, P. T. Raimondi, L. Washburn,
+B. Gaylord, and P. T. Drake. 2006. A metapopulation
+perspective on patch dynamics and connectivity of giant kelp.
+Pages 352–386 in J. P. Kritzer and P. F. Sale, editors. Marine
+metapopulations. Academic Press, San Diego, California,
+USA.
+
+2505
+
+Reichle, D. E., J. F. Franklin, and D. W. Goodall. 1975.
+Productivity of world ecosystems. National Academy of
+Sciences, Washington, D.C., USA.
+Runyon, J., R. H. Waring, S. N. Goward, and J. M. Wells.
+1994. Environmental limits on net primary production and
+light-use efﬁciency across the Oregon Transect. Ecological
+Applications 4:226–237.
+Sousa, W. P. 1984. The role of disturbance in natural
+communities. Annual Review of Ecology and Systematics
+15:353–391.
+Sprugel, D. 1985. Natural disturbance and ecosystem energetics. Pages 335–352 in S. T. A. Pickett and P. S. White, editors.
+The ecology of natural disturbance and patch dynamics.
+Academic Press, Orlando, Florida, USA.
+Sprugel, D. G., and F. H. Bormann. 1981. Natural disturbance
+and the steady state in high-altitude balsam ﬁr forests.
+Science 211:390–393.
+Van Tussenbroek, B. I. 1989. Seasonal growth and composition
+of fronds of Macrocystis pyrifera in the Falkland Islands.
+Marine Biology 100:419–430.
+Webb, W. L., W. K. Lauenroth, S. R. Szarek, and R. S.
+Kinerson. 1983. Primary production and abiotic controls in
+forests, grasslands, and desert ecosystems in the United
+States. Ecology 64:134–151.
+Wheeler, P. A., and W. J. North. 1981. Nitrogen supply, tissue
+composition and frond growth rates for Macrocystis pyrifera
+off the coast of southern California. Marine Biology 64:
+59–69.
+Zimmerman, R. C., and J. N. Kremer. 1984. Episodic nutrient
+supply to a kelp forest ecosystem in southern California.
+Journal of Marine Research 42:591–604.
+Zimmerman, R. C., and J. N. Kremer. 1986. In situ growth and
+chemical composition of the giant kelp, Macrocystis pyrifera:
+response to temporal changes in ambient nutrient availability. Marine Ecology Progress Series 27:277–285.
+Zimmerman, R. C., and D. L. Robertson. 1985. Effects of El
+Niño on local hydrography and growth of the giant kelp,
+Macrocystis pyrifera at Santa Catalina Island, California.
+Limnology and Oceanography 30:1298–1302.
+
+

@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pdftotext:*)",
+      "Bash(mkdir:*)",
+      "Bash(find:*)",
+      "Bash(python:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(chmod:*)",
+      "Bash(./compile.sh)",
+      "Bash(pdflatex:*)",
+      "Bash(rm:*)",
+      "Bash(latexmk:*)",
+      "Bash(mv:*)"
+    ],
+    "deny": []
+  }
+}

@@ -1,0 +1,41 @@
+# LR-I vs LR-P Comparison
+# Phase 1 baseline comparison
+
+experiment:
+  name: "lri_vs_lrp"
+  description: "Systematic comparison of LR-I and LR-P algorithms"
+
+seeds: [42, 123, 456, 789, 1011]
+
+algorithms:
+  # LR-I variants
+  - name: "lri_alpha001"
+    type: "LR-I"
+    alpha: 0.001
+
+  - name: "lri_alpha01"
+    type: "LR-I"
+    alpha: 0.01
+
+  - name: "lri_alpha05"
+    type: "LR-I"
+    alpha: 0.05
+
+  # LR-P variants
+  - name: "lrp_symmetric"
+    type: "LR-P"
+    alpha: 0.01
+    beta: 0.01
+
+  - name: "lrp_light_penalty"
+    type: "LR-P"
+    alpha: 0.01
+    beta: 0.005
+
+  - name: "lrp_heavy_penalty"
+    type: "LR-P"
+    alpha: 0.01
+    beta: 0.02
+
+training:
+  num_epochs: 20

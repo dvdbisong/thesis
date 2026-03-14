@@ -1,0 +1,243 @@
+%% Requires compilation with XeLaTeX or LuaLaTeX
+\documentclass[10pt,xcolor={table,dvipsnames},t]{beamer}
+\usetheme{UVic}
+
+\usepackage{booktabs}
+
+\title[PhD Progress Report]{PhD Progress Report}
+\subtitle{Learning Automata Framework for Adaptive Kelp Forest Monitoring in British Columbia Coastal Waters}
+\author{Ekaba Bisong}
+\institute{Department of Computer Science\\University of Victoria}
+\date{January 12, 2025}
+
+\begin{document}
+
+% Slide 1: Title
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Slide 2: Progress Overview
+\begin{frame}{Progress Overview}
+
+\textbf{Since December 2025:}
+\begin{itemize}
+  % \item Thesis proposal approved by committee
+  \item Began implementation of Paper 1: ``Learning Automata for Adaptive Kelp Detection''
+  \item Created publication-quality maps for study area visualization
+  \item Established code infrastructure for visualization and analysis
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Current Focus:}
+\begin{itemize}
+  \item Paper 1 methodology implementation
+  \item Study area maps and figures for publication
+  \item Data preprocessing pipeline refinement
+\end{itemize}
+
+\end{frame}
+
+% Slide 3: Paper 1 Status
+\begin{frame}{Paper 1: Current Status}
+
+\textbf{Title:} ``Learning Automata for Adaptive Kelp Detection with Limited Labels''
+
+\vspace{0.5em}
+\textbf{Completed:}
+\begin{itemize}
+  \item Study area map (BC coastal waters with Sentinel-2 tile footprints)
+  \item Data distribution map (kelp coverage by scene)
+  \item Environmental context map (bathymetry, substrate, temperature gradient)
+  \item Train/test split visualization (Protocol B: spatial adaptation)
+  \item Sentinel-2 mosaic with RGB sample composites
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{In Progress:}
+\begin{itemize}
+  \item Baseline heuristic implementations (spectral indices)
+  \item LA framework core components
+\end{itemize}
+
+\end{frame}
+
+% Slide 4: Study Area Coverage
+\begin{frame}{Study Area: BC Coastal Waters}
+
+\textbf{Sentinel-2 Tile Coverage:}
+\begin{itemize}
+  \item 7 scenes spanning BC's coastline (48.7°N -- 53.0°N)
+  \item 416 tiles total (512$\times$512 pixels, 10m resolution)
+  \item Temporal span: 2021--2023
+\end{itemize}
+
+\vspace{0.5em}
+\begin{table}[h]
+\small
+\begin{tabular}{lll}
+\toprule
+\textbf{Location} & \textbf{Year} & \textbf{Tiles} \\
+\midrule
+S. Vancouver Island & 2021 & 42 \\
+Salish Sea & 2022 & 72 \\
+Strait of Georgia & 2022 & 73 \\
+C. Vancouver Island & 2023 & 58 \\
+Discovery Islands & 2023 & 56 \\
+Central Coast & 2023 & 59 \\
+North Coast & 2023 & 56 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{frame}
+
+% Slide 5: Data Statistics
+\begin{frame}{Data Distribution Statistics}
+
+\textbf{Kelp Coverage Analysis:}
+\begin{itemize}
+  \item Overall kelp coverage: $\sim$0.84\% of pixels
+  \item Range across scenes: 0.20\% -- 1.68\%
+  \item Highly imbalanced class distribution (typical for kelp detection)
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Environmental Heterogeneity:}
+\begin{itemize}
+  \item Bathymetry variation: 10.3 -- 218.4 (normalized values)
+  \item Substrate variation: 1.1 -- 2.7 (categorical encoding)
+  \item Latitudinal gradient: 4.3° span (temperature proxy)
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Implication:} Environmental variability motivates context-aware adaptation in the LA framework.
+
+\end{frame}
+
+% Slide 6: Visualization Infrastructure
+\begin{frame}{Visualization Infrastructure}
+
+\textbf{Publication-Quality Maps Created:}
+\begin{enumerate}
+  \item \texttt{fig1\_study\_area} --- Main study area with tile locations
+  \item \texttt{fig2\_data\_distribution} --- Kelp coverage and tile counts
+  \item \texttt{fig3\_environmental\_context} --- Bathymetry, substrate, zones
+  \item \texttt{fig4\_sentinel\_mosaic} --- RGB composites with samples
+  \item \texttt{fig\_train\_test\_split} --- Protocol B spatial split
+\end{enumerate}
+
+\vspace{0.5em}
+\textbf{Technical Stack:}
+\begin{itemize}
+  \item Python with Cartopy, Matplotlib, GeoPandas, Rasterio
+  \item BC Albers projection (EPSG:3005)
+  \item 300 DPI output for journal submission
+\end{itemize}
+
+\end{frame}
+
+% Slide 7: Protocol B: Spatial Adaptation
+\begin{frame}{Protocol B: Spatial Adaptation Experiment}
+
+\textbf{Train/Test Split Design:}
+\begin{itemize}
+  \item \textbf{Training (2021--2022):} 3 scenes, 187 tiles
+  \begin{itemize}
+    \item S. Vancouver Island, Salish Sea, Strait of Georgia
+  \end{itemize}
+  \item \textbf{Test (2023):} 4 scenes, 229 tiles
+  \begin{itemize}
+    \item C. Vancouver Island, Discovery Islands, Central Coast, North Coast
+  \end{itemize}
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Research Question Addressed (RQ1):}
+\begin{quote}
+How effectively can an LA framework adapt to new geographic regions with limited labeled examples?
+\end{quote}
+
+\vspace{0.3em}
+\textbf{Evaluation:} Zero-shot and few-shot adaptation to unseen 2023 regions.
+
+\end{frame}
+
+% Slide 8: Implementation Roadmap
+\begin{frame}{Implementation Roadmap}
+
+\textbf{Phase 1: Foundation (Current)}
+\begin{itemize}
+  \item[$\checkmark$] Data preprocessing and tile generation
+  \item[$\checkmark$] Study area visualizations
+  \item[$\square$] Tier 1 spectral indices (NDVI, FAI, NDWI, Kelp Index)
+  \item[$\square$] Baseline evaluation framework
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Phase 2: Core Framework (Next)}
+\begin{itemize}
+  \item[$\square$] Component 1: Global Policy Learning (L$_{\text{R-I}}$)
+  \item[$\square$] Component 2: Context-Aware Local Adaptation
+  \item[$\square$] Component 3: Sparse Label Handling
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Phase 3: Experiments}
+\begin{itemize}
+  \item[$\square$] Protocol A: Temporal generalization
+  \item[$\square$] Protocol B: Spatial adaptation
+  \item[$\square$] Protocol C: Sparse labels
+\end{itemize}
+
+\end{frame}
+
+% Slide 9: Next Steps
+\begin{frame}{Immediate Next Steps}
+
+\textbf{This Week (Jan 13--19):}
+\begin{itemize}
+  \item Implement Tier 1 spectral indices as baseline heuristics
+  \item Set up evaluation metrics (IoU, F1, Precision, Recall)
+  \item Begin LA global policy component
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{This Month (January 2025):}
+\begin{itemize}
+  \item Complete baseline experiments on training set
+  \item Implement context feature extraction (environmental vectors)
+  \item Draft Paper 1 introduction and related work sections
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Target:} Paper 1 submission by November 2026 (per timeline)
+
+\end{frame}
+
+% Slide 10: Summary
+\begin{frame}{Summary}
+
+\begin{itemize}
+  \item \textbf{Proposal:} Approved --- now in implementation phase
+
+  \vspace{0.5em}
+  \item \textbf{Paper 1 Progress:} Study area visualizations complete; baseline implementation underway
+
+  \vspace{0.5em}
+  \item \textbf{Data:} 416 tiles across 7 scenes ready for experiments
+
+  \vspace{0.5em}
+  \item \textbf{Infrastructure:} Visualization pipeline established with publication-quality outputs
+
+  \vspace{0.5em}
+  \item \textbf{Next Milestone:} Baseline heuristics and evaluation framework
+\end{itemize}
+
+\vspace{1em}
+\centering
+\textbf{Questions?}
+
+\end{frame}
+
+\end{document}

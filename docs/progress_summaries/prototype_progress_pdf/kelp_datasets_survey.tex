@@ -1,0 +1,176 @@
+%% Kelp Segmentation Datasets Survey
+%% Comprehensive Report for PhD Research
+%% Last Updated: March 2026
+
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{makecell}
+
+% Colors
+\definecolor{available}{RGB}{39,174,96}
+\definecolor{contact}{RGB}{243,156,18}
+\definecolor{unavailable}{RGB}{231,76,60}
+
+% Section formatting
+\titleformat{\section}{\large\bfseries\color{blue!70!black}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+\title{\textbf{Kelp Segmentation Datasets}\\[0.5em]
+\large Data Survey for LA-Based Kelp Detection Research}
+\author{Ekaba Bisong}
+\date{March 2026}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+%% ============================================================
+\section{Executive Summary}
+%% ============================================================
+
+This document provides a survey of kelp segmentation datasets for training and validating Learning Automata-based kelp detection systems. The focus is on:
+\begin{itemize}
+  \item Giant kelp (\textit{Macrocystis pyrifera}) -- California, Baja California
+  \item Bull kelp (\textit{Nereocystis luetkeana}) -- Pacific Northwest
+  \item Satellite imagery from Landsat and Sentinel-2
+\end{itemize}
+
+\subsection*{Dataset Availability Summary}
+
+\begin{center}
+\begin{tabular}{llcl}
+\toprule
+\textbf{Dataset} & \textbf{Type} & \textbf{Status} & \textbf{Size} \\
+\midrule
+Figshare Kelp (Mask R-CNN) & Labeled imagery & \textcolor{available}{Downloaded} & 73 MB \\
+Floating Forests & Citizen science labels & \textcolor{contact}{Contact Required} & 5,635 images \\
+Hakai Institute & Labeled aerial/satellite & \textcolor{contact}{Contact Required} & Unknown \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%% ============================================================
+\section{Downloaded Datasets}
+%% ============================================================
+
+\subsection{1. Figshare Mask R-CNN Kelp Dataset}
+
+\begin{tabular}{p{4cm}p{10cm}}
+\toprule
+\textbf{Attribute} & \textbf{Details} \\
+\midrule
+Location & \texttt{data/figshare\_kelp/} \\
+Size & 73 MB (432 images) \\
+Source & Figshare (DOI: 10.6084/m9.figshare.19935869) \\
+Region & Southern California and Baja California \\
+Species & Giant kelp (\textit{Macrocystis pyrifera}) \\
+Satellite & Landsat Thematic Mapper \\
+Resolution & 30 m \\
+Format & JPEG images + VIA JSON annotations \\
+Labels & Polygon masks for kelp canopy \\
+Splits & Train: 323, Val: 30, Test: 79 \\
+Performance & Dice: 0.93, Jaccard: 0.87 \\
+Code & \url{https://github.com/jorgeassis/maskRCNN} \\
+Citation & Marquez et al. (2022) Scientific Reports \\
+\bottomrule
+\end{tabular}
+
+
+%% ============================================================
+\section{Datasets Requiring Contact}
+%% ============================================================
+
+The following high-quality dataset may be available upon request:
+
+\subsection{1. Floating Forests (DrivenData Source)}
+
+\begin{tabular}{p{4cm}p{10cm}}
+\toprule
+\textbf{Attribute} & \textbf{Details} \\
+\midrule
+Project & Floating Forests (Zooniverse citizen science) \\
+Labels & $>$1 million citizen classifications \\
+Images & 5,635 labeled Landsat images (DrivenData competition) \\
+Regions & Falkland Islands (100\%), California, Tasmania \\
+Validation & Each image shown to 15 users for consensus \\
+Status & DrivenData competition ended (Feb 2024); data removed from site \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.5em}
+\textbf{Contact Information:}
+
+\textbf{Dr.\ Kyle Cavanaugh} (UCLA Geography)
+\begin{itemize}[nosep]
+  \item Email: \texttt{kcavanaugh@geog.ucla.edu}
+  \item Web: \url{https://geog.ucla.edu/person/kyle-cavanaugh/}
+\end{itemize}
+
+\textbf{Dr.\ Jarrett Byrnes} (UMass Boston Biology)
+\begin{itemize}[nosep]
+  \item Email: \texttt{Jarrett.Byrnes@umb.edu}
+  \item Lab: \url{https://byrneslab.net/}
+\end{itemize}
+
+\textbf{Why valuable:} Original labeled dataset with 5,635 training images and validated citizen science labels. Includes cross-hemisphere data (Falkland Islands).
+
+\subsection{2. Hakai Institute (BC, Canada)}
+
+\begin{tabular}{p{4cm}p{10cm}}
+\toprule
+\textbf{Attribute} & \textbf{Details} \\
+\midrule
+Institution & Hakai Institute, British Columbia \\
+Region & BC Central Coast (Canada) \\
+Species & Giant kelp (\textit{Macrocystis}), Bull kelp (\textit{Nereocystis}) \\
+Data Types & Field data, aerial imagery, satellite-derived products \\
+ML Training & Semantic segmentation labels (NPZ format) \\
+GEEK Tool & Landsat kelp extent 1984--2019 (Google Earth Engine) \\
+GitHub & \url{https://github.com/HakaiInstitute/hakai-ml-train} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.5em}
+\textbf{Available Resources:}
+\begin{itemize}[nosep]
+  \item Kelp field data matched to satellite imagery for spectral signatures
+  \item Annual kelp extent rasters (1984--2019) from Landsat
+  \item High-resolution airborne coastal observatory data
+\end{itemize}
+
+\textbf{Contact:} Data catalogue at \url{https://catalogue.hakai.org/}
+
+\textbf{Why valuable:} Species-specific labels (Macrocystis vs Nereocystis), field-validated ground truth, and existing ML training infrastructure.
+
+%% ============================================================
+\section{Datasets NOT Useful for Kelp Research}
+%% ============================================================
+
+The following datasets were evaluated but are \textbf{not relevant} for kelp forest research:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Dataset} & \textbf{Reason Not Useful} & \textbf{Actual Target} \\
+\midrule
+USF Floating Algae & Different organisms & Sargassum, Cyanobacteria, Ulva \\
+Marine Debris Data & Wrong task & Plastic, driftwood, debris detection \\
+IMO Macroalgae & Different species/habitat & European intertidal algae (not kelp) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Key distinction:} Kelp (Macrocystis, Nereocystis) are subtidal canopy-forming species attached to the seafloor. The above datasets target floating algae, debris, or intertidal species.
+
+\end{document}

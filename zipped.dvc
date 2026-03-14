@@ -1,0 +1,6 @@
+outs:
+- md5: 733572c17e628d5d926a631a63b036d5.dir
+  size: 65780785076
+  nfiles: 5
+  hash: md5
+  path: zipped

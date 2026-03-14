@@ -1,0 +1,479 @@
+%% Requires compilation with XeLaTeX or LuaLaTeX
+\documentclass[10pt,xcolor={table,dvipsnames},t]{beamer}
+\usetheme{UVic}
+
+\usepackage{booktabs}
+
+% Reduce list spacing (beamer-native approach)
+\setbeamertemplate{itemize/enumerate body begin}{\vspace{-0.5ex}}
+\setbeamertemplate{itemize/enumerate subbody begin}{\vspace{-0.5ex}}
+
+\title[LA Kelp Prototype Progress]{LA Kelp Detection Prototype}
+\subtitle{Weekly Progress Report}
+\author{Ekaba Bisong}
+\institute{Department of Computer Science\\University of Victoria}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Table of Contents
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+%% ============================================================
+%% WEEK 1: Monday, February 10, 2026
+%% ============================================================
+\section{Monday, February 10, 2026}
+
+\begin{frame}
+\centering
+\vfill
+{\Large\textbf{Week 1}}\\[1em]
+{\large Monday, February 10, 2026}
+\vfill
+\end{frame}
+
+\begin{frame}{Week 1: Committee Meeting \& Project Setup}
+
+\textbf{Committee Meeting (February 5, 2026):}
+\begin{itemize}
+  \item Received feedback to build full yet simple prototype
+  \item Focus on spectral heuristics only (no ML training initially)
+  \item Global Policy Learning only (L$_{\text{R-I}}$ automaton)
+  \item Clarified scope: kelp \textbf{mapping}, not full ecological monitoring
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Project Setup Completed:}
+\begin{itemize}
+  \item Created prototype directory structure
+  \item Set up science log and weekly reporting system
+  \item Created implementation plan
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Week 1: Prototype Architecture}
+
+\textbf{Prototype Scope:}
+\begin{itemize}
+  \item 4 spectral heuristics: NDVI, FAI, GNDVI, Ensemble
+  \item L$_{\text{R-I}}$ automaton for heuristic selection
+  \item Test on existing $\sim$430 tiles from data\_bc
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Infrastructure:}
+\begin{itemize}
+  \item config.yaml for experiment parameters
+  \item Makefile for running experiments
+  \item Experiment tracker with auto-logging
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Week 1: Next Steps}
+
+\textbf{Immediate Tasks:}
+\begin{enumerate}
+  \item Implement config.yaml and Makefile
+  \item Create experiment tracker
+  \item Implement data loader for Sentinel-2 tiles
+  \item Begin spectral heuristics implementation
+\end{enumerate}
+
+\vspace{0.5em}
+\textbf{Success Criteria:}
+\begin{itemize}
+  \item LA correctly selects heuristics and updates probabilities
+  \item Probability vector converges toward better heuristics
+  \item LA outperforms random selection baseline
+\end{itemize}
+
+\end{frame}
+
+%% ============================================================
+%% WEEK 2: Monday, February 17, 2026
+%% ============================================================
+\section{Monday, February 17, 2026}
+
+\begin{frame}
+\centering
+\vfill
+{\Large\textbf{Week 2}}\\[1em]
+{\large Monday, February 17, 2026}
+\vfill
+\end{frame}
+
+\begin{frame}{Week 2: Prototype Implementation Complete}
+\small
+\textbf{All Components Implemented:}
+\begin{itemize}
+  \item Data loader for Sentinel-2 tiles (10 bands)
+  \item 4 spectral heuristics: NDVI, FAI, GNDVI, Ensemble
+  \item L$_{\text{R-I}}$ automaton with probability updates
+  \item Reward function (binary/continuous modes)
+  \item Experiment runner with convergence plots; Baselines: Random, Fixed, Oracle
+\end{itemize}
+
+\vspace{0.2em}
+\textbf{Infrastructure:}
+\begin{itemize}
+  \item \texttt{make run} / \texttt{make baselines} -- run experiments
+  \item Conda environment ``kelp'' (Python 3.10)
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Week 2: Baseline Results}
+\small
+\textbf{Test Set Performance (IoU):}
+
+\vspace{0.3em}
+\begin{table}
+\centering
+\footnotesize
+\begin{tabular}{lrl}
+\toprule
+\textbf{Method} & \textbf{IoU} & \textbf{Role} \\
+\midrule
+Oracle & 0.0765 & Upper bound \\
+Fixed GNDVI & 0.0699 & Best single heuristic \\
+Fixed Ensemble & 0.0695 & Second best \\
+Fixed NDVI & 0.0533 & Middle performer \\
+Random & 0.0445 & Lower bound \\
+Fixed FAI & 0.0074 & Worst heuristic \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{0.3em}
+\textbf{Key Insight:} IoU values are low (0.007--0.076) due to class imbalance (kelp is sparse in tiles).
+
+\end{frame}
+
+\begin{frame}{Week 2: Experiment 1 -- Binary Reward (Failed)}
+\small
+\textbf{Configuration:}
+\begin{itemize}
+  \item \texttt{reward.type: "binary"}, \texttt{reward.iou\_threshold: 0.3}
+\end{itemize}
+
+\vspace{0.3em}
+\textbf{Result:} LA converged to \textbf{FAI} (the \emph{worst} heuristic!)
+
+\vspace{0.3em}
+\textbf{Root Cause Analysis:}
+\begin{itemize}
+  \item Binary reward: $r = 1$ if IoU $> 0.3$, else $r = 0$
+  \item Actual IoU values: 0.007 -- 0.076 (never exceed 0.3)
+  \item \textcolor{red}{Almost no tiles received positive reward}
+  \item Automaton received near-zero learning signal
+  \item Probability updates were essentially random drift
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Week 2: Fix -- Continuous Reward}
+
+\textbf{Problem:} Threshold 0.3 unreachable for this dataset.
+
+\vspace{0.5em}
+\textbf{Solution:} Use continuous reward (IoU directly as reward signal)
+\begin{itemize}
+  \item Changed: \texttt{reward.type: "continuous"}
+  \item Now every tile provides gradient information
+  \item IoU of 0.07 gives more reward than IoU of 0.007
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Expected Outcome:}
+\begin{itemize}
+  \item LA should converge toward GNDVI/Ensemble ($\sim$0.07 IoU)
+  \item LA should move away from FAI ($\sim$0.007 IoU)
+  \item Test IoU should exceed random baseline (0.0445)
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Week 2: Experiment 2 -- Continuous Reward, $\alpha=0.1$}
+\small
+\textbf{Configuration:} \texttt{reward.type: "continuous"}, \texttt{automaton.alpha: 0.1}
+
+\vspace{0.3em}
+\textbf{Result:} LA converged to \textbf{Ensemble} (correct!) but \textcolor{orange}{too fast}.
+
+\vspace{0.3em}
+\begin{table}
+\centering
+\footnotesize
+\begin{tabular}{lrr}
+\toprule
+\textbf{Epoch} & \textbf{Ensemble Prob} & \textbf{Entropy} \\
+\midrule
+1 & 98.76\% & 0.096 \\
+2 & 99.9999\% & 0.000 \\
+3--10 & 100\% & 0.000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{0.3em}
+\textbf{Issue:} Winner-take-all dynamics. No exploration after Epoch 2.
+
+\end{frame}
+
+\begin{frame}{Week 2: Experiment 3 -- Lower Learning Rate, $\alpha=0.01$}
+\small
+\textbf{Configuration:} \texttt{reward.type: "continuous"}, \texttt{automaton.alpha: 0.01}
+
+\vspace{0.2em}
+\textbf{Result:} \textcolor{green}{Gradual convergence} -- proper learning dynamics!
+
+\vspace{0.2em}
+\begin{table}
+\centering
+\footnotesize
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Epoch} & \textbf{NDVI} & \textbf{FAI} & \textbf{GNDVI} & \textbf{Ensemble} \\
+\midrule
+1 & 37\% & 3\% & 27\% & 34\% \\
+4 & 44\% & 0.03\% & 25\% & 30\% \\
+7 & 29\% & $\sim$0\% & 18\% & 53\% \\
+10 & 20\% & $\sim$0\% & \textbf{41\%} & 39\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{0.2em}
+\textbf{Key:} FAI eliminated, GNDVI/Ensemble competing, entropy = 1.52
+
+\end{frame}
+
+\begin{frame}{Week 2: Experiment Comparison}
+\footnotesize
+\begin{table}
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Metric} & \textbf{Exp 2 ($\alpha$=0.1)} & \textbf{Exp 3 ($\alpha$=0.01)} \\
+\midrule
+Convergence & Instant (Epoch 2) & Gradual (10 epochs) \\
+Final Entropy & 0.0 & 1.52 \\
+Best Heuristic Prob & 100\% & 41\% \\
+Test IoU & 0.0719 & 0.0711 \\
+vs Random & +0.0151 & +0.0144 \\
+Gap to Oracle & 6.0\% & 7.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\small
+\textbf{Both experiments:}
+\begin{itemize}
+  \item \textcolor{green}{\checkmark} Outperform random baseline; \textcolor{green}{\checkmark} Eliminate FAI (worst)
+  \item \textcolor{green}{\checkmark} Converge toward best heuristics (GNDVI/Ensemble)
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Week 2: Key Learnings}
+\small
+\textbf{Lessons from Experiments 1--3:}
+\begin{enumerate}
+  \item Binary reward requires threshold calibration to data distribution
+  \item Continuous reward provides gradient signal for low IoU values
+  \item Learning rate $\alpha$ controls convergence: $\alpha=0.1$ (instant), $\alpha=0.01$ (gradual)
+  \item L$_{\text{R-I}}$ correctly learns heuristic quality ranking
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Next Steps: Prototype Refinement}
+\small
+\textbf{Prototype Refinement:}
+\begin{enumerate}
+  \item Run more epochs (20--50) to see full convergence behavior
+  \item Try $\alpha=0.001$ for slower/stable convergence curves
+  \item Add $\varepsilon$-greedy exploration to prevent probability collapse
+\end{enumerate}
+
+\vspace{0.3em}
+\textbf{LA Variant Comparison:}
+\begin{enumerate}
+  \item Compare L$_{\text{R-I}}$ with L$_{\text{R-P}}$ (reward-penalty)
+  \item Test Pursuit algorithm (faster convergence via estimation)
+  \item Test Estimator/SERI (Bayesian estimation + pursuit)
+  \item Evaluate VSLA (adaptive learning rate based on entropy)
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Next Steps: LA Variant Comparison}
+\small
+Implemented in \texttt{automaton.py}:
+
+\vspace{0.3em}
+\begin{table}
+\centering
+\footnotesize
+\begin{tabular}{lll}
+\toprule
+\textbf{Algorithm} & \textbf{Description} & \textbf{Expected Behavior} \\
+\midrule
+L$_{\text{R-I}}$ & Reward only, ignore penalty & Conservative, stable \\
+L$_{\text{R-P}}$ & Reward and penalty updates & Faster but noisier \\
+Pursuit & Estimates reward, pursues best & 10--20x faster convergence \\
+Discretized Pursuit & Finite probability levels & Even faster \\
+Estimator (SERI) & Bayesian estimation + pursuit & Fastest $\varepsilon$-optimal \\
+VSLA & Adaptive $\alpha$ based on entropy & Auto-balances explore/exploit \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{0.3em}
+\textbf{Next:} Implement and run experiments comparing all variants on kelp detection task.
+
+\end{frame}
+
+%% ============================================================
+%% WEEK 3: Monday, February 24, 2026
+%% ============================================================
+\section{Monday, March 6, 2026}
+
+\begin{frame}
+\centering
+\vfill
+{\Large\textbf{Week 3}}\\[1em]
+{\large Monday, March 6, 2026}
+\vfill
+\end{frame}
+
+\begin{frame}{Week 3: Kelp Dataset Survey}
+\small
+\textbf{Objective:} Identify and acquire labeled kelp datasets for LA training and validation.
+
+\vspace{0.3em}
+\textbf{Target Species:}
+\begin{itemize}
+  \item Giant kelp (\textit{Macrocystis pyrifera}) -- California, Baja California
+  \item Bull kelp (\textit{Nereocystis luetkeana}) -- Pacific Northwest
+\end{itemize}
+
+\vspace{0.3em}
+\textbf{Satellite Data Sources:}
+\begin{itemize}
+  \item Landsat 5, 7, 8, 9 (30 m resolution)
+  \item Sentinel-2 (10 m resolution) -- higher priority for future work
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Week 3: Downloaded Dataset}
+\footnotesize
+\begin{table}
+\centering
+\begin{tabular}{lllr}
+\toprule
+\textbf{Dataset} & \textbf{Type} & \textbf{Best For} & \textbf{Size} \\
+\midrule
+Figshare Kelp & Polygon masks & \textbf{Training} & 73 MB \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{0.3em}
+\textbf{Figshare Mask R-CNN Dataset:}
+\begin{itemize}
+  \item 432 Landsat images (train: 323, val: 30, test: 79)
+  \item VIA JSON polygon annotations
+  \item Performance: Dice 0.93, Jaccard 0.87
+  \item Region: Southern California and Baja California
+  \item Species: Giant kelp (\textit{Macrocystis pyrifera})
+\end{itemize}
+
+\vspace{0.3em}
+\textbf{Note:} SBC LTER contains derived canopy products (not labeled imagery), so not useful for training/validation.
+
+\end{frame}
+
+\begin{frame}{Week 3: Datasets Evaluated \& Rejected}
+\small
+\textbf{Datasets NOT for Kelp Research:}
+\begin{table}
+\centering
+\footnotesize
+\begin{tabular}{ll}
+\toprule
+\textbf{Dataset} & \textbf{Actual Target (Not Kelp)} \\
+\midrule
+USF Floating Algae & Sargassum, Cyanobacteria, Ulva \\
+Marine Debris & Plastic, driftwood, debris \\
+IMO Macroalgae & European intertidal algae \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{0.3em}
+\textbf{Key Distinction:} Kelp (Macrocystis, Nereocystis) are subtidal canopy-forming species. The above datasets target floating algae or debris.
+
+\end{frame}
+
+\begin{frame}{Week 3: High-Quality Datasets (Contact Required)}
+\small
+\textbf{1. Floating Forests (DrivenData Source)}
+\begin{itemize}
+  \item 5,635 labeled Landsat images; $>$1M citizen classifications
+  \item Regions: Falkland Islands, California, Tasmania
+  \item Dr.\ Kyle Cavanaugh (UCLA): \texttt{kcavanaugh@geog.ucla.edu}
+  \item Dr.\ Jarrett Byrnes (UMass): \texttt{Jarrett.Byrnes@umb.edu}
+\end{itemize}
+
+\vspace{0.3em}
+\textbf{2. Hakai Institute (BC, Canada)}
+\begin{itemize}
+  \item Field data + aerial imagery for BC Central Coast
+  \item Species-specific labels: Macrocystis vs Nereocystis
+  \item ML training pipeline: \url{github.com/HakaiInstitute/hakai-ml-train}
+  \item Data catalogue: \url{catalogue.hakai.org}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Week 3: Dataset Summary \& Next Steps}
+\small
+\textbf{Current Status:}
+\begin{itemize}
+  \item \textcolor{green}{\checkmark} 1 labeled dataset downloaded (Figshare)
+  \item \textcolor{green}{\checkmark} Created data survey report.
+\end{itemize}
+
+\vspace{0.3em}
+\textbf{Next Steps:}
+\begin{enumerate}
+  \item Use Figshare data for initial LA heuristic evaluation
+  \item Contact Cavanaugh/Byrnes for Floating Forests labels
+  \item Contact Hakai Institute for BC kelp data
+  \item Follow-up with Mohsen to obtain his data and models
+  \item Look for available open-source Kelp models
+\end{enumerate}
+
+\end{frame}
+
+%% ============================================================
+%% ADD NEW WEEKS BELOW (copy section template)
+%% ============================================================
+
+%% \section{Monday, March 13, 2026}
+%% \begin{frame}{Week 4: [Title]}
+%% ...
+%% \end{frame}
+
+\end{document}

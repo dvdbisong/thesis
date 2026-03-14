@@ -1,0 +1,217 @@
+%% Requires compilation with XeLaTeX or LuaLaTeX
+\documentclass[10pt,xcolor={table,dvipsnames},t]{beamer}
+\usetheme{UVic}
+
+\usepackage{booktabs}
+
+\title[PhD Progress Report]{PhD Progress Report}
+\subtitle{Learning Automata Framework for Adaptive Kelp Forest Monitoring in British Columbia Coastal Waters}
+\author{Ekaba Bisong}
+\institute{Department of Computer Science\\University of Victoria}
+\date{December 2025}
+
+\begin{document}
+
+% Slide 1: Title
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Slide 2: Research Overview
+\begin{frame}{Research Overview}
+
+\textbf{Problem:} Monitoring kelp forests via satellite imagery is challenging due to:
+\begin{itemize}
+  \item Limited labeled training data
+  \item Heterogeneous environmental conditions along BC's coastline
+  \item Sparse and delayed ground-truth validation
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Solution:} An adaptive Learning Automata (LA) framework that:
+\begin{itemize}
+  \item Learns to select optimal detection heuristics with minimal supervision
+  \item Adapts to varying turbidity, SST, and seasonal patterns
+  \item Handles asynchronous label arrival through buffering mechanisms
+\end{itemize}
+
+\end{frame}
+
+% Slide 3: Main Objectives
+\begin{frame}{Main Objectives}
+
+\begin{enumerate}
+  \item \textbf{Adaptive LA Framework:} Develop a Learning Automata framework for satellite-based kelp monitoring with limited labeled data
+
+  \item \textbf{Context-Aware Selection:} Design heuristic selection mechanisms that adapt to heterogeneous environmental conditions
+
+  \item \textbf{Sparse Label Handling:} Create buffering and delayed reward propagation for asynchronous ground-truth data
+
+  \item \textbf{TEK Integration:} Establish protocols for integrating Traditional Ecological Knowledge while respecting indigenous data sovereignty
+
+  \item \textbf{Experimental Design:} Formulate complete evaluation using BC Bull Kelp dataset with ablation studies
+\end{enumerate}
+
+\end{frame}
+
+% Slide 4: Completed Work
+\begin{frame}{Completed Work}
+
+\textbf{Thesis Proposal Complete:}
+\begin{itemize}
+  \item Comprehensive literature review (kelp ecology, remote sensing, LA theory)
+  \item Core methodology with three integrated components:
+  \begin{itemize}
+    \item Component 1: Global Policy Learning (L$_{\text{R-I}}$ updates)
+    \item Component 2: Context-Aware Local Adaptation (memory banks, k-NN)
+    \item Component 3: Sparse Label Handling (temporal decay)
+  \end{itemize}
+  \item Conceptual models for all four research questions (RQ1--RQ4)
+  \item Experimental design with stratified evaluation protocols
+  \item TEK integration protocol with phased community engagement
+\end{itemize}
+
+\end{frame}
+
+% Slide 5: Research Questions
+\begin{frame}{Research Questions}
+
+\begin{itemize}
+  \item \textbf{RQ1:} How effectively can an LA framework adapt to new regions with limited labeled examples?
+
+  \vspace{0.5em}
+  \item \textbf{RQ2:} Can context-aware heuristic selection improve detection across heterogeneous coastal environments?
+
+  \vspace{0.5em}
+  \item \textbf{RQ3:} How can delayed and sparse feedback be incorporated into the learning process?
+
+  \vspace{0.5em}
+  \item \textbf{RQ4:} What protocols enable respectful integration of Traditional Ecological Knowledge?
+\end{itemize}
+
+\end{frame}
+
+% Slide 6: Timeline 2026
+\begin{frame}{Timeline: 2026}
+
+\begin{itemize}
+  \item \textbf{January 2026} --- Proposal Defense: Committee approves PhD proposal
+
+  \vspace{0.3em}
+  \item \textbf{May 2026} --- M1: Dataset and baselines ready
+  \begin{itemize}
+    \item Sentinel-2 imagery preprocessed
+    \item Ground-truth labels compiled
+    \item Tier 1 spectral indices implemented
+  \end{itemize}
+
+  \vspace{0.3em}
+  \item \textbf{October 2026} --- M2: Core framework functional
+  \begin{itemize}
+    \item All three LA components integrated
+    \item Tier 2 and Tier 3 heuristics developed
+  \end{itemize}
+
+  \vspace{0.3em}
+  \item \textbf{November 2026} --- \textbf{Paper 1 (RQ1):} ``Learning Automata for Adaptive Kelp Detection with Limited Labels''
+\end{itemize}
+
+\end{frame}
+
+% Slide 7: Timeline 2027
+\begin{frame}{Timeline: 2027}
+
+\begin{itemize}
+  \item \textbf{January 2027} --- M3: Temporal adaptation experiments complete
+
+  \item \textbf{February 2027} --- \textbf{Paper 2 (RQ2):} ``Context-Aware Heuristic Selection for Heterogeneous Coastal Environments''
+
+  \item \textbf{March 2027} --- M4 \& M5: Spatial and sparse label experiments complete
+
+  \item \textbf{April 2027} --- \textbf{Paper 3 (RQ3):} ``Learning from Delayed and Sparse Feedback in Environmental Monitoring''
+
+  \item \textbf{May 2027} --- M6: Extensions implemented (pursuit algorithms, TEK Phase 1)
+
+  \item \textbf{June 2027} --- \textbf{Paper 4 (RQ4):} ``Integrating Traditional Ecological Knowledge into Automated Kelp Forest Monitoring''
+
+  \item \textbf{August 2027} --- M7: Thesis draft complete
+
+  \item \textbf{October 2027} --- M8: Thesis defense
+\end{itemize}
+
+\end{frame}
+
+% Slide 8: Publication Plan
+\begin{frame}{Publication Plan}
+
+\textbf{Four Papers Aligned with Research Questions:}
+
+\vspace{0.5em}
+\begin{itemize}
+  \item \textbf{Paper 1 (RQ1)} --- Core LA framework, adaptation with minimal supervision
+  \begin{itemize}
+    \item Target: November 2026
+  \end{itemize}
+
+  \item \textbf{Paper 2 (RQ2)} --- Context-aware heuristic selection across varying conditions
+  \begin{itemize}
+    \item Target: February 2027
+  \end{itemize}
+
+  \item \textbf{Paper 3 (RQ3)} --- Buffering mechanisms, temporal decay, asynchronous labels
+  \begin{itemize}
+    \item Target: April 2027
+  \end{itemize}
+
+  \item \textbf{Paper 4 (RQ4)} --- TEK integration and indigenous data sovereignty
+  \begin{itemize}
+    \item Target: June 2027
+  \end{itemize}
+\end{itemize}
+
+\end{frame}
+
+% Slide 9: Next Steps
+\begin{frame}{Immediate Next Steps}
+
+\textbf{Next 2--3 Months:}
+\begin{itemize}
+  \item Finalize PhD proposal for committee review
+  \item Proposal defense (January 2026)
+  \item Begin Phase 1: Foundation and Data Preparation
+  \begin{itemize}
+    \item Acquire and preprocess Sentinel-2 imagery for BC coastal waters
+    \item Compile ground-truth labels from available sources
+    \item Implement baseline spectral indices (NDVI, FAI, NDWI, Kelp Index)
+    \item Establish evaluation infrastructure
+  \end{itemize}
+\end{itemize}
+
+\end{frame}
+
+% Slide 10: Summary
+\begin{frame}{Summary}
+
+\begin{itemize}
+  \item \textbf{Proposal Status:} Complete and ready for committee review
+
+  \vspace{0.5em}
+  \item \textbf{Methodology:} Three-component LA framework designed with mathematical formalization
+
+  \vspace{0.5em}
+  % \item \textbf{Timeline:} On track for October 2027 completion
+
+  \vspace{0.5em}
+  \item \textbf{Publications:} Four papers planned, one per research question
+
+  \vspace{0.5em}
+  \item \textbf{Next Milestone:} Proposal defense (January 2026)
+\end{itemize}
+
+\vspace{1em}
+\centering
+\textbf{Questions?}
+
+\end{frame}
+
+\end{document}

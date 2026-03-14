@@ -1,0 +1,15 @@
+# Discretized Pursuit Algorithm Configuration
+# Finite probability levels for fastest convergence
+
+experiment:
+  name: "discretized_pursuit"
+  description: "Discretized Pursuit with finite probability resolution"
+
+automaton:
+  type: "DiscretizedPursuit"
+  alpha: 0.01
+  resolution: 100   # Number of discrete probability levels
+  initial_prob: "uniform"
+
+training:
+  num_epochs: 20
