@@ -1,7 +1,9 @@
 # Learning Automata Kelp Detection Prototype
 # Makefile for experiment management
 
-.PHONY: run run-name list clean clean-all setup test help
+.PHONY: run run-name list clean clean-all setup test help \
+	download-multitemporal-dry download-multitemporal \
+	preprocess-multitemporal validate-multitemporal multitemporal-all
 
 # Default config file
 CONFIG ?= config.yaml
@@ -68,6 +70,39 @@ splits:
 ## Verify data integrity
 verify-data:
 	$(CONDA_ACTIVATE) && PYTHONPATH=. $(PYTHON) $(CODE_DIR)/preprocessing/data_loader.py --verify
+
+#-------------------------------------------------------------------------------
+# Multi-Temporal Data (Phase 0.5)
+#-------------------------------------------------------------------------------
+
+## Download multi-temporal Sentinel-2 imagery via GEE (dry run)
+download-multitemporal-dry:
+	$(CONDA_ACTIVATE) && PYTHONPATH=. $(PYTHON) -m src.preprocessing.gee_download \
+		--output data/bc_sentinel2_multitemporal/raw/ \
+		--dry-run
+
+## Download multi-temporal Sentinel-2 imagery via GEE
+download-multitemporal:
+	$(CONDA_ACTIVATE) && PYTHONPATH=. $(PYTHON) -m src.preprocessing.gee_download \
+		--output data/bc_sentinel2_multitemporal/raw/
+
+## Preprocess multi-temporal imagery to tiles
+preprocess-multitemporal:
+	$(CONDA_ACTIVATE) && PYTHONPATH=. $(PYTHON) -m src.preprocessing.preprocess_multitemporal \
+		--input data/bc_sentinel2_multitemporal/raw/ \
+		--output data/bc_sentinel2_multitemporal/Tiles/ \
+		--auxiliary "data/bc_sentinel2/new/Masks 10 scenes/"
+
+## Validate multi-temporal tiles
+validate-multitemporal:
+	@echo "Validating tiles in data/bc_sentinel2_multitemporal/Tiles/"
+	@for dir in data/bc_sentinel2_multitemporal/Tiles/*/; do \
+		echo "Validating $$dir"; \
+		$(CONDA_ACTIVATE) && PYTHONPATH=. $(PYTHON) -m src.preprocessing.tile_creator validate --dir "$$dir"; \
+	done
+
+## Full multi-temporal pipeline
+multitemporal-all: download-multitemporal preprocess-multitemporal validate-multitemporal
 
 #-------------------------------------------------------------------------------
 # Baselines
@@ -183,6 +218,13 @@ help:
 	@echo "  make compare EXPS='a b'     Compare specific experiments"
 	@echo "  make baselines              Run baseline comparisons"
 	@echo "  make list                   List all experiments"
+	@echo ""
+	@echo "Multi-Temporal Data (Phase 0.5):"
+	@echo "  make download-multitemporal-dry   Query GEE without downloading"
+	@echo "  make download-multitemporal       Download via GEE"
+	@echo "  make preprocess-multitemporal     Process to tiles"
+	@echo "  make validate-multitemporal       Validate tile integrity"
+	@echo "  make multitemporal-all            Full pipeline"
 
 # Default target
 .DEFAULT_GOAL := help

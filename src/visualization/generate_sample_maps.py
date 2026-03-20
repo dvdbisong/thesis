@@ -28,6 +28,18 @@ from tqdm import tqdm
 DPI = 400
 FIGSIZE = (9.6, 5.4)  # Results in ~3840x2160 at 400 DPI
 
+# Site locations mapping file
+SITE_LOCATIONS_PATH = Path(__file__).parent.parent.parent / 'data' / 'bc_sentinel2' / 'site_locations.json'
+
+
+def load_site_locations() -> dict:
+    """Load site code to location name mapping."""
+    if SITE_LOCATIONS_PATH.exists():
+        with open(SITE_LOCATIONS_PATH) as f:
+            data = json.load(f)
+            return {code: info['location_name'] for code, info in data.get('sites', {}).items()}
+    return {}
+
 
 def load_tile_and_mask(image_path: Path, mask_path: Path) -> Tuple[np.ndarray, np.ndarray, dict]:
     """
@@ -131,6 +143,7 @@ def create_mosaic(tiles_dir: Path, n_tiles: int = 4) -> Tuple[np.ndarray, np.nda
 def generate_sample_map(
     scene_dir: Path,
     output_dir: Path,
+    site_locations: dict,
     dpi: int = DPI,
     n_tiles: int = 4
 ):
@@ -140,11 +153,13 @@ def generate_sample_map(
     Args:
         scene_dir: Directory containing the scene tiles
         output_dir: Output directory for the map
+        site_locations: Dictionary mapping site codes to location names
         dpi: Output resolution (dots per inch)
         n_tiles: Number of tiles to mosaic
     """
     site_code = scene_dir.name.split('_')[-1]
     scene_date = scene_dir.name.split('T')[0]
+    location_name = site_locations.get(site_code, '')
 
     # Create mosaic
     try:
@@ -184,11 +199,12 @@ def generate_sample_map(
     kelp_pct = (np.sum(mask_mosaic > 0) / mask_mosaic.size) * 100
 
     # Main title with metadata
-    fig.suptitle(
-        f'Site: {site_code}  |  Date: {scene_date[:4]}-{scene_date[4:6]}-{scene_date[6:8]}  |  '
-        f'Kelp Coverage: {kelp_pct:.2f}%',
-        fontsize=11, fontweight='bold', y=0.98
-    )
+    if location_name:
+        title = f'{location_name} ({site_code})  |  {scene_date[:4]}-{scene_date[4:6]}-{scene_date[6:8]}  |  Kelp: {kelp_pct:.2f}%'
+    else:
+        title = f'Site: {site_code}  |  {scene_date[:4]}-{scene_date[4:6]}-{scene_date[6:8]}  |  Kelp: {kelp_pct:.2f}%'
+
+    fig.suptitle(title, fontsize=11, fontweight='bold', y=0.98)
 
     plt.tight_layout(rect=[0, 0, 1, 0.96])
 
@@ -257,6 +273,12 @@ def main():
     print(f"DPI: {args.dpi}")
     print()
 
+    # Load site locations
+    site_locations = load_site_locations()
+    if site_locations:
+        print(f"Loaded {len(site_locations)} site locations")
+    print()
+
     # Process each scene
     scenes = sorted(data_dir.iterdir())
 
@@ -274,6 +296,7 @@ def main():
         generate_sample_map(
             scene_dir,
             output_dir,
+            site_locations=site_locations,
             dpi=args.dpi,
             n_tiles=args.n_tiles
         )
