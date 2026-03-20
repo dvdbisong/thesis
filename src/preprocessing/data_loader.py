@@ -1,19 +1,23 @@
 """
-Data Loader for Sentinel-2 Kelp Detection
+Data Loader for Kelp Detection
 
-Loads tile/mask pairs from the data_bc directory structure.
-Provides PyTorch Dataset interface for training and evaluation.
+Provides PyTorch Dataset classes for:
+1. BCKelpDataset / KelpTileDataset - BC Sentinel-2 12-band tiles
+2. FigshareKelpDataset - Figshare Landsat RGB images
+
+Updated: 2026-03-19 - Added Figshare support and RGB-only mode
 """
 
 import json
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Callable
 
 import numpy as np
 import rasterio
 import torch
 from torch.utils.data import Dataset, DataLoader
+from PIL import Image
 
 
 class KelpTileDataset(Dataset):
@@ -305,6 +309,129 @@ def get_data_loaders(
     )
 
     return train_loader, val_loader, test_loader
+
+
+class FigshareKelpDataset(Dataset):
+    """
+    PyTorch Dataset for Figshare Landsat kelp detection images.
+
+    Loads RGB JPG images with corresponding binary masks (generated from VIA annotations).
+
+    Args:
+        data_dir: Root directory containing train/val/test splits
+        split: Dataset split ('train', 'val', 'test')
+        transform: Optional transform to apply to images
+        target_transform: Optional transform to apply to masks
+
+    Example:
+        >>> dataset = FigshareKelpDataset('data/figshare_landsat', split='train')
+        >>> image, mask, metadata = dataset[0]
+        >>> print(image.shape)  # (3, H, W)
+    """
+
+    def __init__(
+        self,
+        data_dir: str,
+        split: str = 'train',
+        transform: Optional[Callable] = None,
+        target_transform: Optional[Callable] = None,
+        normalize: bool = True
+    ):
+        self.data_dir = Path(data_dir)
+        self.split_dir = self.data_dir / split
+        self.transform = transform
+        self.target_transform = target_transform
+        self.normalize = normalize
+
+        if not self.split_dir.exists():
+            raise ValueError(f"Split directory not found: {self.split_dir}")
+
+        # Check for masks directory
+        self.masks_dir = self.split_dir / 'masks'
+        if not self.masks_dir.exists():
+            raise ValueError(
+                f"Masks directory not found: {self.masks_dir}\n"
+                f"Run via_to_mask.py first to generate masks from VIA annotations."
+            )
+
+        # Collect samples
+        self.samples = self._collect_samples()
+        print(f"Loaded {len(self.samples)} Figshare images from {split} split")
+
+    def _collect_samples(self) -> List[Dict]:
+        """Collect all image-mask pairs."""
+        samples = []
+
+        for image_path in sorted(self.split_dir.glob('*.jpg')):
+            # Construct corresponding mask path
+            mask_name = image_path.stem + '_mask.png'
+            mask_path = self.masks_dir / mask_name
+
+            if mask_path.exists():
+                # Parse filename for metadata
+                # Format: LC08_037041_20130906_19.jpg
+                parts = image_path.stem.split('_')
+                satellite = parts[0] if len(parts) > 0 else 'unknown'
+                date = parts[2] if len(parts) > 2 else 'unknown'
+
+                samples.append({
+                    'image_path': str(image_path),
+                    'mask_path': str(mask_path),
+                    'satellite': satellite,
+                    'date': date,
+                    'tile_id': image_path.stem
+                })
+
+        return samples
+
+    def __len__(self) -> int:
+        return len(self.samples)
+
+    def __getitem__(self, idx: int) -> Tuple[torch.Tensor, torch.Tensor, Dict[str, Any]]:
+        sample = self.samples[idx]
+
+        # Load image
+        image = Image.open(sample['image_path']).convert('RGB')
+        image = np.array(image, dtype=np.float32)  # Shape: (H, W, 3)
+
+        # Load mask
+        mask = Image.open(sample['mask_path']).convert('L')
+        mask = np.array(mask, dtype=np.float32)  # Shape: (H, W)
+
+        # Normalize mask to binary (0 or 1)
+        mask = (mask > 127).astype(np.float32)
+
+        # Normalize image to [0, 1]
+        if self.normalize:
+            image = image / 255.0
+
+        # Transpose to (C, H, W)
+        image = image.transpose(2, 0, 1)
+
+        # Apply transforms
+        if self.transform:
+            image = self.transform(image)
+
+        if self.target_transform:
+            mask = self.target_transform(mask)
+
+        # Convert to tensors
+        image_tensor = torch.from_numpy(image)
+        mask_tensor = torch.from_numpy(mask)
+
+        metadata = {
+            'tile_id': sample['tile_id'],
+            'satellite': sample['satellite'],
+            'date': sample['date'],
+            'image_path': sample['image_path'],
+            'mask_path': sample['mask_path']
+        }
+
+        return image_tensor, mask_tensor, metadata
+
+
+# Alias for backwards compatibility
+BCKelpDataset = KelpTileDataset
 
 
 if __name__ == "__main__":

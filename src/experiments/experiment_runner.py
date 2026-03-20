@@ -17,16 +17,16 @@ import pandas as pd
 import torch
 from tqdm import tqdm
 
-from code.experiments.tracker import ExperimentTracker, load_config
-from code.experiments.run_experiment import (
+from src.experiments.tracker import ExperimentTracker, load_config
+from src.experiments.run_experiment import (
     create_heuristics,
     run_training,
     run_evaluation,
     plot_convergence,
     load_baseline_results,
 )
-from code.la_framework.detector import LADetector
-from code.preprocessing.data_loader import create_splits, load_splits
+from src.la_framework.detector import LADetector
+from src.preprocessing.data_loader import create_splits, load_splits
 
 
 # Standard seeds for reproducibility

@@ -12,7 +12,25 @@
       "Bash(pdflatex:*)",
       "Bash(rm:*)",
       "Bash(latexmk:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "WebSearch",
+      "Bash(humanizer:*)",
+      "Bash(pip install:*)",
+      "Bash(wc:*)",
+      "Bash(xargs -I {} sh -c 'echo \"\"Directory: {}\"\"; ls {} | wc -l')",
+      "Bash(xargs:*)",
+      "Bash(python3:*)",
+      "Bash(tree:*)",
+      "Bash(done)",
+      "WebFetch(domain:undetectable.ai)",
+      "WebFetch(domain:help.undetectable.ai)",
+      "Bash(source:*)",
+      "Bash(conda activate:*)",
+      "Bash(jupyter nbconvert:*)",
+      "Bash(cat:*)",
+      "WebFetch(domain:dpird-dma.github.io)",
+      "Bash(humanize:*)",
+      "WebFetch(domain:ai-text-humanizer.com)"
     ],
     "deny": []
   }

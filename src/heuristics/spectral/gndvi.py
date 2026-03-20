@@ -10,7 +10,7 @@ submerged or floating aquatic vegetation like kelp.
 
 import torch
 
-from code.heuristics.base import SpectralIndexHeuristic
+from src.heuristics.base import SpectralIndexHeuristic
 
 
 class GNDVIHeuristic(SpectralIndexHeuristic):

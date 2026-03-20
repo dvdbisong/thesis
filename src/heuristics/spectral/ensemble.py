@@ -9,7 +9,7 @@ from typing import List, Optional
 
 import torch
 
-from code.heuristics.base import HeuristicBase
+from src.heuristics.base import HeuristicBase
 
 
 class EnsembleHeuristic(HeuristicBase):

@@ -17,10 +17,10 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
-from code.experiments.tracker import load_config
-from code.experiments.run_experiment import create_heuristics
-from code.la_framework.reward import compute_metrics
-from code.preprocessing.data_loader import KelpTileDataset, load_splits, create_splits
+from src.experiments.tracker import load_config
+from src.experiments.run_experiment import create_heuristics
+from src.la_framework.reward import compute_metrics
+from src.preprocessing.data_loader import KelpTileDataset, load_splits, create_splits
 
 
 def evaluate_random_baseline(

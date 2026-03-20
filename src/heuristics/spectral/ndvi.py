@@ -8,7 +8,7 @@ Higher values indicate more vegetation (including kelp).
 
 import torch
 
-from code.heuristics.base import SpectralIndexHeuristic
+from src.heuristics.base import SpectralIndexHeuristic
 
 
 class NDVIHeuristic(SpectralIndexHeuristic):

@@ -15,16 +15,16 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
-from code.experiments.tracker import ExperimentTracker, load_config
-from code.heuristics.spectral import (
+from src.experiments.tracker import ExperimentTracker, load_config
+from src.heuristics.spectral import (
     EnsembleHeuristic,
     FAIHeuristic,
     GNDVIHeuristic,
     NDVIHeuristic,
 )
-from code.la_framework.detector import LADetector
-from code.la_framework.reward import compute_metrics
-from code.preprocessing.data_loader import (
+from src.la_framework.detector import LADetector
+from src.la_framework.reward import compute_metrics
+from src.preprocessing.data_loader import (
     KelpTileDataset,
     create_splits,
     load_splits,

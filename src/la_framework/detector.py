@@ -9,9 +9,9 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import torch
 
-from code.heuristics.base import HeuristicBase
-from code.la_framework.automaton import LRIAutomaton, create_automaton, list_automaton_types
-from code.la_framework.reward import RewardFunction
+from src.heuristics.base import HeuristicBase
+from src.la_framework.automaton import LRIAutomaton, create_automaton, list_automaton_types
+from src.la_framework.reward import RewardFunction
 
 
 class LADetector:

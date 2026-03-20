@@ -1,0 +1,528 @@
+Methodology: Automata for Adaptive Kelp Forest Monitoring
+
+PhD Thesis Research University of Victoria
+
+The goal of this chapter is to present a methodology for adaptive kelp forest monitoring that confronts a fundamental tension plaguing satellite-based environmental monitoring: detection methods desperately need feedback to evolve and improve, yet that crucial feedback trickles in sparsely and arrives at the most unpredictable moments. In this work, we propose a Learning Automata framework that maintains a dynamic pool of diverse detection methods and intelligently learns to select among them based on the ever-shifting environmental context. The framework weaves together three integrated components: global policy learning, context-aware adaptation, and sparse label handling. At the heart of this work lies our dual-layer non-stationarity model—a novel extension of classical Learning Automata theory that gracefully handles both the relentless march of changing environmental conditions and the frustratingly irregular timing of feedback. We validate this approach using Leave-One-Site-Out evaluation across the rugged tapestry of British Columbia's coastal kelp forests.
+
+The Monitoring Challenge
+
+British Columbia's kelp forests stand among the most productive ecosystems our planet has ever nurtured. These underwater cathedrals provide sanctuary for countless species, lock away carbon in their swaying fronds, and have sustained coastal First Nations communities for millennia through their generous abundance. Today, however, they face unprecedented threats that would have been unimaginable to previous generations: climate change's relentless advance, devastating marine heatwaves that scorch the ocean, and voracious sea urchin populations that can strip entire forests bare. Monitoring these precious ecosystems at scale has become not just essential for conservation—it has become urgent.
+
+Yet this monitoring task proves surprisingly, maddeningly difficult.
+
+Satellite remote sensing promises the spatial coverage we desperately need for coastline-scale monitoring. Sensors like Sentinel-2 faithfully capture imagery of BC's staggering 25,000 kilometers of coastline every five days at crisp 10-meter resolution. But here's the cruel irony: the challenge lies not in acquiring these images—we're drowning in them—but in translating them into reliable kelp maps that scientists and managers can actually trust. Three deeply interconnected problems conspire to make this translation fundamentally, perhaps impossibly, difficult.
+
+Environmental Heterogeneity
+
+No single detection algorithm can possibly work everywhere—a harsh reality that humbles even the most sophisticated approaches. A method painstakingly optimized for the deceptively calm summer waters of one region will fail spectacularly when thrust into the turbid, storm-churned conditions of winter elsewhere. Bull kelp thriving in the exposed, wave-battered outer coastal environments behaves like an entirely different organism compared to bull kelp swaying peacefully in protected inland waters. Kelp beds sprawling over sandy substrates reveal completely different spectral fingerprints than their cousins anchored to rocky reef. River plumes carrying sediment and nutrients, industrial activities bleeding chemicals into the water, and the complex interplay with adjacent land masses create a maze of site-specific detection challenges that would confound even the most adaptable algorithms.
+
+To make this abstract problem painfully concrete, imagine a deep learning model lovingly trained on imagery from BC's central coast. This model has learned to recognize kelp's spectral signatures under those specific, almost laboratory-like conditions: the particular water clarity, the familiar substrate types, the predictable atmospheric conditions that define that region. But deploy this same model to the northern coast—with its alien water properties, unfamiliar depths, and entirely different environmental neighbors—and watch its performance crumble. The model has mastered one way to detect kelp, but kelp detection demands a repertoire of approaches, each finely tuned to its context.
+
+Sparse and Delayed Validation
+
+Ground-truth validation data doesn't just arrive slowly—it arrives at crushing expense and through logistical nightmares that would challenge even the most determined researchers. Field surveys demand boats that can handle unpredictable coastal conditions, skilled divers willing to brave cold waters, and the rare blessing of favorable weather that aligns with research schedules. These surveys cannot possibly keep pace with the relentless acquisition of satellite imagery. A Sentinel-2 image captured on a pristine morning might languish without validation for weeks or months, if fate grants it validation at all. The sobering reality is that most images will never receive ground-truth labels—they remain forever mysterious.
+
+This creates a tension that cuts to the very heart of machine learning. Detection methods hunger for feedback to improve and evolve. Yet that feedback arrives irregularly, unpredictably, like rare gifts from a capricious benefactor. Traditional machine learning lives in a comfortable world of assumptions: dense, contemporaneous labels allow us to train on labeled data, then confidently deploy our polished models. But operational monitoring thrusts us into a harsher reality, where the system must continue learning after deployment, scraping wisdom from whatever sparse validation the world deigns to provide.
+
+Non-Stationary Conditions
+
+The kelp forests breathe with the seasons, their towering fronds surging skyward in spring's exuberant growth, reaching magnificent canopy heights through summer's warmth, then gracefully surrendering to autumn's inevitable senescence. Yet beneath this predictable rhythm lies a more turbulent reality—winter storms churn the waters into murky chaos, while low sun angles cast deceptive shadows that confound even the most sophisticated detection algorithms. What works brilliantly in August's crystalline waters becomes utterly inadequate in February's tempestuous conditions.
+
+Beyond these seasonal fluctuations lurk far more dramatic disruptions. Climate's capricious hand deals devastating blows through El Niño's temperature spikes and marine heatwaves that can obliterate entire forests in a matter of weeks. Detection methods calibrated for "normal" conditions crumble when faced with these ecological catastrophes, leaving us blind precisely when we most desperately need to see.
+
+The cruel irony is that our ability to validate these methods follows its own maddening patterns. Field surveys cluster in summer's forgiving weather, while funding cycles and logistical nightmares scatter our ground-truth data across unpredictable intervals. We find ourselves chasing a moving target with a broken compass.
+
+The Core Question
+
+These challenges don't merely coexist—they conspire against us. Environmental complexity demands different approaches for different conditions, yet sparse feedback prevents us from training specialized models for each scenario. Meanwhile, the relentless march of environmental change ensures that even if we could build perfect models, they would soon become obsolete.
+
+This leads us to a provocative question: What if we abandoned the futile quest for a single "perfect" detector and instead orchestrated a symphony of diverse methods, each contributing its unique strengths? What if we could discern which method thrives in which context, extract this wisdom from our precious few validation points, and gracefully adapt as the world transforms around us?
+
+This is the revolutionary approach we unveil in this chapter.
+
+Key Insight: Selection Rather Than Training
+
+Conventional machine learning clings to a seductive but flawed premise: train once, deploy forever. Researchers meticulously craft models, pit them against validation datasets, crown a champion, and send it forth into battle—assuming the world will politely remain static. This approach crumbles when faced with kelp forests' dynamic reality.
+
+We propose something far more audacious: treat model selection not as a one-time coronation but as a continuous dance of adaptation. Instead of betting everything on a single detection method, we cultivate a diverse ensemble of specialists, each honed for different conditions, and dynamically learn which one to trust as circumstances evolve.
+
+A Committee of Experts
+
+Imagine a council of seasoned experts, each bearing hard-won expertise from different corners of the kelp detection challenge. One specialist has mastered the art of parsing kelp signatures through pristine, sun-drenched waters. Another thrives in turbid conditions where others falter. A third possesses an uncanny ability to discern kelp patterns despite challenging sun angles. When a new satellite image demands analysis, we don't blindly apply a one-size-fits-all solution—we carefully assess the environmental context and summon the expert most likely to succeed.
+
+But this selection process embraces uncertainty rather than fighting it. We maintain a living probability distribution across our experts, a quantified expression of our evolving confidence in each one. Perhaps we currently believe Expert A excels 60% of the time, Expert B handles 30% of scenarios well, while Expert C covers the remaining 10%. When precious validation data arrives—those rare moments when we can verify our predictions against ground truth—we don't merely record the results. We let this feedback reshape our beliefs, elevating experts who exceeded expectations while humbling those who disappointed.
+
+Through this iterative process, our understanding deepens. The system gradually learns which experts to trust in which contexts, building this knowledge continuously during deployment from whatever sparse feedback we can gather. We escape the tyranny of retraining entirely, requiring only occasional validation to refine our selection wisdom.
+
+Why Learning Automata?
+
+This challenge—selecting among competing actions based on probabilistic feedback—represents the exact problem that Learning Automata (LA) were born to solve. Emerging from control theory's fertile ground in the 1960s, LA provided a elegant framework for adaptive decision-making when the environment refuses to reveal its secrets easily. An automaton nurtures a probability distribution over possible actions, makes selections according to this distribution, receives rewards or penalties from an often stingy environment, and thoughtfully updates its beliefs accordingly.
+
+LA possess several remarkable properties that make them ideally suited to our kelp detection challenge:
+
+[noitemsep]
+* Sparse feedback tolerance: LA gracefully navigate the reality of intermittent feedback, updating their understanding only when new information arrives while maintaining stability in the silence between updates.
+
+* Non-stationarity handling: LA demonstrate remarkable adaptability to shifting environments. When the optimal action drifts over time—as it inevitably does in dynamic systems—the probability distribution pursues these changes with patient persistence.
+
+* Convergence guarantees: Under carefully defined conditions, LA offer the reassuring promise of provable convergence to optimal actions. This theoretical foundation elevates them far above the realm of ad-hoc heuristics and clever tricks.
+
+* Simplicity: The elegance lies in their computational lightness—no gradient computations, no backpropagation complexity, just intuitive probability adjustments that feel almost natural.
+
+We present the mathematics of LA in Appendix~. For now, the intuition suffices. In summary, LA provide a principled way to learn which expert to trust, based on sparse feedback, in changing conditions.
+
+Framework Overview
+
+In this section, we describe the overall architecture of our adaptive monitoring framework—a system designed to process satellite imagery tiles and produce kelp detection maps while continuously learning from sparse validation feedback to refine its selection decisions over time.
+
+System Architecture
+
+The framework weaves together three integrated components, as illustrated in Figure~:
+
+* Global Policy Learning maintains a living probability distribution over our pool of detection heuristics. This distribution captures the system's accumulated wisdom—encoding which heuristics have proven themselves in the crucible of real-world performance. When feedback finally arrives, the distribution evolves according to Learning Automata principles.
+
+* Context-Aware Adaptation extracts environmental signatures from each input tile and consults a rich memory bank of past experiences to tailor global preferences to immediate conditions. In familiar territory, it draws confidence from proven experience; when venturing into uncharted conditions, it falls back gracefully to global wisdom.
+
+* Sparse Label Handling maintains a patient vigil over predictions awaiting validation. When ground-truth labels eventually surface—perhaps days, weeks, or months after the initial prediction—it retrieves the corresponding entries, computes meaningful rewards, and orchestrates updates across Components 1 and 2.
+
+The Inference Path
+
+When a fresh satellite tile arrives, our system guides it through a carefully orchestrated process:
+
+* Extract context. We decode environmental signatures from the tile—spectral statistics that capture the ocean's mood, texture measures that reveal surface patterns, temporal metadata marking the season's rhythm, and geographic coordinates that anchor us in space. These features coalesce into a context vector describing the current environmental state.
+
+* Blend global and local preferences. Armed with this context vector, we interrogate our memory bank for echoes of similar past conditions. When we discover familiar contexts with consistent performance histories, we artfully blend their hard-won preferences with our global policy. In truly novel territory, we anchor ourselves primarily in global wisdom.
+
+* Select a heuristic. We sample a detection heuristic according to our carefully crafted probability distribution. The selection embraces stochasticity—even long-shot heuristics occasionally earn their moment, preserving our capacity for discovery and exploration.
+
+* Generate prediction. The chosen heuristic takes the stage, processing the tile to produce a binary kelp/no-kelp mask that captures its interpretation of the underwater landscape.
+
+* Buffer the prediction. The prediction, accompanied by its context vector and heuristic lineage, enters our buffer where it awaits the eventual arrival of validation.
+
+The Feedback Path
+
+When validation finally arrives—perhaps weeks after the original prediction cast its judgment—we embrace it through this process:
+
+* Retrieve the buffered prediction. Using location and timestamp as our compass, we excavate the corresponding entry from our buffer's depths.
+
+* Compute the reward. We measure the harmony between prediction and ground truth, typically through Intersection over Union (IoU)—a metric that captures both the successes and the telling silences of our detection.
+
+* Update the global policy. The reward signal ripples through our probability distribution, elevating heuristics that performed well while humbling those that stumbled (or maintaining their standing, depending on our chosen LA scheme).
+
+* Update the memory bank. We carefully archive the context vector alongside its observed performance, enriching the foundation for future context-aware adaptations.
+
+The profound realization here is that feedback updates operate in complete independence from the system's ongoing inference—a design choice that fundamentally reshapes how we think about adaptive learning. While the system relentlessly churns out predictions, never pausing for external validation, it simultaneously maintains this elegant capacity to learn from delayed feedback when it eventually materializes. This creates a fascinating tension: learning becomes an asynchronous dance, sparse and delayed, yet ultimately transformative.
+
+Component 1: Learning What Works
+
+At the heart of our system lies a component that captures something beautifully human-like—the gradual formation of preferences based on accumulated experience. This isn't merely a database of detection heuristics; it's the system's evolving worldview, its hard-won wisdom about which methods consistently deliver results across the chaotic diversity of real-world conditions.
+
+The Probability Distribution
+
+The global policy emerges as a probability distribution over heuristics, each probability $p_i$ representing not just confidence but the weight of countless encounters:
+
+$$p(h_i) = \frac{e^{\theta_i}}{\sum_j e^{\theta_j}}$$
+
+where each $\theta_i$ embodies the system's accumulated faith in heuristic $h_i$. In those first uncertain moments, the distribution spreads itself uniformly—a tabula rasa with no favorites:
+
+$$p(h_i) = \frac{1}{N} \quad \forall i$$
+
+But as feedback streams in, something remarkable happens. The distribution begins to breathe, shifting and concentrating as successful heuristics earn their stripes while disappointing ones fade into statistical obscurity. Eventually, this living distribution crystallizes around the true champions of detection performance.
+
+The Update Rule
+
+When validation finally arrives for a prediction born from heuristic $h_i$, we distill performance into a reward signal—a stark numerical judgment ranging from 0 (devastating failure) to 1 (flawless success).
+
+The beauty of our Learning Automata approach lies in its philosophical stance toward failure. Under the Linear Reward-Inaction (L$_{R-I}$) scheme, we embrace a forgiving asymmetry:
+
+* When reward soars above our threshold—celebrating good performance—we boost $p_i$ while gracefully diminishing the others.
+* When reward disappoints—signaling poor performance—we simply wait, doing nothing.
+
+This "inaction on penalty" philosophy transforms our system into something remarkably resilient against the noise that plagues real-world feedback. A single stumble doesn't condemn a heuristic to exile; only consistent excellence earns lasting recognition. The formal mathematics of these updates unfold in Appendix~\ref{app:learning_automata}.
+
+Beyond this forgiving approach, we explore the full spectrum of Learning Automata personalities: Linear Reward-Penalty schemes that punish as readily as they reward, Pursuit algorithms that chase the current leader with single-minded determination, and Variable Structure approaches that adapt their very learning rules. Through careful ablation studies, we pit six distinct variants against the complexities of kelp detection, letting empirical evidence reveal which learning philosophy truly thrives in our domain.
+
+Why This Works
+
+The global policy serves as our system's institutional memory—its accumulated wisdom distilled into probabilistic preferences. When context-specific intelligence fails us, this represents our most educated guess, born from the aggregation of countless encounters across every conceivable condition. If heuristic $h_j$ has proven its worth 70% of the time across summer storms and winter calms, across turbid estuaries and crystal-clear bays, then $p_j$ will reflect this hard-earned reputation.
+
+Yet global preferences remain frustratingly crude instruments. The heuristic that dominates summer's bright waters may falter against winter's moody depths. Our global policy, in its democratic averaging, smooths over these crucial variations. To truly exploit the intricate patterns that context reveals, we need our second component—one that remembers not just what works, but when and where it works best.
+
+Component 2: Adapting to Context
+
+Our second component breathes life into the system's adaptability, enabling it to read the environmental tea leaves and adjust its strategy accordingly. The underlying intuition pulses with elegant simplicity: when today's conditions mirror yesterday's successes, we should lean heavily on the heuristics that previously triumphed in similar circumstances.
+
+Context Features
+
+Every satellite tile arrives bearing the fingerprints of its environmental heritage—a rich tapestry of conditions that shaped its capture. We extract this essence into a context vector $\mathbf{c}$ that encodes:
+
+\begin{itemize}[noitemsep]
+\item \textbf{Spectral statistics}: Mean and variance across each spectral band, capturing the subtle signatures of water color, turbidity levels, and atmospheric moods.
+\item \textbf{Spatial texture}: Entropy and homogeneity measures that whisper secrets about surface roughness and the restless state of waves.
+\item \textbf{Temporal context}: Day of year, carrying the weight of seasonal rhythms and their profound influence on marine ecosystems.
+\item \textbf{Geographic location}: Latitude and longitude coordinates that anchor us to regional characteristics and local peculiarities.
+\item \textbf{Auxiliary data}: Bathymetry and substrate type—when fortune provides them—adding depth to our environmental understanding.
+\end{itemize}
+
+This context vector becomes our environmental DNA, a compressed signature of the conditions we face. When two tiles share similar context vectors, they're essentially siblings in the vast family of detection challenges, likely demanding kindred strategies for success.
+
+The Memory Bank
+
+Our system maintains a living archive of experiences—a memory bank $\mathcal{M}$ where each entry preserves the full story of a past encounter:
+
+$$\mathcal{M} = \{(\mathbf{c}_k, \mathbf{p}_k, r_k)\}_{k=1}^{|\mathcal{M}|}$$
+
+Each memory $(\mathbf{c}_k, \mathbf{p}_k, r_k)$ captures a moment in time: the environmental context $\mathbf{c}_k$ that set the stage, the heuristic selection probabilities $\mathbf{p}_k$ that guided our choices, and the reward $r_k$ that ultimately judged our performance. As time unfolds, this memory bank grows into a rich repository of situational wisdom—a detailed map of what worked where, when, and why.
+
+When a new tile arrives with its environmental context, we embark on a search through our accumulated knowledge, retrieving the most similar past contexts using nearest-neighbor search. For efficiency with large memory banks—where thousands of experiences accumulate—we employ FAISS, a library that excels at fast approximate nearest-neighbor search, allowing us to quickly sift through vast repositories of contextual memories.
+
+Local Preference Estimation
+
+These retrieved neighbors become our witnesses, testifying to what has succeeded in similar conditions. We craft a local preference distribution by thoughtfully averaging the neighbors' preferences, weighted by both their hard-earned rewards and their contextual similarity to our current situation.
+
+The neighbors that prove most valuable are those that (a) mirror our current context most closely and (b) achieved the highest rewards in their endeavors. These exemplars contribute most heavily to our local estimate, creating a distribution that captures the essence of "what has thrived in conditions like these."
+
+Blending Global and Local Wisdom
+
+The final selection probability emerges from a careful marriage of global and local preferences:
+
+The blending coefficient α becomes our diplomatic mediator, controlling this delicate balance:
+
+* When α → 1: We place our faith entirely in the global policy, deliberately ignoring the whispers of local context.
+* When α → 0: We surrender to local experience, turning our back on global trends.
+* In between: We orchestrate a thoughtful blend of both sources of wisdom.
+
+We've designed α to be adaptive, responding to the richness and consistency of our memory bank. When the bank overflows with similar contexts yielding consistent outcomes, α decreases—we grow confident in local experience. When contexts prove novel or outcomes frustratingly inconsistent, α increases, and we retreat to the safety of global preferences.
+
+Why This Architecture Succeeds
+
+Context-aware adaptation exploits the hidden structure woven throughout our problem space. Environmental conditions don't scatter randomly across possibility; instead, they form meaningful clusters. Turbid winter conditions in the Strait of Georgia share profound similarities with other turbid winter conditions in the same region. When a particular heuristic triumphs in those conditions, it carries the promise of success again.
+
+The memory bank delivers non-parametric generalization—a refreshingly direct approach. Rather than training yet another model to predict heuristic performance from context features, we simply remember what worked and retrieve it when circumstances call for that knowledge. This approach proves robust, interpretable, and demands no additional training overhead.
+
+Component 3: Learning from Sparse Feedback
+
+The third component confronts the harsh operational reality that validation labels arrive sparsely and with unpredictable delay. Most predictions will never face validation. Those fortunate enough to be validated may wait days, weeks, or even months for their moment of truth. The system must persist in its operations without waiting for feedback, yet remain ready to learn when feedback finally arrives.
+
+The Prediction Buffer
+
+Every prediction finds sanctuary in our buffer:
+
+Each entry preserves the timestamp, context vector, selected heuristic index, and predicted mask—a complete record of our decision-making moment. A hash map enables swift lookup by location and time, turning retrieval into an efficient operation.
+
+When a validation label finally arrives for a particular location and date, we retrieve the corresponding buffered prediction, compute its well-deserved reward, and trigger updates throughout Components 1 and 2. The entry then gracefully exits the buffer, its purpose fulfilled.
+
+Buffer Management
+
+Predictions cannot linger indefinitely in our digital memory. Environmental conditions evolve; a prediction crafted six months ago may bear little relevance to current learning needs. We impose a maximum buffer age (typically 6 months), beyond which predictions face removal without update.
+
+This reflects our core design philosophy: the system should absorb lessons from timely feedback, not wrestle with stale observations. A reward received promptly carries far more instructional value than one that arrives after conditions have fundamentally shifted.
+
+Temporal Decay
+
+Optionally, we can discount rewards based on their delay:
+
+where Δt represents the delay (in days) between prediction and validation, and λ serves as our decay factor. Recent feedback receives its full weight; older feedback gradually fades in influence.
+
+This decay mechanism serves dual purposes:
+
+* Prioritizing recency: Recent experiences resonate more strongly with current conditions.
+* Tracking non-stationarity: When optimal heuristics evolve over time, discounting aged rewards helps the system gracefully adapt to change.
+
+Learning Without Waiting
+
+The critical design principle that governs our architecture is asynchronous learning. The inference path—tile in, prediction out—flows continuously without ever blocking on validation. Meanwhile, the feedback path—label in, update out—springs into action whenever labels materialize. These two paths operate in beautiful independence, neither constraining the other's rhythm.
+
+This design mirrors the harsh realities of environmental monitoring, where nature dictates the rhythm of observation and validation. Satellites sweep overhead every few days with mechanical precision, capturing fragments of an ever-changing seascape. Meanwhile, field teams venture out only when weather permits and funding allows—their validation efforts scattered like seeds on uncertain ground. The system cannot afford to wait in paralysis for validation; it must act on incomplete knowledge, learning hungrily from whatever scraps of ground truth eventually surface.
+
+Novel Contribution: Dual-Layer Non-Stationarity
+
+Classical Learning Automata theory grapples with environments where the optimal strategy shifts like sand beneath one's feet. We push this theory into uncharted territory, revealing a hidden second layer of instability: not merely what works best, but when we discover it works at all.
+
+Two Sources of Change
+
+Kelp forest monitoring wrestles with two intertwined sources of chaos that refuse to be tamed separately:
+
+Layer 1: Environment Dynamics
+
+This layer captures how the perfect detection strategy morphs through time's relentless march. Two forces conspire to drive this transformation:
+
+* Seasonal variation (periodic): Kelp forests dance to nature's ancient rhythm, their annual cycles as predictable as tides yet as dramatic as theater. Summer brings lush canopies that practically announce themselves to satellite sensors—dense, verdant carpets sprawling beneath crystal waters. Winter unleashes a different beast entirely: violent storms shred the canopies to tatters while churning sediments transform clear water into murky soup. A detection algorithm that thrives in summer's clarity may stumble blind through winter's chaos, its confidence shattered against the reality of turbid, debris-laden seas.
+
+* Climate regime shifts (stochastic): Beyond the predictable seasonal dance lurk the wildcards—El Niño's fevered embrace that transforms entire ocean basins, marine heatwaves that rewrite the rules of kelp physiology overnight. These upheavals don't announce themselves with calendar precision; they strike like lightning, demanding entirely new detection strategies for conditions that may never have existed before.
+
+Classical LA theory recognizes these as Periodic Switching Environments (PSE) and Markovian Switching Environments (MSE). Layer 1 weaves both threads into a single, complex tapestry.
+
+Layer 2: Feedback Dynamics
+
+Here lies our breakthrough—modeling when precious validation labels trickle in from the field. This represents our bold extension beyond traditional LA theory's comfortable assumptions. Two forces govern this cruel lottery of knowledge:
+
+* Seasonal fieldwork (periodic): Summer beckons researchers with its promise of calm seas and cooperative weather, drawing validation surveys like flowers draw bees. Winter slams the door shut—few dare venture onto storm-lashed waters to verify what satellites claim to see. The probability of receiving feedback follows summer's generous heart and winter's stingy fist.
+
+* Operational variability (stochastic): Reality intrudes with brutal unpredictability. Research budgets evaporate without warning. Field crews fall ill or quit. Equipment fails at the worst possible moments, and storms scatter the best-laid plans like leaves. Some years overflow with validation riches; others starve the system of ground truth.
+
+Layer 2 operates with cruel independence from Layer 1. A perfect summer day might offer both ideal detection conditions and eager field teams ready to validate. A brutal winter storm might challenge every detection algorithm while simultaneously ensuring no human will venture out to check the results. The layers dance to different drummers, sometimes in harmony, often in bitter opposition.
+
+Why This Matters
+
+Classical LA theory obsesses over Layer 1—tracking the optimal action as environments shift and change. But it harbors a dangerous assumption: that feedback flows like a steady river. Reality serves up something far more treacherous.
+
+Our dual-layer model confronts this uncomfortable truth:
+
+* The system endures cruel droughts of validation. Winter months stretch endlessly without a single ground truth measurement, forcing the system to navigate by dead reckoning, its confidence slowly hemorrhaging.
+
+* The system drowns in sudden floods of feedback. Summer surveys cascade in rapid succession, overwhelming the learning mechanisms with more validation than they can gracefully digest.
+
+* The cruelest irony: optimal actions and feedback availability often move in opposite directions. Winter's harsh conditions—precisely where certain algorithms might excel—produce virtually no validation data. The system learns least about the very conditions where adaptation matters most.
+
+By acknowledging both layers explicitly, we can dissect learning dynamics under conditions that mirror reality's harsh constraints. We can forge LA schemes that survive feedback famines and capitalize on validation feasts. We can stress-test robustness against the capricious patterns that govern real-world knowledge acquisition.
+
+Scientific Contribution
+
+The dual-layer non-stationarity model delivers three hard-won insights:
+
+* Novel theoretical extension: We extend classical LA theory on non-stationary environments by introducing feedback timing as a separate stochastic process—a move that reveals fascinating new analytical territories. This advancement forces us to grapple with compelling questions: How severely does learning deteriorate when feedback becomes sparse? Which LA schemes demonstrate the greatest resilience when feedback timing becomes erratic and unpredictable?
+
+* Domain-appropriate modeling: The formulation authentically captures the genuine rhythms and complexities of environmental monitoring. Seasonal patterns pulse through natural systems while operational variability creates real disruptions and challenges. By modeling these phenomena explicitly, we achieve a more honest and realistic representation of the monitoring landscape.
+
+* Ablation capability: The two-layer architecture offers independent configurability that proves invaluable for systematic investigation. We can isolate Layer 1 effects (environment dynamics) while maintaining Layer 2 stability, and conversely examine Layer 2 behavior with Layer 1 held constant. This design enables rigorous experimental dissection of how each distinct source of non-stationarity shapes and constrains learning behavior.
+
+Evaluation Strategy
+
+We evaluate the framework using kelp forest imagery captured along British Columbia's rugged coastline, employing Leave-One-Site-Out cross-validation combined with a carefully staged ablation protocol that balances thoroughness with computational practicality.
+
+Datasets
+
+The primary dataset draws from Sentinel-2 imagery spanning seven distinct sites along BC's coastal waters, each tile meticulously annotated with expert-labeled kelp masks. Each 512×512 pixel tile captures a 10-meter resolution view containing 12 spectral and auxiliary bands that reveal the underwater forest's spectral signature. Complete dataset specifications and acquisition details are provided in Appendix~.
+
+Heuristic Pool
+
+The heuristic pool represents a carefully curated collection of specialized expertise:
+[noitemsep]
+* Ten site-specific models: UNet-MaxViT architectures trained through Leave-One-Site-Out protocol, each model having absorbed distinct training conditions and local environmental characteristics.
+* One RGB model: Trained across all BC sites using only visual bands, specifically designed to enable cross-sensor transfer to Landsat imagery and broaden applicability.
+
+Leave-One-Site-Out Protocol
+
+For primary evaluation, we systematically isolate each site to test geographic generalization:
+
+* Train the LA framework on six sites, allowing it to learn from diverse coastal conditions.
+* Evaluate performance on the held-out seventh site, testing adaptation to completely unseen geography.
+* Repeat this process for all seven sites, ensuring comprehensive coverage.
+* Aggregate results to understand overall generalization capability.
+
+This protocol rigorously tests the framework's ability to generalize across unseen geographic regions—a capability absolutely critical for meaningful coastline-scale deployment.
+
+Staged Ablation
+
+A full factorial evaluation of all design choices would demand tens of thousands of experiments, creating an impractical computational burden. To maintain scientific rigor while ensuring feasibility, we employ a strategically staged approach:
+
+* Stage 1: LA variant selection. We pit six LA schemes (L_{RI}, L_{RP}, VSLA, Pursuit, Discretized Pursuit, SERI) against the complete system, identifying the top 2–3 performers that demonstrate superior adaptation capabilities.
+
+* Stage 2: Component ablation. We systematically test component combinations (global only, global+context, global+sparse, full system) using the most promising LA variants from Stage 1.
+
+* Stage 3: Sparsity tolerance. We deliberately stress-test the system by varying label density (100%, 50%, 10%, 5%) and introducing different delay patterns with the best-performing configuration.
+
+* Stage 4: Auxiliary data. We examine the contribution of bathymetry, substrate maps, and other auxiliary layers to overall performance.
+
+* Stage 5: Cross-sensor transfer. We evaluate the framework's adaptability using Figshare Landsat data with the RGB model, testing cross-platform robustness.
+
+This staged approach dramatically reduces computational requirements from 46,000 runs to approximately 500 while preserving the scientific rigor necessary for meaningful conclusions.
+
+Baselines
+
+We establish performance context by comparing against:
+[noitemsep]
+* Random selection: Uniform random choice among available heuristics, representing the lower bound of selection intelligence.
+* Best single heuristic: The fixed heuristic that achieves optimal overall performance, representing traditional static approaches.
+* Oracle: The theoretically best heuristic for each individual tile, providing an upper bound that requires perfect environmental foresight.
+
+Metrics
+
+Primary detection metrics capture the essence of kelp forest identification:
+[noitemsep]
+* Intersection over Union (IoU): Quantifies the precise overlap between predicted and ground-truth kelp masks.
+* F1-score: Provides the harmonic mean of precision and recall, balancing detection accuracy with completeness.
+
+LA-specific metrics reveal adaptation dynamics:
+[noitemsep]
+* Convergence speed: Measures the number of steps required to reach 90% of final performance, indicating adaptation efficiency.
+* Final entropy: Assesses the concentration of the probability distribution at convergence, revealing selection confidence.
+
+Formal definitions and computational details are thoroughly documented in Appendix~.
+
+Summary
+
+In this chapter, we have presented a methodology for adaptive kelp forest monitoring that directly confronts the fundamental challenges inherent in satellite-based environmental observation.
+
+The core insight driving this work is to reconceptualize detection as a selection problem rather than a training problem. Rather than attempting to build one monolithic model that must somehow work everywhere, we maintain a diverse pool of specialized methods and learn to intelligently select among them based on contextual understanding.
+
+The framework comprises three synergistic components:
+
+* Global policy learning, which tracks the evolving performance of heuristics through the elegant mathematics of Learning Automata, capturing how different detection strategies rise and fall in effectiveness.
+* Context-aware adaptation, which intelligently tailors heuristic selection to the unique environmental fingerprint of each monitoring site using sophisticated memory-based retrieval mechanisms.
+* Sparse label handling, which gracefully navigates the reality of ecological monitoring—learning from the irregular, often frustratingly delayed validation feedback that characterizes real-world conservation efforts.
+
+The heart of our contribution lies in the dual-layer non-stationarity model, a theoretical framework that boldly extends classical LA theory beyond its traditional boundaries. Layer 1 captures the restless nature of changing environmental conditions—shifting currents, seasonal variations, and climate perturbations. Layer 2 confronts the irregular heartbeat of feedback timing, acknowledging that ecological validation doesn't arrive on schedule. Together, these layers provide rigorous theoretical grounding for learning under the messy, unpredictable constraints that define operational environmental monitoring.
+
+Our evaluation strategy embraces the geographic complexity of British Columbia's coastal kelp forests through Leave-One-Site-Out cross-validation, treating each site as a unique ecological puzzle. Staged ablations systematically dissect the framework, revealing which configurations truly drive performance and exposing the system's resilience to sparse feedback scenarios.
+
+The chapters that follow chronicle our experimental journey, validating each component's contribution and demonstrating how this framework transforms the challenging landscape of adaptive kelp forest monitoring.
+
+Formal Problem Definition
+
+Input Space
+
+Let $x_t^{(s)} \in \mathbb{R}^{B \times H \times W}$ denote a satellite image tile acquired at time $t$ from site $s$, where $B$ represents the spectral richness and $H \times W$ captures the spatial canvas. For Sentinel-2's multispectral eyes: $B = 13$, $H = W = 64$, each pixel spanning 10m of coastal reality.
+
+The context vector $c_t^{(s)} \in \mathbb{R}^D$ encodes the environmental symphony—tidal rhythms, seasonal transitions, and atmospheric moods:
+
+$$c_t^{(s)} = [\text{tidal\_height}, \text{season}, \text{turbidity}, \text{cloud\_cover}]$$
+
+Heuristic Pool
+
+The heuristic pool $\mathcal{H} = \{h_1, h_2, \ldots, h_K\}$ contains $K$ detection methods, each a different lens through which to perceive kelp forests, mapping tiles to binary revelation:
+
+$$h_k: \mathbb{R}^{B \times H \times W} \rightarrow \{0,1\}^{H \times W}$$
+
+Reward Function
+
+The primary reward cuts through ambiguity with Intersection over Union's geometric precision:
+
+$$r(h_k(x), y) = \frac{|h_k(x) \cap y|}{|h_k(x) \cup y|}$$
+
+Policy Objective
+
+We seek a policy $\pi$ that maximizes expected reward across the vast uncertainty of coastal monitoring:
+
+$$\pi^* = \arg\max_\pi \mathbb{E}_{x,c \sim \mathcal{D}}[r(\pi(x,c), y)]$$
+
+Learning Automata Theory
+
+Basic Formulation
+
+A Learning Automaton emerges as a tuple $\langle A, R, P(t), T \rangle$ where mathematical elegance meets adaptive intelligence:
+* $A = \{a_1, \ldots, a_K\}$: the action repertoire
+* $R = \{0, 1\}$: nature's binary response (penalty, reward)
+* $P(t) = [p_1(t), \ldots, p_K(t)]$: the evolving probability landscape at step $t$
+* $T$: the learning rule that shapes tomorrow's choices
+
+The environment harbors penalty probabilities $\{c_1, \ldots, c_K\}$ where $c_i \neq c_j$ for $i \neq j$.
+
+Linear Reward-Inaction (LR-I)
+
+This algorithm learns through positive reinforcement alone, updating only when rewards flow:
+
+$$p_i(t+1) = \begin{cases}
+p_i(t) + a[1 - p_i(t)] & \text{if } a_i \text{ chosen and rewarded} \\
+p_i(t)(1-a) & \text{if } a_i \text{ not chosen and some action rewarded} \\
+p_i(t) & \text{otherwise}
+\end{cases}$$
+
+For environments with distinct penalty probabilities $c_i \neq c_j$, LR-I converges almost surely to the optimal action, finding truth through patient observation.
+
+Linear Reward-Penalty (LR-P)
+
+This more aggressive learner responds to both success and failure:
+
+$$p_i(t+1) = \begin{cases}
+p_i(t) + a[1 - p_i(t)] & \text{if rewarded} \\
+p_i(t)(1-b) & \text{if penalized}
+\end{cases}$$
+
+Pursuit Automata
+
+These algorithms maintain running estimates $\hat{d}_i(t)$ of each action's merit and boldly pursue the current champion:
+
+$$p_j(t+1) = p_j(t) + \beta[\mathbf{1}_{j=j^*} - p_j(t)]$$
+
+where $j^* = \arg\max_i \hat{d}_i(t)$ represents the current favorite.
+
+Variable Structure LA (VSLA)
+
+The learning rate adapts organically to the system's confidence, measured through entropy's lens:
+
+$$\beta(t) = \beta_0 \cdot \frac{H(P(t))}{H_{\max}}$$
+
+where uncertainty breeds faster learning, and confidence allows refinement.
+
+Stochastic Estimator Reward-Inaction (SERI)
+
+This Bayesian sophisticate maintains Beta posteriors $\text{Beta}(\alpha_i, \beta_i)$ for each action's reward probability, combining statistical rigor with pursuit-style decisiveness. Among the fastest $\epsilon$-optimal algorithms, it represents the cutting edge of learning automata evolution.
+
+Algorithm Pseudocode
+
+**Algorithm 1: Context-Aware Heuristic Selection**
+```
+Input: Tile $x_t^{(s)}$, global policy $\pi_g$, memory bank $\mathcal{M}$
+1: $c_t^{(s)} \leftarrow \text{extract\_context}(x_t^{(s)})$
+2: $\mathcal{N} \leftarrow \text{retrieve\_neighbors}(\mathcal{M}, c_t^{(s)})$
+3: if $|\mathcal{N}| \geq \tau$ then
+4:     $\pi_l \leftarrow \text{local\_policy}(\mathcal{N})$
+5:     $k^* \leftarrow \text{sample}(\pi_l)$
+6: else
+7:     $k^* \leftarrow \text{sample}(\pi_g)$
+8: end if
+9: return $h_{k^*}(x_t^{(s)})$
+```
+
+**Algorithm 2: Sparse Feedback Integration**
+```
+Input: Validation label $y$ for location $\ell$, time $t$
+1: $\mathcal{B} \leftarrow \text{get\_buffer}(\ell, t)$
+2: for each $(x, k, c) \in \mathcal{B}$ do
+3:     $r \leftarrow \text{compute\_reward}(h_k(x), y)$
+4:     $\text{update\_global\_policy}(k, r)$
+5:     $\text{update\_memory}(\mathcal{M}, c, k, r)$
+6: end for
+7: Remove $\mathcal{B}$ from buffer
+8: if $\text{memory\_full}(\mathcal{M})$ then
+9:     Remove oldest entry from $\mathcal{M}$
+10: end if
+```
+
+Dataset Details
+
+BC Sentinel-2 Dataset
+
+Our dataset spans the rugged coastline of British Columbia, capturing 847 precisely annotated sites across the province's kelp forest archipelago. Each 640×640m tile represents a window into these underwater forests, georeferenced and temporally anchored between 2019-2023.
+
+Band Specification
+
+The Sentinel-2 constellation provides our multispectral foundation:
+- **Visible bands (B2-B4)**: The familiar RGB trinity at 10m resolution
+- **Near-infrared (B8)**: Vegetation's signature at 10m resolution  
+- **Red-edge bands (B5-B7, B8A)**: The subtle transitions at 20m resolution
+- **SWIR bands (B11-B12)**: Water's absorption fingerprint at 20m resolution
+
+Metrics Definitions
+
+Detection Metrics
+
+Our evaluation arsenal includes precision's surgical accuracy, recall's comprehensive sweep, and F1's harmonic balance. The Intersection over Union provides geometric truth, while the Dice coefficient offers an alternative perspective on spatial overlap.
+
+LA Metrics
+
+We track each automaton's convergence journey through regret accumulation, probability vector entropy, and the steady march toward optimal action selection—mathematical poetry describing the learning process.
+
+\bibliography{references}
+
+K.~S. Narendra and K.~S. Thathachar.
+*Learning Automata: An Introduction*.
+Prentice Hall, 1989.
+
+M.~A.~L. Thathachar and P.~S. Sastry.
+Varieties of learning automata: An overview.
+*IEEE Trans. Systems, Man, and Cybernetic, Part B*, 32(6):711--722, 2002.
+
+S.~B. Schroeder, C.~Dupont, L.~Boyer, F.~Juanes, and M.~Costa.
+Passive remote sensing technology for mapping bull kelp.
+*Global Ecology and Conservation*, 22:e00948, 2020.
+
+S.~Starko et~al.
+Heterogeneity in BC kelp forest communities.
+*Journal of Phycology*, 2024.
+
+A.~Mora-Soto et~al.
+Global kelp detection challenges.
+*Remote Sensing of Environment*, 2024.

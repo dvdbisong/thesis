@@ -13,7 +13,7 @@ making it particularly suitable for floating kelp detection.
 
 import torch
 
-from code.heuristics.base import SpectralIndexHeuristic
+from src.heuristics.base import SpectralIndexHeuristic
 
 
 class FAIHeuristic(SpectralIndexHeuristic):
