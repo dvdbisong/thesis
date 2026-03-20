@@ -6,12 +6,16 @@ across multiple seasons and years to enable empirical testing of the
 dual-layer MSE/PSE framework.
 
 Usage:
+    # Export to GCS (starts GEE tasks)
     python -m src.preprocessing.gee_download --output data/bc_sentinel2_multitemporal/raw/
+
+    # Download from GCS to local (after exports complete)
+    python -m src.preprocessing.gee_download --download-from-gcs --output data/bc_sentinel2_multitemporal/raw/
 
 Requirements:
     - Google Earth Engine account and authentication
     - earthengine-api package
-    - geemap package (optional, for visualization)
+    - Google Cloud SDK (gsutil) for downloading from GCS
 
 Author: Ekaba Bisong
 Date: March 2026
@@ -20,6 +24,7 @@ Date: March 2026
 import argparse
 import json
 import os
+import subprocess
 import time
 from dataclasses import dataclass
 from datetime import datetime
@@ -27,6 +32,10 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import ee
+
+# Google Cloud Storage configuration
+GCS_BUCKET = "uvic-thesis"
+GCS_PREFIX = "kelp_multitemporal"  # Folder within bucket
 
 # Site definitions from site_locations.json
 # Coordinates are center points; we'll create bounding boxes around them
@@ -121,10 +130,13 @@ class ImageMetadata:
     files: Dict[str, str]
 
 
-def initialize_gee():
+def initialize_gee(project: Optional[str] = None):
     """Initialize Google Earth Engine."""
     try:
-        ee.Initialize()
+        if project:
+            ee.Initialize(project=project)
+        else:
+            ee.Initialize()
         print("Google Earth Engine initialized successfully.")
     except Exception as e:
         print(f"Error initializing GEE: {e}")
@@ -312,17 +324,18 @@ def get_season_dates(season: str, year: int) -> Tuple[str, str]:
     return start_date, end_date
 
 
-def export_image_to_drive(
+def export_image_to_gcs(
     image: ee.Image,
     aoi: ee.Geometry,
     description: str,
-    folder: str,
+    bucket: str,
+    prefix: str,
     bands_10m: List[str],
     bands_20m: List[str],
     crs: str,
 ) -> Dict[str, ee.batch.Task]:
     """
-    Export Sentinel-2 bands to Google Drive.
+    Export Sentinel-2 bands to Google Cloud Storage.
 
     Exports 10m and 20m bands separately, matching Mohsen's format.
 
@@ -330,7 +343,8 @@ def export_image_to_drive(
         image: Sentinel-2 image
         aoi: Area of interest
         description: Export description/filename
-        folder: Google Drive folder
+        bucket: GCS bucket name
+        prefix: Folder prefix within bucket
         bands_10m: List of 10m band names
         bands_20m: List of 20m band names
         crs: Coordinate reference system (e.g., "EPSG:32609")
@@ -340,12 +354,15 @@ def export_image_to_drive(
     """
     tasks = {}
 
+    # File prefix in GCS
+    gcs_prefix = f"{prefix}/{description}" if prefix else description
+
     # Export 10m bands
-    task_10m = ee.batch.Export.image.toDrive(
+    task_10m = ee.batch.Export.image.toCloudStorage(
         image=image.select(bands_10m),
         description=f"{description}_B2B3B4B8",
-        folder=folder,
-        fileNamePrefix=f"{description}_B2B3B4B8",
+        bucket=bucket,
+        fileNamePrefix=f"{gcs_prefix}_B2B3B4B8",
         region=aoi,
         scale=10,
         crs=crs,
@@ -355,11 +372,11 @@ def export_image_to_drive(
     tasks["10m"] = task_10m
 
     # Export 20m bands (at 10m resolution for stacking)
-    task_20m = ee.batch.Export.image.toDrive(
+    task_20m = ee.batch.Export.image.toCloudStorage(
         image=image.select(bands_20m),
         description=f"{description}_B5B6B7B8A_B11B12",
-        folder=folder,
-        fileNamePrefix=f"{description}_B5B6B7B8A_B11B12",
+        bucket=bucket,
+        fileNamePrefix=f"{gcs_prefix}_B5B6B7B8A_B11B12",
         region=aoi,
         scale=10,  # Resample to 10m
         crs=crs,
@@ -371,12 +388,105 @@ def export_image_to_drive(
     return tasks
 
 
+def download_from_gcs(
+    bucket: str,
+    prefix: str,
+    local_dir: str,
+    dry_run: bool = False,
+) -> bool:
+    """
+    Download files from GCS to local directory using gsutil.
+
+    Args:
+        bucket: GCS bucket name
+        prefix: Folder prefix within bucket
+        local_dir: Local destination directory
+        dry_run: If True, only show what would be downloaded
+
+    Returns:
+        True if successful, False otherwise
+    """
+    gcs_path = f"gs://{bucket}/{prefix}/"
+    local_path = Path(local_dir)
+    local_path.mkdir(parents=True, exist_ok=True)
+
+    print(f"\nDownloading from GCS:")
+    print(f"  Source: {gcs_path}")
+    print(f"  Destination: {local_path}")
+
+    if dry_run:
+        # List files without downloading
+        cmd = ["gsutil", "ls", "-l", gcs_path]
+        print(f"\n  Running: {' '.join(cmd)}")
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode == 0:
+            print(result.stdout)
+            return True
+        else:
+            print(f"  Error: {result.stderr}")
+            return False
+
+    # Download using gsutil with parallel transfers
+    cmd = [
+        "gsutil", "-m", "cp", "-r",
+        gcs_path + "*",
+        str(local_path)
+    ]
+    print(f"\n  Running: {' '.join(cmd)}")
+
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode == 0:
+            print("  Download complete!")
+            # Count downloaded files
+            tif_files = list(local_path.glob("*.tif"))
+            print(f"  Downloaded {len(tif_files)} GeoTIFF files")
+            return True
+        else:
+            print(f"  Error: {result.stderr}")
+            return False
+    except FileNotFoundError:
+        print("  Error: gsutil not found. Please install Google Cloud SDK.")
+        print("  Install: https://cloud.google.com/sdk/docs/install")
+        return False
+
+
+def check_export_status(bucket: str, prefix: str) -> Dict[str, int]:
+    """
+    Check status of files in GCS bucket.
+
+    Args:
+        bucket: GCS bucket name
+        prefix: Folder prefix
+
+    Returns:
+        Dictionary with file counts
+    """
+    gcs_path = f"gs://{bucket}/{prefix}/"
+    cmd = ["gsutil", "ls", gcs_path]
+
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode == 0:
+            files = [f for f in result.stdout.strip().split("\n") if f.endswith(".tif")]
+            return {
+                "total_files": len(files),
+                "10m_files": len([f for f in files if "B2B3B4B8" in f]),
+                "20m_files": len([f for f in files if "B5B6B7B8A" in f]),
+            }
+        else:
+            return {"error": result.stderr}
+    except FileNotFoundError:
+        return {"error": "gsutil not found"}
+
+
 def download_site_season(
     site_id: str,
     season: str,
     year: int,
     output_dir: str,
-    drive_folder: str = "kelp_multitemporal",
+    bucket: str = GCS_BUCKET,
+    prefix: str = GCS_PREFIX,
     max_images: int = 2,
     dry_run: bool = False,
 ) -> List[Dict[str, Any]]:
@@ -388,7 +498,8 @@ def download_site_season(
         season: Season name
         year: Year
         output_dir: Local output directory (for manifest)
-        drive_folder: Google Drive folder for exports
+        bucket: GCS bucket name
+        prefix: GCS folder prefix
         max_images: Maximum images to download per site-season-year
         dry_run: If True, only query and score images without downloading
 
@@ -467,7 +578,7 @@ def download_site_season(
 
     # Select top N
     selected = scored_images[:max_images]
-    print(f"    Selected {len(selected)} images for download")
+    print(f"    Selected {len(selected)} images for export")
 
     if dry_run:
         return [
@@ -487,8 +598,8 @@ def download_site_season(
             for img in selected
         ]
 
-    # Export selected images
-    downloaded = []
+    # Export selected images to GCS
+    exported = []
     bands_10m = ["B2", "B3", "B4", "B8"]
     bands_20m = ["B5", "B6", "B7", "B8A", "B11", "B12"]
 
@@ -501,11 +612,12 @@ def download_site_season(
 
         # Start export tasks
         try:
-            tasks = export_image_to_drive(
+            tasks = export_image_to_gcs(
                 image=image,
                 aoi=aoi,
                 description=filename,
-                folder=drive_folder,
+                bucket=bucket,
+                prefix=prefix,
                 bands_10m=bands_10m,
                 bands_20m=bands_20m,
                 crs=crs,
@@ -514,9 +626,9 @@ def download_site_season(
             # Start tasks
             for task_name, task in tasks.items():
                 task.start()
-                print(f"      Started export: {filename}_{task_name}")
+                print(f"      Started export: {filename}_{task_name} -> gs://{bucket}/{prefix}/")
 
-            downloaded.append({
+            exported.append({
                 "site": site_id,
                 "season": season,
                 "year": year,
@@ -528,6 +640,8 @@ def download_site_season(
                 "sun_elevation": img_data["sun_elevation"],
                 "sun_azimuth": img_data["sun_azimuth"],
                 "has_label": False,
+                "gcs_bucket": bucket,
+                "gcs_prefix": prefix,
                 "files": {
                     "10m_bands": f"{filename}_B2B3B4B8.tif",
                     "20m_bands": f"{filename}_B5B6B7B8A_B11B12.tif",
@@ -542,7 +656,7 @@ def download_site_season(
             print(f"      Error exporting {image_id}: {e}")
             continue
 
-    return downloaded
+    return exported
 
 
 def download_all_sites(
@@ -552,6 +666,8 @@ def download_all_sites(
     years: Optional[List[int]] = None,
     max_images_per_combo: int = 2,
     dry_run: bool = False,
+    bucket: str = GCS_BUCKET,
+    prefix: str = GCS_PREFIX,
 ) -> List[Dict[str, Any]]:
     """
     Download imagery for all site-season-year combinations.
@@ -563,6 +679,8 @@ def download_all_sites(
         years: List of years (default: 2021-2023)
         max_images_per_combo: Max images per site-season-year
         dry_run: If True, only query without downloading
+        bucket: GCS bucket name
+        prefix: GCS folder prefix
 
     Returns:
         List of all download metadata
@@ -583,6 +701,8 @@ def download_all_sites(
                     season=season,
                     year=year,
                     output_dir=output_dir,
+                    bucket=bucket,
+                    prefix=prefix,
                     max_images=max_images_per_combo,
                     dry_run=dry_run,
                 )
@@ -597,6 +717,11 @@ def download_all_sites(
         "download_id": f"dl_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
         "timestamp": datetime.now().isoformat(),
         "dry_run": dry_run,
+        "gcs": {
+            "bucket": bucket,
+            "prefix": prefix,
+            "uri": f"gs://{bucket}/{prefix}/",
+        },
         "config": {
             "sites": sites,
             "seasons": seasons,
@@ -629,15 +754,19 @@ def download_all_sites(
         json.dump(manifest, f, indent=2)
 
     print(f"\n{'='*60}")
-    print(f"Download Summary")
+    print(f"Export Summary")
     print(f"{'='*60}")
     print(f"Total images: {len(all_downloads)}")
+    print(f"GCS destination: gs://{bucket}/{prefix}/")
     print(f"Manifest saved: {manifest_path}")
 
     if not dry_run:
         print(f"\nExports started. Check Google Earth Engine Tasks:")
         print(f"  https://code.earthengine.google.com/tasks")
-        print(f"\nOnce complete, download from Google Drive folder: kelp_multitemporal")
+        print(f"\nOnce complete, download from GCS:")
+        print(f"  python -m src.preprocessing.gee_download --download-from-gcs --output {output_dir}")
+        print(f"\nOr manually with gsutil:")
+        print(f"  gsutil -m cp -r gs://{bucket}/{prefix}/* {output_dir}")
 
     return all_downloads
 
@@ -651,7 +780,7 @@ def main():
         "--output",
         type=str,
         default="data/bc_sentinel2_multitemporal/raw/",
-        help="Output directory for manifest and metadata",
+        help="Output directory for manifest and downloaded files",
     )
     parser.add_argument(
         "--sites",
@@ -684,13 +813,66 @@ def main():
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Query and score images without downloading",
+        help="Query and score images without exporting",
+    )
+    parser.add_argument(
+        "--download-from-gcs",
+        action="store_true",
+        help="Download from GCS to local (run after exports complete)",
+    )
+    parser.add_argument(
+        "--check-status",
+        action="store_true",
+        help="Check status of files in GCS bucket",
+    )
+    parser.add_argument(
+        "--bucket",
+        type=str,
+        default=GCS_BUCKET,
+        help=f"GCS bucket name (default: {GCS_BUCKET})",
+    )
+    parser.add_argument(
+        "--prefix",
+        type=str,
+        default=GCS_PREFIX,
+        help=f"GCS folder prefix (default: {GCS_PREFIX})",
+    )
+    parser.add_argument(
+        "--project",
+        type=str,
+        default=None,
+        help="GCP project ID for GEE initialization",
     )
 
     args = parser.parse_args()
 
-    # Initialize GEE
-    initialize_gee()
+    # Check GCS status
+    if args.check_status:
+        print(f"Checking GCS bucket: gs://{args.bucket}/{args.prefix}/")
+        status = check_export_status(args.bucket, args.prefix)
+        if "error" in status:
+            print(f"Error: {status['error']}")
+        else:
+            print(f"Total files: {status['total_files']}")
+            print(f"10m band files: {status['10m_files']}")
+            print(f"20m band files: {status['20m_files']}")
+        return
+
+    # Download from GCS
+    if args.download_from_gcs:
+        success = download_from_gcs(
+            bucket=args.bucket,
+            prefix=args.prefix,
+            local_dir=args.output,
+            dry_run=args.dry_run,
+        )
+        if success:
+            print("\nNext step: Run preprocessing")
+            print(f"  make preprocess-multitemporal")
+        return
+
+    # Initialize GEE and start exports
+    initialize_gee(project=args.project)
 
     # Run download
     download_all_sites(
@@ -700,6 +882,8 @@ def main():
         years=args.years,
         max_images_per_combo=args.max_images,
         dry_run=args.dry_run,
+        bucket=args.bucket,
+        prefix=args.prefix,
     )
 
 

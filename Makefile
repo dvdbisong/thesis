@@ -3,6 +3,7 @@
 
 .PHONY: run run-name list clean clean-all setup test help \
 	download-multitemporal-dry download-multitemporal \
+	check-multitemporal-status download-multitemporal-gcs \
 	preprocess-multitemporal validate-multitemporal multitemporal-all
 
 # Default config file
@@ -81,9 +82,19 @@ download-multitemporal-dry:
 		--output data/bc_sentinel2_multitemporal/raw/ \
 		--dry-run
 
-## Download multi-temporal Sentinel-2 imagery via GEE
+## Export multi-temporal Sentinel-2 imagery to GCS via GEE
 download-multitemporal:
 	$(CONDA_ACTIVATE) && PYTHONPATH=. $(PYTHON) -m src.preprocessing.gee_download \
+		--output data/bc_sentinel2_multitemporal/raw/
+
+## Check GCS export status
+check-multitemporal-status:
+	$(CONDA_ACTIVATE) && PYTHONPATH=. $(PYTHON) -m src.preprocessing.gee_download --check-status
+
+## Download multi-temporal imagery from GCS to local
+download-multitemporal-gcs:
+	$(CONDA_ACTIVATE) && PYTHONPATH=. $(PYTHON) -m src.preprocessing.gee_download \
+		--download-from-gcs \
 		--output data/bc_sentinel2_multitemporal/raw/
 
 ## Preprocess multi-temporal imagery to tiles
@@ -220,8 +231,10 @@ help:
 	@echo "  make list                   List all experiments"
 	@echo ""
 	@echo "Multi-Temporal Data (Phase 0.5):"
-	@echo "  make download-multitemporal-dry   Query GEE without downloading"
-	@echo "  make download-multitemporal       Download via GEE"
+	@echo "  make download-multitemporal-dry   Query GEE without exporting"
+	@echo "  make download-multitemporal       Export to GCS via GEE"
+	@echo "  make check-multitemporal-status   Check GCS export status"
+	@echo "  make download-multitemporal-gcs   Download from GCS to local"
 	@echo "  make preprocess-multitemporal     Process to tiles"
 	@echo "  make validate-multitemporal       Validate tile integrity"
 	@echo "  make multitemporal-all            Full pipeline"

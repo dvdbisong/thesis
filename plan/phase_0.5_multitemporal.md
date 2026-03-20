@@ -96,15 +96,15 @@ python -m src.preprocessing.gee_download \
     --dry-run
 ```
 
-### Step 3: Download Imagery
+### Step 3: Export Imagery to GCS
 
 ```bash
-# Download all sites, all seasons, all years
+# Export all sites, all seasons, all years to Google Cloud Storage
 python -m src.preprocessing.gee_download \
     --output data/bc_sentinel2_multitemporal/raw/ \
     --max-images 2
 
-# Download specific site/season
+# Export specific site/season
 python -m src.preprocessing.gee_download \
     --output data/bc_sentinel2_multitemporal/raw/ \
     --sites T09UXQ \
@@ -112,9 +112,23 @@ python -m src.preprocessing.gee_download \
     --years 2021 2022
 ```
 
-**Note:** Exports go to Google Drive. Download from Drive to local after completion.
+**Note:** Exports go to GCS bucket `gs://uvic-thesis/kelp_multitemporal/`. Monitor task status in [GEE Task Manager](https://code.earthengine.google.com/tasks).
 
-### Step 4: Preprocessing
+### Step 4: Download from GCS
+
+```bash
+# Check export status
+python -m src.preprocessing.gee_download --check-status
+
+# Download completed exports to local
+python -m src.preprocessing.gee_download \
+    --download-from-gcs \
+    --output data/bc_sentinel2_multitemporal/raw/
+```
+
+**Note:** Requires Google Cloud SDK (`gsutil`) to be installed and authenticated.
+
+### Step 5: Preprocessing
 
 ```bash
 # Process downloaded imagery to match Mohsen's format
@@ -124,7 +138,7 @@ python -m src.preprocessing.preprocess_multitemporal \
     --auxiliary "data/bc_sentinel2/new/Masks 10 scenes/"
 ```
 
-### Step 5: Validation
+### Step 6: Validation
 
 ```bash
 # Validate tile dimensions and band counts
@@ -266,11 +280,12 @@ multitemporal-all: download-multitemporal preprocess-multitemporal validate-mult
 ## Checklist
 
 ### Download Phase
-- [ ] GEE authentication configured
+- [ ] GEE authentication configured (`earthengine authenticate`)
+- [ ] GCS authentication configured (`gcloud auth login`)
 - [ ] Dry run completed successfully
-- [ ] Full download initiated
+- [ ] Full export initiated to GCS
 - [ ] Exports completed in GEE Tasks
-- [ ] Downloaded from Google Drive to local
+- [ ] Downloaded from GCS to local (`--download-from-gcs`)
 
 ### Preprocessing Phase
 - [ ] Raw imagery preprocessed
@@ -305,6 +320,7 @@ numpy>=1.24.0
 ## Notes
 
 1. **GEE Quotas:** Be aware of GEE export quotas. Process in batches if needed.
-2. **Google Drive Space:** Ensure sufficient Drive space (~50GB for raw imagery).
+2. **GCS Bucket:** Exports go to `gs://uvic-thesis/kelp_multitemporal/` (~50GB expected).
 3. **Auxiliary Data:** Reused from existing labeled images (static over time).
 4. **T10UDU:** May lack auxiliary data - handle gracefully in preprocessing.
+5. **gsutil:** Required for downloading from GCS. Install via `pip install google-cloud-storage` or Google Cloud SDK.
