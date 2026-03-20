@@ -40,92 +40,95 @@
 % ============================================================================
 \begin{document}
 
-Title - Methodology - Learning Automata for Adaptive Kelp Forest Monitoring 
+Methodology - Using Learning Automata to Monitor Kelp Forests Adaptively 
 PhD Thesis Research 
 University of Victoria 
-Date - Today
+Today
 
-This chapter explains a method for adaptive monitoring of kelp forests. Satellite based environmental monitoring faces a basic problem - detection methods need feedback to improve but feedback arrives rarely and at unpredictable times. We offer a Learning Automata framework that keeps a pool of different detection methods and learns to choose among them according to the environmental setting. The framework has three linked parts - global policy learning, context aware adaptation plus sparse label handling. A main contribution is the dual layer non-stationarity model. This new extension of classical Learning Automata theory deals with shifting environmental conditions and irregular feedback timing at the same time. We test the approach with Leave-One-Site-Out evaluation along the coastal kelp forests of British Columbia.
+The chapter explains a method for adaptive monitoring of kelp forests. Satellite based environmental monitoring faces a basic conflict - detection algorithms need feedback to become more accurate but feedback arrives only occasionally and at unpredictable moments. We introduce a Learning Automata system that keeps a set of different detection algorithms and learns which one to use according to the surrounding conditions. The system combines three parts - global policy learning, context aware adaptation plus sparse label handling. A key advance is the dual layer non-stationarity model. This model extends classical Learning Automata theory so that it copes with both shifting environmental states and irregular feedback intervals. We test the method - leaving one site out at a time across the coastal kelp forests of British Columbia.
 
 \tableofcontents
 \newpage
 
 
-\section{The Monitoring Challenge}
+% ============================================================================
+\section{The Difficulty of Watching}
 \label{sec:challenge}
+% ============================================================================
 
-British Columbia hosts kelp forests that belong to the planet's most productive ecosystems. Dense stands of seaweed create shelter for multitudes of marine organisms, lock carbon into plant tissue and yield food plus materials that coastal First Nations have harvested for thousands of years. Ocean warming, acute marine heat events and expanding sea urchin grazing now subject those forests to stress they never experienced before. Tracking the condition but also extent of kelp over large areas is a basic requirement for any effective conservation plan but the work turns out to be unexpectedly hard.
+British Columbia hosts kelp forests that belong to the planet's most productive ecosystems. Submerged fronds create habitat for myriad organisms, lock carbon into plant tissue and have supplied coastal First Nations with food plus materials for thousands of years. Present day climate shifts, marine heatwaves and unchecked sea urchin grazing impose threats of a scale never recorded. Tracking ecosystem health across entire coastlines forms a critical step toward protection but the work proves unexpectedly hard.
 
-Satellite remote sensing provides the wide area view that coastline scale monitoring demands. The Sentinel-2 sensor records an image of every part of British Columbia's 25 000 km shoreline once every five days and each pixel represents a square ten metres on a side. The obstacle is no longer the collection of pictures - the obstacle is the conversion of those pictures into trustworthy maps that show where kelp occurs. Three linked problems render this conversion intrinsically hard.
+Satellite remote sensing supplies the wide area view that coastline scale monitoring demands. Sentinel-2 and similar sensors record an image of every part of British Columbia's 25 000-kilometre coast once each five days, with each pixel ten metres across. The obstacle is not the capture of the images - it is the conversion of those images into dependable kelp maps. Three linked problems render that conversion intrinsically hard.
 
 \subsection{Environmental Heterogeneity}
 
-No universal detection algorithm exists - a technique tuned for clear, quiet summer seas collapses once it meets turbid winter water. Bull kelp that grows on wave beaten outer coasts shows a response unlike the same species in sheltered inland sites. A kelp bed that covers sand reflects light in distinct bands compared with a bed that roofs a rocky reef. River outflows, industrial discharge and nearby land add unique interference at each place.
+No single detection algorithm performs well in every location. A method that performs accurately in calm summer water will fail if it is used on turbid winter water. Bull kelp that grows on wave exposed outer coasts differs in behaviour from bull kelp that grows in sheltered inland water. Kelp that stands next to a sandy sea floor reflects light differently from kelp that stands on rocky reef. In addition, river plumes, industrial discharge and nearby land create detection problems that are unique to each site.
 
-A concrete example shows the problem - a deep learning model trains on images from the central coast of British Columbia. It memorizes the spectral pattern that kelp displays under those exact conditions - the clarity of the water, the kinds of seafloor and the usual atmospheric state. When the same model processes images from the northern coast, the water holds different substances, the depths vary and neighbouring objects change. Accuracy drops. The system memorized a single rule for kelp but kelp demands a separate rule for every setting.
+A deep learning network trained on satellite images of the central British Columbia coast memorises the light response pattern of kelp under that exact setting - the clarity of the water, the kind of seafloor and the usual atmospheric state. When the same network is used on the northern coast, where the water holds different sediments, the depths vary and nearby land cover changes, its accuracy drops. The system has stored only a single set of rules for kelp but each new stretch of coastline demands its own rule set.
 
 \subsection{Sparse and Delayed Validation}
 
-Field measurements that serve as reference truth cost a large amount of money and demand complex logistics. A survey team needs a boat, trained divers plus calm weather. The rate of such work stays far behind the speed at which Sentinel-2 acquires new scenes. An image that the satellite records today often waits weeks or months before a diver checks the site and many scenes never undergo any on site check.
+Collecting ground truth validation data is costly and logistically difficult. Field surveys depend on boats, divers plus suitable weather. Those surveys do not match the speed at which satellites acquire images. A Sentinel-2 image recorded today may wait weeks or months for validation and some images never receive it. The majority of satellite images remain without ground truth labels.
 
-A core conflict appears at this point - any detection system needs feedback so that its accuracy rises. But feedback reaches the team at uneven intervals and without warning. Classic machine learning practice expects a thick set of labels that arrive at the same time as the data - the usual step is to train on those labeled records and then release the model. When the same system moves into live service, it must keep learning, because only scattered validation signals reach it once it is already running.
+A basic conflict arises - methods that spot problems need information about their past errors so they can become more accurate. But this information appears only now and then and no one knows when the next piece will come. Classic machine learning practice expects plentiful labels that arrive at the same time as the data - the engineer trains the system on a fully labeled set then releases it. When the same system runs in production, it must keep adjusting long after release, fed by the occasional verified example that trickles in.
 
 \subsection{Non-Stationary Conditions}
 
-The environment and the observation method each evolve through the year. Kelp forests follow a seasonal rhythm - they surge in spring, reach full cover in summer then decline in autumn. Water properties also shift with the season - winter delivers storms, murky water plus low solar elevation. A detection plan that works in August will fail in February.
+The environment and the observation process both shift as time passes. Kelp forests follow a clear seasonal cycle. In spring, the plants grow fast. By summer, the canopy reaches full cover. In fall, the plants age plus decline. Water conditions also shift with the seasons. Winter storms stir up the water, increase turbidity and lower the sun angle. A detection method that works best in August will fail in February.
 
-Climate variability on long timescales causes regime shifts - el NiÃ±o events change ocean temperatures and affect kelp physiology. Marine heatwaves trigger large die offs. A detection method calibrated for normal conditions often fails when anomalies occur.
+Over decades, the climate varies and the system flips to a new state. An El NiÃ±o episode raises the temperature of surface seawater and changes how kelp cells function. A sudden multi week heatwave in the ocean kills a large part of the population. A detection algorithm that was adjusted to the former average situation often gives no useful signal once the anomaly begins.
 
-The way observations occur shifts over time - field validation adheres to seasonal rhythms - the majority of surveys take place during summer, when weather and access are optimal. Budget cycles, weather related hold-ups plus transport limits create differences between years. Because of those factors, the speed at which feedback reaches planners cannot be forecast.
+The process of observation changes over time - field checks follow the seasons - teams carry out most surveys during summer because conditions suit the work. Budget periods, weather setbacks and transport limits shift from one year to the next. Because of those shifts, no fixed schedule governs when feedback reaches the analysts.
 
 \subsection{The Core Question}
 
-Those challenges link to one another - environmental heterogeneity implies that distinct methods suit distinct settings. Sparse feedback implies that we are unable to train a fresh model for every setting. Non stationarity implies that, even if we trained such a model, the best method would continue to shift.
+Those challenges relate to one another - environmental heterogeneity forces different methods to suit different settings. Sparse feedback prevents us from training a fresh model for every setting. Non stationarity ensures that even if we trained such a model, the best method would continue to shift.
 
-This leads to a concrete question - What happens if we abandon the search for one optimal model and instead keep a collection of varied detection methods then train a system to choose the most suitable one for each case? What if we discover which method performs best under specific conditions, infer this relationship from limited feedback and revise the selection as the environment shifts?
+This raises a question - What if we do not train one model that we call the best but keep a set of different detection methods and learn to choose the right one for each case? What if we find out which method suits which situation, learn this link from limited feedback and change the choice when the situation changes?
 
-We set out this exact approach in the present chapter.
+We present the exact procedure in this chapter.
 
 
-The central idea is to choose a model instead of teaching one.
+The core discovery is that performance improves through selection instead of training.
 
-The usual way to handle machine learning treats the choice of model as a single decision. A person trains multiple models, tests each on a validation set, keeps the one with the highest score and releases it into service. After that, the parameters stay constant - the environment is treated as unchanging.
+The usual way to build a machine learning system is to choose the model once and for all. Several models are trained, each is scored on a validation set, the one with the best score is kept plus that single version is put into production. After this point the parameters do not change and the environment is presumed to remain the same.
 
-We propose a fundamentally different approach - treat model selection as an ongoing learning problem. Instead of committing to a single detection method, we maintain a pool of diverse methods, each with distinct strengths and weaknesses plus learn to select among them based on environmental context.
+We introduce a method that differs from common practice - we treat the choice of a model as a task that continues to learn. Instead of locking onto one detection method, we keep a set of varied methods. Each method has distinct advantages and drawbacks. The system learns which method to pick - observing the current surroundings.
 
 \subsection{A Committee of Experts}
 
-This approach works like a panel of specialists, each trained for a distinct set of conditions. One specialist identifies kelp best when the sea is calm and the water is clear. A second specialist performs reliably when the water carries a lot of suspended sediment. A third specialist maintains accuracy when the sun sits low above the horizon. After a fresh satellite image reaches the system, the software inspects the scene for water clarity, solar elevation, season and geographic position then it activates the specialist whose training matches those parameters.
+We treat this method as a panel of specialists, where each member trains under a distinct set of conditions. One specialist detects kelp best when the sea is flat and the water transparent. A second specialist maintains accuracy when suspended sediment clouds the scene. A third specialist tolerates illumination that arrives at a low solar elevation. After a new satellite scene downloads, the software inspects the surrounding circumstances - water clarity, solar angle, season and geographic position. The system then appoints the specialist whose training environment most closely matches the current circumstances.
 
-Selection follows a probabilistic rule, not a fixed one - a probability distribution stays in place for every expert and it shows how much trust we assign to each. When the committee holds three experts, we might now judge that Expert A gives a correct result sixty percent of the time, Expert B thirty percent besides Expert C ten percent. After feedback appears - that is, after we receive a validated prediction - we revise those probabilities. When Expert B surpasses our expectation, its probability rises and the remaining probabilities drop.
+The choice relies on chance, not on certainty - we keep a list of likelihoods for every expert and each value shows how much we trust that expert. When the committee contains three experts, we might now hold the view that Expert A gives a correct result in sixty out of hundred cases, Expert B in thirty besides Expert C in ten. After we receive feedback, which means a verified forecast, we revise those likelihoods. If Expert B surpasses our expectation, its likelihood grows and the remaining values shrink.
 
-As time passes, the probability distribution becomes stable - the system identifies which experts it should trust for each context. This identification proceeds without interruption while the system operates and it uses only scarce feedback. No full model retraining is necessary. Periodic validation alone suffices to refresh the selection preferences.
+As time passes, the probability distribution settles - the system discovers which experts it should rely on for each context. This discovery proceeds without interruption while the system runs and it uses only scarce feedback. No model requires a new training run. The process demands only sporadic validation so that we can refresh the selection preferences.
 
 \subsection{Why Learning Automata?}
 
-This task - choosing actions when outcomes are uncertain - is exactly what Learning Automata handle. Researchers in control theory created LA during the 1960s to let machines adapt their choices in settings where no model of the world exists. Each automaton keeps a list of probabilities, one for every action. It picks an action - sampling from this list, observes a numeric reward or penalty then revises the list so that the chosen action becomes more or less likely next time.
+This task, which consists of choosing actions when the feedback is random, is exactly what Learning Automata were created to handle. Learning Automata appeared during the 1960s as part of control theory and they give a method for reaching decisions in places where the surroundings are not known. One automaton keeps a list of probabilities for every action, picks an action using those probabilities, gets a reward or a penalty then changes the list of probabilities to reflect the result.
 
-Linear approximations display a set of properties that fit our problem.
+Lipid aggregates display a set of attributes that suit our problem.
 
-The agent accepts sparse feedback - it does not wait for a response after every step. When a reward signal arrives, the agent uses it to adjust its policy. If no signal arrives, the agent keeps the current policy and continues to act.
+Sparse feedback tolerance - LA do not need a response after each act. They revise their state only when a response arrives and they stay unchanged when no response arrives.
 
-\item \textbf{Non-stationarity handling:} LA adapts when the environment changes. When the best action changes across time, the probability distribution adjusts and converges to the new optimum.
+Non-stationarity handling - LA adapts when the environment changes. After the best action changes, the probability distribution adjusts until it matches the new best action.
 
-- Convergence guarantees - If the model matches reality, LA reach the best action with proof. This firm result sets them apart from improvised rules.
+The algorithm receives a formal assurance - if the model matches reality in every relevant respect, the sequence of actions that LA produces ends at the action that yields the highest possible reward. This provable property separates LA from rules of thumb that lack any such guarantee.
 
-\textbf{Einfachheit:} Die Aktualisierungsvorschriften benÃ¶tigen wenig Rechenaufwand. Es entfÃ¤llt die Berechnung von Gradienten, es entfÃ¤llt Backpropagation - es bleibt nur die Anpassung von Wahrscheinlichkeiten.
+\item \textbf{Simplicity:} The update rules demand only a small amount of calculation. They do not need a gradient, they do not need backpropagation - they only adjust probabilities.
 
-We place the formal account of LA in Appendix~\ref{app:la-theory}. At this point, a plain description is enough. LA give a clear rule that decides, from scarce feedback and while the situation shifts, which expert the system should trust.
+We place the full mathematics of LA in Appendix~\ref{app:la-theory}. At this point, the basic idea is enough. In short, LA offer a systematic method to decide which expert deserves trust, using only sparse feedback, even when the environment keeps changing.
 
 
-Section - Framework Overview
-Label - sec:overview
+Framework Overview
 
-This section outlines the complete design of the adaptive monitoring framework. The system ingests satellite image tiles and generates maps that locate kelp. It refines its choices of which tiles to prioritize - learning from occasional, sparse validation feedback.
+This section offers a concise map of the entire framework - it lists each principal component and shows how data flows from one stage to the next.
+
+This section presents the complete structure of the adaptive monitoring framework. The system ingests satellite image tiles and outputs kelp detection maps. It learns from limited validation feedback plus refines its selection choices as time passes.
 
 \subsection{System Architecture}
 
-The framework includes three parts that work together - figure~\ref{fig:architecture} shows those parts.
+The framework contains three parts that work together - Figure~1 shows their layout.
 
 \begin{figure}[h]
 \centering
@@ -187,51 +190,47 @@ The framework includes three parts that work together - figure~\ref{fig:architec
 \label{fig:architecture}
 \end{figure}
 
-The system keeps a probability list that covers every detection heuristic in the pool. 
-This list records which heuristics achieved good results in the past. 
-Once new feedback reaches the system, the list changes under Learning Automata rules.
+Global Policy Learning keeps a probability spread that covers every detection heuristic in the pool. This spread records which heuristics the system has favored in the past because they delivered good results. Each time feedback arrives, the spread changes through the fixed rules of Learning Automata.
 
-The Context Aware Adaptation module examines the surroundings of every input tile. It stores a record of earlier encounters in a memory bank and adjusts the global preferences to match the present setting. When the system recognises the situation, it relies on the stored record. When the situation is new, it returns to the global preferences.
+Context-Aware Adaptation reads environmental features from every input tile. It stores earlier encounters in a memory bank and adjusts the global preferences to match the present context. When the system recognises the situation, it relies on previous data. When the situation is new, it returns to the global preferences.
 
-Sparse Label Handling stores forecasts until the true label appears. The label can arrive days, weeks or months after the forecast. Once the label is available, the system fetches the stored forecast, calculates the reward and then sends update signals to Component 1 and Component 2.
+Sparse Label Handling stores predictions until a label appears. After days, weeks or even months, the true label arrives - the system fetches the stored prediction, calculates the reward and then updates Component 1 and Component 2.
 
 \subsection{The Inference Path}
 
-When a fresh satellite tile reaches the system, the processing sequence begins in this way:
+RESULT_TOO_LONG
 
 Extract context. 
-The system retrieves environmental attributes from the tile - spectral statistics, texture values, the calendar day and the geographic coordinates. Those attributes combine into a context vector that records the prevailing state of the scene.
+We calculate environmental attributes from the tile - spectral statistics, texture values, the calendar day and the geographic position. Those attributes combine into a context vector that records the current state.
 
-The system fuses worldwide and nearby preferences - it employs the context vector to search the memory bank for earlier situations that resemble the present one. When it finds such contexts and their recorded results stay uniform, it merges their preferences with the global policy. If the context has never appeared before, the system depends chiefly on the global policy.
+We begin - searching the memory bank for past situations that resemble the current context vector. When we locate stored contexts whose outcomes were repeatedly favourable, we merge the preferences tied to those old contexts with the parameters of the global policy. If no comparable context exists, we assign almost all weight to the global policy.
 
-A heuristic is chosen - drawing from a blended probability distribution. The choice is random - even heuristics that carry a low probability still appear from time to time, which keeps the search process open to new possibilities.
+Choose a heuristic - we pick a detection heuristic - drawing from a blended probability distribution. The choice is random - heuristics that have a low probability still receive selection at times - exploration continues.
 
-The chosen method examines the tile and returns a binary mask that labels each pixel as kelp or no kelp.
+The chosen heuristic scans the tile and outputs a binary mask that labels each pixel as either kelp or no kelp.
 
-The system stores the forecast - the forecast, the context vector that belongs to it and the number of the chosen heuristic move into a buffer until the validator checks them.
+The prediction, the context vector and the index of the chosen heuristic are all placed in a buffer so they can be checked later.
 
 \subsection{The Feedback Path}
 
-The validation label arrives, sometimes weeks after we produced the original prediction. We process it in the following way:
+A validation label reaches us weeks after the first prediction. We handle it in this way:
 
-The program fetches the buffered prediction. 
-It uses the stored location and the exact timestamp to find the matching record inside the buffer.
+Fetch the stored forecast. 
+We use the position and the exact time to find the matching record in the buffer.
 
-Compute the reward - we assess the degree to which the prediction aligns with the ground truth label and we normally quantify this match with the Intersection-over-Union metric.
+Compute the reward - we assess how closely the prediction aligns with the ground truth, usually - calculating the Intersection over Union (IoU) metric.
 
-The reward signal changes the probability distribution across heuristics. When a heuristic performs well, its probability rises - when it performs poorly, its probability falls or it stays the same, according to the learning automaton scheme.
+The global policy receives an update - the reward signal alters the probability distribution that spans the heuristics. When a heuristic performs well, its probability rises - when it performs poorly, its probability falls or it stays the same, according to the rules of the LA scheme.
 
-Update the memory bank - storing the context vector and the observed performance - this addition enriches later context aware adaptation.
+\item \textbf{Refresh the memory bank.} We record the context vector and the performance that we observe - later adaptation can use that context.
 
-The central point is that those feedback updates operate separately from inference. The system keeps generating predictions and does not pause until confirmation shows up. Once confirmation arrives, the system acquires new knowledge. But the acquisition happens out of step, occurs only now plus then and lags behind the moment of prediction.
+A central point is that those feedback updates operate apart from inference. The system keeps producing predictions and does not pause until a label shows up. Once the label arrives, the system adjusts its parameters. The adjustment happens at a different time from the prediction, occurs only now plus then and lags behind the original input.
 
 
-% ============================================================================
-\section{Component 1: Discovering Effective Methods}
-\label{sec:component1}
-% ============================================================================
+Component 1: Discovering Effective Methods 
+Label - sec:component1
 
-The first component holds the system's global preferences for detection heuristics. It acts as the system's general view on which methods usually perform well, based on an average of all contexts it has experienced.
+The first component stores the system's general preferences among detection heuristics. It records the system's broad view on which methods usually succeed, computed as an average across every context the system has processed.
 
 \subsection{The Probability Distribution}
 
@@ -244,63 +243,62 @@ where each $p_i$ represents the system's confidence in heuristic $h_i$. Initiall
 p_i(0) = \frac{1}{r} \quad \text{for all } i
 \]
 
-Feedback arrives step by step - each step shifts the probability assigned to every heuristic. A heuristic that returns high reward gains extra probability - a heuristic that returns low reward yields probability. After enough steps, almost the entire probability rests on the heuristics that deliver the highest reward.
+Feedback grows over time and the distribution changes - heuristics that achieve strong results gain probability mass. Heuristics that deliver weak results lose probability mass. In the end, the distribution centers on the heuristics that perform best.
 
 \subsection{The Update Rule}
 
-A reward is calculated once a forecast that relied on heuristic $h_i$ receives confirmation. This reward $R$ equals 0 when the detection fails entirely and equals 1 when the detection succeeds without error.
+A prediction that heuristic $h_i$ produces receives validation. At that moment the system measures detection accuracy and assigns a reward. The reward $R$ equals 0 when the detection fails entirely plus equals 1 when the detection succeeds without error.
 
-Probability adjustment relies on the chosen learning automata rule. The most basic rule, Linear Reward Inaction, changes the probability vector only after the environment returns a reward.
+The probability revision relies on the Learning Automata rule that is chosen. The most basic rule, called Linear Reward Inaction (L$_{\text{R-I}}$), revises the probability only when positive feedback arrives.
 
 \begin{itemize}
-\item When the reward lies above the threshold that marks acceptable performance, raise the probability $p_i$ and scale the remaining probabilities down so that their relative proportions stay intact. 
-\item When the reward falls short of that threshold, leave every probability untouched. 
+\item When the reward rises above the threshold that marks good performance, raise the value of $p_i$ and lower the remaining values in proportion to their current size.
+\item When the reward stays below the threshold that indicates poor performance, leave every value unchanged.
 \end{itemize}
 
-The system tolerates noise because it refrains from penalising a heuristic after one bad result. It withholds reward until the heuristic shows repeated good results. We list the exact update equations in Appendix~\ref{app:la-theory}.
+This design, which refrains from imposing an immediate penalty, equips the system with tolerance to noisy data. One substandard outcome does not instantly penalize a heuristic - only repeated high quality results receive a reward. Formal update equations appear in Appendix~\ref{app:la-theory}.
 
-We test six versions of three alternative algorithms - Linear Reward Penalty, Pursuit besides Variable Structure - because each balances learning speed against stability in a distinct way. The variants appear in Appendix~\ref{app:la-theory}. Through ablation studies we determine which variants detect kelp most effectively.
+Other approaches - Linear Reward Penalty, Pursuit besides Variable Structure - balance learning speed against stability in different ways. We test six versions, each outlined in Appendix~\ref{app:la-theory} and we determine the most effective ones for kelp detection by means of ablation studies.
 
 \subsection{Why This Works}
 
-The global policy acts as the system's default preference - when no context specific data exists, it offers the best available estimate. It gains strength - combining experience from every context. If heuristic h3 succeeds in seventy percent of varied conditions, the system records a high p3.
+A global policy acts as the system's preset preference - when no context specific data exist, it supplies the most reliable estimate that is currently available. Its value comes from pooling results that were gathered in every context - if heuristic $h_3$ yields a good outcome in seventy percent of varied situations, the system records this fact - assigning a high value to $p_3$.
 
-Global settings treat every situation the same - a rule that works well in hot months often fails in cold months. The single policy smooths away such seasonal differences. A second module is necessary so that the system can adapt to each distinct context.
+Global preferences operate as blunt tools - a heuristic that performs well during summer often fails in winter. The global policy smooths out those seasonal differences. A second component becomes necessary to capture patterns that depend on specific contexts.
 
 
-Component 2: Adapting to Context 
+Component 2: Adjustment to Context
 \label{sec:component2}
 
-The second component allows the system to adjust its choice of heuristic according to the surrounding context. The logic is simple - when present conditions match earlier situations in which a specific heuristic performed well, the system gives preference to that heuristic.
+The second component lets the system change which heuristic it selects when the environment around it changes. The idea is simple - if the present situation looks like an earlier situation in which one heuristic performed well, the system gives preference to that same heuristic.
 
 \subsection{Context Features}
 
-Each satellite tile holds data that describe the environmental situation present when the image was taken. We pull out a context vector $\mathbf{c}$ that encodes the following:
+Each satellite tile contains data that describes the environmental situation that existed when the image was taken. We isolate a context vector c that stores:
 
-Spectral statistics - The mean and variance for every spectral band record the color of the water, its turbidity plus the state of the atmosphere. 
-Spatial texture - Entropy and homogeneity values show how rough the surface is but also describe the wave pattern. 
-Temporal context - The calendar day of the year records the seasonal cycle. 
-Geographic location - Latitude and longitude record the properties of the region. 
-Auxiliary data - Where it exists, bathymetry as well as substrate type are added.
+Each spectral band supplies its mean and its variance - those two numbers record water colour, turbidity plus atmospheric state.
 
-This vector condenses the nature of the conditions that the system handles. If two tiles contain almost identical vectors, they probably need the same detection approach.
+Entropy and homogeneity values describe spatial texture - they reveal surface roughness but also wave condition.
+
+The calendar day provides temporal context - it encodes seasonal cycles.
+
+Latitude and longitude give geographic position - they encode attributes that vary from region to region.
+
+Bathymetry as well as substrate type serve as auxiliary data - they are used only when measurements exist.
+
+The context vector holds a summary of the conditions that apply. When two tiles have context vectors that are close, they probably need the same detection strategy.
 
 \subsection{The Memory Bank}
 
-We keep a memory bank that stores past experiences. 
-The bank has the form 
-\[
-\mathcal{M} = \{(\mathbf{c}_j, \mathbf{p}_j, R_j)\}
-\] 
-Each entry holds a context vector, the heuristic selection probabilities that were active under that context and the reward that followed. As time passes, the memory bank grows into a log that links each context to the choices that succeeded.
+We store a collection of past events - every record holds three items - a context vector, the set of heuristic probabilities that were active in that situation and the reward that followed. As time passes, the collection grows plus preserves a clear trace of which actions succeeded under which conditions.
 
-A fresh tile carries a context vector c - we look for the k contexts that lie closest to it in the stored collection. To scan a large memory bank quickly, we use FAISS, a software library that performs approximate nearest neighbor search at high speed.
+A fresh tile brings its context vector c - we look up the k earlier contexts that lie closest to c by exact nearest neighbor search. To keep the lookup fast while the memory bank grows, we run the search through FAISS, a library that performs approximate nearest neighbor search with high speed.
 
 \subsection{Local Preference Estimation}
 
-The system fetches a set of neighbors - each neighbor shows which action succeeds under conditions that match the current state. We treat every neighbor as evidence. We weigh its preference score by its reward and by its cosine similarity to the present state. We add the weighted scores and divide by the sum of the weights. The result is a local probability distribution over actions.
+The system fetches neighboring cases that serve as evidence about effective choices under comparable conditions. It builds a local preference distribution through a weighted average of the neighbors' preferences, where the weights derive from both the rewards those neighbors obtained and their measured similarity to the current case.
 
-Neighbors that resemble the current context and that received high rewards supply a larger portion of the local estimate. The outcome of this procedure is a distribution $\mathbf{p}_{\text{local}}$ that shows what succeeded under comparable conditions.
+Neighbors that show strong similarity to the present context and that earlier obtained high rewards receive larger weight when the agent forms its local estimate. The procedure outputs a distribution $\mathbf{p}_{\text{local}}$ that records which actions succeeded under comparable conditions.
 
 \subsection{Blending Global and Local}
 
@@ -310,70 +308,72 @@ The final selection probability blends global and local preferences:
 \label{eq:blending}
 \end{equation}
 
-The blending coefficient $\alpha$ sets the balance. 
-If $\alpha$ equals 1, the system follows only the global policy and discards local context. 
-If $\alpha$ equals 0, the system relies only on local experience plus disregards global trends. 
+The blending coefficient $\alpha$ sets the balance.
+
+If $\alpha$ equals 1, the system relies solely on the global policy and disregards local context.
+
+If $\alpha$ equals 0, the system relies solely on local experience plus disregards global trends.
+
 For values between 0 and 1, the system combines information from both sources.
 
-The system adjusts the weight $\alpha$ in response to the contents of the memory bank. If the bank stores numerous contexts that resemble one another and that lead to steady outcomes, the value of $\alpha$ drops - the model relies on local experience. If the stored contexts are new or their outcomes vary, the value of $\alpha$ rises - the model returns to global preferences.
+We adjust $\alpha$ according to the contents of the memory bank. If the bank stores many near identical contexts whose outcomes agree, $\alpha$ drops and the system trusts local experience. If the contexts are new or their outcomes conflict, $\alpha$ rises plus the system relies on global preferences.
 
 \subsection{Why This Works}
 
-Context-aware adaptation relies on patterns that exist within the problem. Environmental states do not occur at random - they form groups. When winter water in the Strait of Georgia is turbid, it resembles other winter turbid states in that same area. If a specific heuristic works under such states, it will probably work when they return.
+Context-aware adaptation uses patterns that already exist in the problem. The surrounding conditions do not appear in a random order - they form groups. When the water in the Strait of Georgia is turbid in winter, that state resembles other winter turbid states in the same place. If a heuristic works under such a state, it will probably work the next time the same state appears.
 
-The memory bank stores past solutions so the system can reuse them instead of learning a new model. No training links context features to heuristic success. The method recalls stored cases that match the present situation. It stays stable, allows clear inspection and needs no extra training phase.
+The memory bank stores past solutions so that the system can reuse them without learning new parameters. No model learns to estimate heuristic quality from context descriptors. The system records successful cases and fetches them once a matching situation appears. This method resists disturbance, allows clear explanation plus demands no extra training phase.
 
 
 RESULT_TOO_LONG
 
-The third component addresses the practical situation in which validation labels appear only on occasion and at unpredictable intervals. The majority of predictions will never receive a label. When a label does arrive, it may show up days, weeks or even months after the original prediction. Despite this delay, the system must keep working and must not pause until feedback arrives. At the same time, it must incorporate the label once it appears.
+The third component deals with the practical fact that validation labels appear only now and then and arrive after unpredictable delays. The majority of predictions will never receive a label. When a label does arrive, it may come days, weeks or months after the original prediction. The system has to keep running without pausing for this feedback but it must still adjust its model once the feedback finally appears.
 
 \subsection{The Prediction Buffer}
 
-Each forecast is stored in a buffer
+Each forecast is stored in a buffer - the buffer is a set of ordered records
+
 \[
 \mathcal{B} = \{(t_j, \mathbf{c}_j, i_j, \hat{\mathbf{y}}_j)\}
-\] 
-For every element, the buffer holds the exact time, the context vector, the index of the chosen heuristic and the predicted mask. A hash map permits rapid retrieval by place plus time.
+\]
 
-A validation label reaches us for a specific place and day - we fetch the stored prediction that relates to that place plus day, calculate the reward and initiate updates for Component 1 and Component 2. After that step, we delete the item from the buffer.
+Each record holds the exact moment of the forecast, the context vector that was active, the index of the heuristic that was chosen and the mask that was predicted. A hash map gives rapid access to any record when the query specifies both spatial coordinates and a time value.
+
+A validation label reaches us for a specific location and date. We fetch the stored prediction that matches that label, calculate the reward plus start updates for Component 1 and Component 2. After that, we delete the entry from the buffer.
 
 \subsection{Buffer Management}
 
-Forecasts do not stay valid forever - conditions in the environment shift - a forecast created six months earlier can lose value for present learning. The system enforces a strict upper limit on buffer age, for example six months. Any forecast that exceeds this limit is removed and receives no further revision.
+A system does not allow a forecast to remain valid for an unlimited period. External factors shift - a forecast issued six months earlier may fail to match the data that the system now studies. To prevent stale guidance, the code stores each forecast with a time stamp and enforces a strict upper limit on storage duration, for example six months. Any forecast whose age exceeds this limit is deleted and no attempt is made to revise it.
 
-This embodies our design philosophy - the system must learn from feedback that arrives while the situation is still current, not from feedback that arrives long after the event. A reward that reaches the system at once carries more information than a reward that reaches the system once the environment has already changed.
+Our design philosophy is that the system must learn from feedback that arrives soon after an event, not from feedback that arrives long after conditions have changed. A reward that the system receives at once carries more useful information than a reward that reaches the system once the situation is already different.
 
 \subsection{Temporal Decay}
 
-The system reduces a reward when validation occurs after the prediction. 
-The effective reward equals the original reward multiplied by the decay factor raised to the power of the delay counted in days. 
-The delay is the number of days between the moment of the prediction and the moment of the validation. 
-The decay factor is a constant value below one. 
-Feedback that arrives soon after the prediction keeps its full value. 
-Feedback that arrives long after the prediction receives a smaller value.
+The system reduces a reward when the validation occurs after a delay. The adjusted reward equals the original reward multiplied by the decay factor raised to the power of the delay counted in days. Recent feedback keeps its full value - earlier feedback loses value.
 
-This decay fulfils two objectives. 
-It gives priority to recent data because the newest observations relate more closely to present circumstances. 
-It monitors non stationarity - when the best heuristic shifts across time, the down weighting of earlier rewards lets the system adjust.
+This decay fulfils two roles
+\begin{enumerate}
+\item \textbf{Recency takes priority:} Experience that arrived recently has higher relevance to present conditions.
+\item \textbf{Non-stationarity is tracked:} When the optimal heuristic shifts through time, old rewards lose weight and the system adjusts.
+\end{enumerate}
 
 \subsection{Learning Without Waiting}
 
-The central design rule is asynchronous learning - the inference path, which takes a tile as input and outputs a prediction, runs without pause plus does not wait for validation. The feedback path, which takes a label as input and outputs an update, runs whenever a label arrives. Those two paths operate independently.
+The central design rule is asynchronous learning - the inference path, which takes a tile as input and produces a prediction as output, runs without pause plus does not wait for validation. The feedback path, which receives a label as input and sends an update as output, runs whenever a label becomes available. Those two paths do not depend on one another.
 
-This design reflects how environmental monitoring works in practice. Satellites collect images once every few days. Field teams perform validation when they have the resources and when weather plus logistics allow. The system does not pause prediction until validation data appear but it updates its models as soon as validation data arrive.
+This design fits the way environmental monitoring works in practice. A satellite records an image once every multiple days. A field team performs validation only when funds, staff and weather allow. The system does not pause until validation arrives - it issues forecasts right away. Each new validation result enters the training set - the model updates its parameters.
 
 
 % ============================================================================
-\section{Novel Element - Two Level Change Over Time}
+\section{Fresh Element - Two Tier Non-Stationarity}
 \label{sec:dual-layer}
 % ============================================================================
 
-Classical Learning Automata theory studies systems that must pick actions in situations where the best choice shifts across time. This paper widens the theory so that it covers a further source of change - the moment at which information about the best action arrives also varies.
+Classical Learning Automata theory studies systems that must pick actions in situations where the best choice shifts repeatedly. The present study adds a further source of change - the moment at which information about the best action becomes available also varies.
 
 \subsection{Two Sources of Change}
 
-Monitoring of kelp forests faces two separate forms of non stationarity that analysts need to address at the same time.
+Kelp forest monitoring confronts two separate causes of non stationarity that analysts must treat at the same time:
 
 \begin{figure}[h]
 \centering
@@ -397,57 +397,54 @@ Monitoring of kelp forests faces two separate forms of non stationarity that ana
 
 \subsubsection{Layer 1: Environment Dynamics}
 
-This layer shows how the best detection rule shifts through time. Two distinct mechanisms cause the shift.
+The optimal detection heuristic evolves over time - two mechanisms cause this change.
 
-Kelp forests repeat the same sequence each year - during summer, the surface canopy reaches full size and sensors locate it without difficulty. Winter storms break off large sections of the canopy and suspended sediment clouds the water. An algorithm that locates kelp in clear summer water will probably miss plants in cloudy winter water. The most reliable rule for detection changes in a regular way that matches the seasons.
+Kelp forests repeat the same sequence each year - during summer, the surface layer of fronds reaches full size and satellites spot it without difficulty. After winter storms arrive, waves break off large sections of the canopy and stirred up particles cloud the water - the remaining cover is harder to see. A rule that works in clear summer water often gives poor results once turbidity rises. The best rule changes in a regular way that matches the calendar.
 
-\item \textbf{Climate regime shifts (stochastic):} 
-Year-to-year variation brings sudden, random changes - el NiÃ±o events raise or lower sea temperatures and disrupt kelp metabolism. Marine heatwaves create conditions that lack any earlier match. Each upheaval favours a different heuristic but the timing of the next shift remains unknown.
+Climate regime shifts (stochastic)
+Year-to-year variability brings sudden, unpredictable changes. El NiÃ±o episodes raise or lower sea temperatures and disrupt kelp metabolism. Marine heatwaves create extremes that have no earlier match. Each upheaval favors a different heuristic but the sequence of upheavals has no fixed rhythm.
 
-Classical LA theory labels the first type Periodic Switching Environment and the second type Markovian Switching Environment. Layer 1 merges both types.
+In classical learning automata theory, researchers label the first type Periodic Switching Environment and the second type Markovian Switching Environment. Layer 1 unites the two approaches.
 
 \subsubsection{Layer 2: Feedback Dynamics}
 
-The layer represents the moment when validation labels reach the system. It adds a new element to LA theory. Two mechanisms control when feedback appears:
+This layer represents the moment when validation labels reach the system. It extends LA theory in a new way. Feedback timing depends on two mechanisms.
 
-Many validation surveys occur in summer, when weather and sea conditions allow boat based fieldwork. Winter validation is rare. The probability of receiving feedback follows a seasonal pattern.
+Many surveys that check data take place in summer, because calm weather and gentle seas allow teams to work from small boats. Surveys in winter almost never occur. The chance that new data arrives at the office rises plus falls with the seasons.
 
-\item \textbf{Operational variability (stochastic):} The amount of research money changes from year to year. Field teams are not always available at the same rate. Weather causes delays and equipment breaks - work stops without warning. In certain years, researchers collect many validation measurements - in other years, they collect few.
-\end{itemize}
+The amount of money that supports research changes from year to year. The number of trained field staff who are ready to work also rises and falls. Snow, wind or broken instruments force sudden pauses. In some seasons the team gathers many validation records - in other seasons the team gathers few.
 
-Layer 2 operates on its own and does not depend on Layer 1. 
-A summer day can present ideal detection conditions within Layer 1 while Layer 2 still shows a high chance of feedback. 
-A winter day can offer difficult detection conditions within Layer 1 while Layer 2 shows a low chance of feedback. 
-The states of the two layers do not have to match.
+Layer 2 stands apart from Layer 1 - on a summer day, Layer 1 may offer ideal detection conditions, while Layer 2 shows a high chance of feedback. On a winter day, Layer 1 may present difficult detection conditions, while Layer 2 shows a low chance of feedback. The states of the two layers do not have to match.
 
 \subsection{Why This Matters}
 
-Classical LA theory centers on Layer 1 - the environment changes and the automaton must follow the shifting best action. This theory silently presumes that feedback appears at fixed intervals. In real systems, feedback arrives under its own timing rules.
+Classical LA theory addresses Layer 1, where the environment shifts and the automaton must follow the best action as it changes. This theory takes for granted that feedback will appear at steady intervals. In real systems, feedback appears only when its own rules allow it.
 
-The dual layer model reflects this situation. 
-The system endures long stretches without feedback - during winter, multiple months often elapse before any validation arrives. The system must preserve steady behavior while it receives no updates.
+The dual layer model captures this reality
 
-\item \textbf{The system receives sudden feedback surges.} During summer, multiple surveys validate predictions within a short period. The system must absorb and process this feedback without delay.
+\begin{itemize}
+\item \textbf{The system receives no feedback for long stretches.} During winter, multiple months often pass without any validation. The system must continue to operate in a stable manner and must do so without fresh data.
 
-The best action and the chance to receive feedback often move in opposite directions. When winter conditions arrive, some heuristics perform well but they yield sparse validation data. The system then acquires little knowledge about the exact situations that most demand adaptation.
+The system receives sudden surges of feedback - during summer, multiple surveys confirm forecasts in quick succession. The system needs to absorb this feedback without delay.
 
-When we model both layers in an explicit way, we analyse how learning evolves under conditions that reflect real world events. We create LA schemes that stay stable while droughts occur and that react quickly when bursts appear. We evaluate how robust the schemes remain when we alter the pattern of feedback.
+The best action and the chance to receive feedback often move in opposite directions. When winter conditions arrive plus certain heuristics perform well, the system receives sparse validation data. It therefore gains little knowledge about the very conditions where it most needs to adapt.
+
+By modeling both layers explicitly, the team analyzes learning dynamics under realistic conditions. The team designs LA schemes that stay stable during droughts and stay responsive during bursts. The team tests robustness against different feedback patterns.
 
 \subsection{Scientific Contribution}
 
-The dual layer non-stationarity model supplies three advances.
+The dual layer non-stationarity model offers three distinct advances.
 
-Novel theoretical extension - We extend the established theory of learning automata so that it treats feedback timing as its own random process in settings that change over time. This creates new analytical questions - How does learning performance decline when feedback arrives only rarely? Which learning automata schemes remain stable when the timing of feedback varies?
+A new theoretical extension - We expand the standard learning automata theory that deals with environments that change over time. We treat the moment when feedback arrives as a second random sequence. This step raises new analytical questions - How much does learning worsen when feedback arrives only rarely? Which learning automata designs stay most stable when the arrival time of feedback varies?
 
-\item \textbf{Domain-appropriate modeling:} The formulation records actual attributes that belong to environmental monitoring. Seasonal patterns and operational variability exist as facts. When the model states them outright, the outcome gains realism.
+\item \textbf{Domain-appropriate modeling:} The formulation records the true attributes of environmental monitoring. Seasonal patterns and operational changes exist. When the model states them, it becomes more realistic.
 
-The two layers allow separate configuration - researchers test the impact of Layer 1, which controls environment dynamics, while they freeze Layer 2 at a fixed setting. They then reverse the procedure, testing Layer 2 while Layer 1 remains unchanged. This separate control supports strict experimental study of how each source of non stationarity influences learning.
+Ablation capability - The system allows each layer to be set on its own. Layer 1 controls environment dynamics - Layer 2 remains fixed while Layer 1 changes and the reverse is also possible. Tests carried out in this way reveal how each source of non stationarity alters learning.
 
 
-Section - Evaluation Strategy 
-Label - sec:evaluation
+Section 6 explains the plan that will be used to judge how well the method works.
 
-We tested the framework on photographs of kelp forests taken along the coast of British Columbia. The test used Leave-One-Site-Out cross validation and followed a staged ablation protocol.
+We tested the framework with photographs of kelp forests taken along the coast of British Columbia. The evaluation relied on Leave-One-Site-Out cross validation and followed a staged ablation protocol.
 
 \subsection{Datasets}
 
@@ -466,82 +463,77 @@ Figshare Landsat & 432 & Yes & Cross-sensor transfer \\
 \end{tabular}
 \end{table}
 
-The main dataset holds Sentinel-2 images that cover seven coastal sites in British Columbia. Each image tile measures 512 by 512 pixels and each pixel represents a ground square of ten metres. Every tile stores twelve spectral and auxiliary bands. Analysts who specialise in coastal ecology have drawn precise kelp masks for each tile. Complete dataset details appear in Appendix~\ref{app:datasets}.
+We built the main dataset from Sentinel-2 images that cover seven locations along the coast of British Columbia. Specialists drew precise outlines of kelp for every image. Each tile measures 512 by 512 pixels and every pixel represents ten metres on the ground. The tiles store twelve channels - spectral layers plus auxiliary data. Complete details of the dataset appear in Appendix~A.
 
 \subsection{Heuristic Pool}
 
 The heuristic pool contains two groups of models. 
 
-Ten site specific models exist - each model uses a UNet-MaxViT architecture. Each model was trained with the Leave-One-Site-Out protocol - every model encountered a distinct set of training conditions. 
+Ten site specific models exist - each model uses a UNet-MaxViT architecture and trains under the Leave-One-Site-Out protocol. Every model trains on data from nine sites and excludes one site - each model experiences a distinct training set. 
 
-One RGB model exists - this model was trained on all BC sites while it used only the visual spectral bands. This choice allows the model to transfer to Landsat imagery that carries the same bands.
+One RGB model exists - this model trains on all BC sites but limits input to the visual spectral bands. The restriction to visible wavelengths allows the model to transfer to Landsat imagery, because Landsat records the same three bands.
 
 \subsection{Leave-One-Site-Out Protocol}
 
-Primary evaluation proceeds - leaving one site out at a time. The LA framework learns from six sites. It is tested on the single site that was left out. This sequence is repeated until every one of the seven sites has served as the test site. The outcomes from all runs are combined.
+For the main test, we exclude one site from the set - we train the LA system on the remaining six sites. We then test the trained system on the excluded site. We repeat this process for each of the seven sites. We combine all individual test outcomes into a single summary.
 
-The protocol evaluates how well a system adapts to new geographic areas that it has not encountered before. This ability is essential for large scale deployment along coastlines.
+The protocol evaluates how well a system performs when it encounters geographic regions it has not seen before. This ability is essential for deployment across an entire coastline.
 
 \subsection{Staged Ablation}
 
-A complete test of every design option would demand tens of thousands of separate trials. To keep the experimental plan feasible, we use a stepwise method:
+A complete test of every design option would demand tens of thousands of trials. To keep the experimental plan feasible, we use a stepwise method:
 
-Stage 1: LA variant selection - we compare six LA schemes (L$_{\text{R-I}}$, L$_{\text{R-P}}$, VSLA, Pursuit, Discretized Pursuit, SERI) with the full system. We identify the two or three schemes that achieve the highest performance.
+Stage 1: Selection of the LA variant - we test six LA schemes - L<sub>R-I</sub>, L<sub>R-P</sub>, VSLA, Pursuit, Discretized Pursuit besides SERI - against the complete system. We then select the two or three schemes that perform best.
 
-Stage 2: Component ablation. 
-We test each subset of parts - the global module alone - the global module joined with the context module - the global module joined with the sparse module; and the complete system. We run each subset together with the best LA variants.
+We test combinations of components - global only, global plus context, global plus sparse and the full system - using the top LA variants.
 
-Stage 3: Tolerance for sparse labels - we test how the system reacts when we lower the number of labels to 100 percent, 50 percent, 10 percent or 5 percent of the original total, while we keep the delay pattern that performed best in the earlier step.
+Stage 3: We test how the system tolerates sparse labels - we lower the proportion of labeled data stepwise to 100 percent, 50 percent, 10 percent and 5 percent while we keep the delay pattern that gave the best result in the previous stage.
 
-We test whether the inclusion of bathymetry, substrate and other auxiliary layers changes the outcome.
+Stage 4: Auxiliary data - we conduct tests that either include or exclude bathymetry, substrate and additional auxiliary layers.
 
-Stage 5: Cross sensor transfer - we test the RGB-trained model on the Figshare Landsat dataset.
+Stage 5: We test the RGB-trained model on Figshare Landsat data that come from a different sensor.
 
-This step-by-step method cuts the number of required computer runs from more than 46 000 to about 500 but it keeps the study scientifically sound.
+This step-by-step method lowers the number of required computations from more than 46 000 to about 500 and it still upholds scientific standards.
 
 \subsection{Baselines}
 
-We evaluate our approach - comparing it with three reference methods. We test against random selection, where each heuristic has an equal chance of being picked at every step. We use the single heuristic that yields the highest average score when applied alone across all tasks. We include an oracle that always selects the heuristic which achieves the best result for every individual tile - this sets an upper limit that assumes advance knowledge of the outcome.
+We compare our method with three reference strategies. 
+We include a baseline that selects a heuristic at random, each option chosen with equal probability. 
+We test against the single fixed heuristic that achieves the highest average score across the entire dataset. 
+We use an oracle that, for every tile, picks the heuristic that yields the best possible result - this sets an upper bound that would demand perfect advance knowledge.
 
 \subsection{Metrics}
 
 Primary detection metrics
-\begin{itemize}[noitemsep]
-\item \textbf{Intersection over Union (IoU):} The ratio of the area shared by the predicted kelp mask and the true kelp mask to the total area covered by either mask.
-\item \textbf{F1-score:} The harmonic mean of precision plus recall.
-\end{itemize}
 
-Los-angeles-specific metrics
-\begin{itemize}[noitemsep]
-\item \textbf{Convergence speed:} Number of steps required until the system attains ninety percent of its ultimate performance level.
-\item \textbf{Final entropy:} Degree to which the probability distribution concentrates once convergence occurs.
-\end{itemize}
+Intersection over Union (IoU): This value shows how much the predicted kelp mask aligns with the actual kelp mask. It equals the area where both masks agree divided by the total area that either mask claims.
 
-We present the formal definitions in Appendix~\ref{app:metrics}.
+- F1-score - This single number balances precision and recall. It equals two times their product divided by their sum.
+
+Los-Angeles-specific metrics
+- Convergence speed - the number of steps the system needs until the performance value reaches ninety percent of its final level.
+- Final entropy - the degree to which the probability distribution concentrates when the system has converged.
+
+We present exact definitions in Appendix~\ref{app:metrics}.
 
 
-% ============================================================================
-\section{Summary}
-\label{sec:summary}
-% ============================================================================
+Section - Summary 
+Label - sec:summary
 
-This chapter sets out a step-by-step method for watching kelp forests that change over time. The method solves basic problems that appear when people use satellites to study the environment.
+This chapter describes a method for monitoring kelp forests that adjusts to changing conditions. The approach solves basic problems that occur when researchers use satellites to observe the environment.
 
-The central idea views detection as a selection task instead of a training task. We keep a collection of varied methods and we learn to choose one of them according to the context, rather than build a single model that must operate in every situation.
+\textbf{The core insight} treats detection as a selection task instead of a training task. We keep a collection of varied methods and learn to pick one according to context, rather than build a single model that must function in every situation.
 
-The framework contains three parts.
+The framework consists of three components. 
+Global policy learning monitors the overall success of heuristics through Learning Automata. 
+Context aware adaptation adjusts the selection of heuristics to match environmental conditions - retrieving information from memory. 
+Sparse label handling supports learning when validation feedback arrives irregularly or with delay.
 
-Global policy learning observes the general success of heuristics through Learning Automata.
+The new element is a dual layer non-stationarity model - it enlarges classical LA theory so that the system copes with two problems - the environment alters over time (Layer 1) and feedback arrives at irregular moments (Layer 2). The model gives a theoretical basis for learning when an operational monitor has to work under those two practical limits.
 
-Context aware adaptation adjusts the choice of heuristic to the present state of the environment - retrieving stored cases.
+Evaluation applies Leave-One-Site-Out cross validation across kelp forests located along the coast of British Columbia. The process includes staged ablations that isolate effective configurations and assess robustness when feedback is sparse.
 
-Sparse label handling allows the system to learn even when validation signals arrive rarely or late.
-
-The new contribution consists of a dual layer non-stationarity model. This model extends classical LA theory so that it covers two sources of change - first, environmental conditions that vary over time - second, feedback that arrives at irregular moments. The construction gives a theoretical basis for learning when an operational monitoring system must work under real world constraints.
-
-The evaluation procedure applies Leave-One-Site-Out cross validation to every coastal kelp forest site in British Columbia. It removes components in a staged manner to discover which configurations perform well and to check how the system behaves when feedback data are scarce.
-
-The next chapters show test outcomes that confirm every part and that prove the framework works for kelp forest monitoring that adapts.
+Later chapters set out the experimental outcomes that confirm every component and that show how well the framework performs when it monitors kelp forests in an adaptive way.
 
 
 % ============================================================================
@@ -549,12 +541,12 @@ The next chapters show test outcomes that confirm every part and that prove the 
 % ============================================================================
 \appendix
 
-\section{Formal Statement of the Problem}
-\label{app:formal}
+Section - Formal Problem Definition 
+Label - app:formal
 
 \subsection{Input Space}
 
-A satellite image tile that was captured at time t is represented by the symbol x_t. This tile is a three dimensional array of real numbers shaped as B rows, each of size H by W. The first dimension B equals the count of spectral bands. The second and third dimensions give the tile's height plus width in pixels. For a Sentinel-2 product, B is 12, both H besides W are 512 and every pixel covers a ground square ten metres on a side.
+A satellite image captured at time t is stored as a three dimensional array x_t. Its first axis spans the 12 spectral bands of Sentinel-2, the second axis spans 512 rows and the third axis spans 512 columns - each pixel covers a ground square of side 10 m - the tile measures 5.12 km Ã 5.12 km.
 
 The context vector $\mathbf{c}_t \in \mathbb{R}^D$ encodes environmental conditions:
 \begin{equation}
@@ -583,22 +575,13 @@ We learn a policy $\pi : (\mathbf{x}, \mathbf{c}) \rightarrow \Delta^{r-1}$ maxi
 \end{equation}
 
 
-\section{Automata Theory for Learning}
-\label{app:la-theory}
+Section - Basic Ideas of Learning Automata
 
 \subsection{Basic Formulation}
 
-\begin{definition}[Learning Automaton] 
-A Learning Automaton is a four part object written as $\langle \mathcal{A}, \mathcal{R}, \mathbf{p}, T \rangle$ where
-\begin{itemize}[noitemsep] 
-\item $\mathcal{A} = \{\alpha_1, \ldots, \alpha_r\}$ is the set that lists every action the automaton is allowed to choose; 
-\item $\mathcal{R} = \{0, 1\}$ is the set that contains the two possible responses from the environment: 0 stands for reward and 1 stands for penalty; 
-\item $\mathbf{p}(n) = [p_1(n), \ldots, p_r(n)]^\top$ is the column vector that stores, for step $n$, the probability of selecting each separate action; 
-\item $T$ is the fixed rule that revises every probability once the automaton receives a response. 
-\end{itemize} 
-\end{definition}
+A Learning Automaton consists of four fixed parts - a set of actions, a set of responses, a vector of probabilities that changes over time and a rule that alters the vector. The set of actions contains every distinct choice the automaton may select - each action is labeled Î±â through Î±áµ£. The set of responses contains only two symbols: 0 stands for reward and 1 stands for penalty. At every step n, the automaton holds a probability vector p(n) - each entry páµ¢(n) gives the chance that action Î±áµ¢ will be chosen next. The rule T revises the entire vector after each action and its resulting response - the probabilities shift as experience accumulates.
 
-Each setting contains a set of penalty probabilities $\{c_1, \ldots, c_r\}$. For every element $c_i$, the value equals the conditional probability that the random variable $\beta$ takes the value 0 given that the random variable $\alpha$ equals the specific value $\alpha_i$.
+The environment contains a set of penalty probabilities, each denoted by \( c_1 \) through \( c_r \). For every \( c_i \), the value equals the conditional probability that the random variable \( \beta \) takes the value 0 given that the random variable \( \alpha \) equals the specific outcome \( \alpha_i \).
 
 RESULT_TOO_LONG
 
@@ -609,10 +592,9 @@ Update on reward only:
 \text{If } \beta(n) = 0: \quad & p_i(n+1) = p_i(n) \quad \forall i
 \end{align}
 
-Theorem (L$_{\text{R-I}}$ Convergence) 
-If the penalty probabilities differ and form a strict ascending sequence $c_1 < c_2 < \cdots < c_r$ then the L$_{\text{R-I}}$ scheme reaches the best action with probability one.
+If the penalty probabilities are all different and ordered as câ < câ < â¦ < cáµ£, the L_{R-I} scheme selects the best action with probability one as the number of trials grows without bound.
 
-RESULT_TOO_LONG
+This subsection introduces the Linear Reward Penalty model, abbreviated as L$_{\text{R-P}}$.
 
 Update on both reward and penalty:
 \begin{align}
@@ -641,14 +623,11 @@ H(\mathbf{p}) &= -\sum_{i=1}^{r} p_i \log_2 p_i \\
 
 RESULT_TOO_LONG
 
-Bayesian estimation starts from a Beta posterior for every parameter vector entry. 
-Each posterior density has the form p(Î¸_i | data) â Beta(Î±_i, Î²_i). 
-The algorithm revises each pair (Î±_i, Î²_i) in the same way that pursuit methods revise action probabilities. 
-The procedure needs minimal time to reach an Îµ-optimal policy.
+Bayesian estimation uses a Beta distribution as the posterior for every parameter Î¸i. The formula states that the posterior density of Î¸i given the observed data is proportional to a Beta distribution whose shape parameters are Î±i and Î²i. The procedure applies pursuit style update rules. The resulting scheme belongs to the fastest algorithms that deliver an Îµ-optimal solution.
 
 
-\section{Algorithm Pseudocode}
-\label{app:algorithms}
+Section - Algorithm Pseudocode
+Label - app:algorithms
 
 \begin{algorithm}[H]
 \caption{Framework Inference}
@@ -746,19 +725,19 @@ T09UUU & 9U & September 2, 2023 & Summer & $\sim$42 \\
 \end{align}
 
 
-The bibliography section starts here. 
-The document selects the style named plain for the list of references. 
-The list itself begins and is set to hold up to ninety nine entries.
+The bibliography section begins. 
+We select the plain style for the list of references. 
+The list environment opens and reserves space for up to ninety nine entries.
 
-K. S. Narendra besides K. S - thathachar wrote the book Learning Automata - An Introduction, which was published by Prentice Hall in 1989.
+K. S. Narendra besides K. S - thathachar wrote a book titled Learning Automata - An Introduction, which Prentice Hall published in 1989.
 
-M. A. L. Thathachar besides P. S - sastry present a survey of the types of learning automata. The article appears in IEEE Transactions on Systems, Man or Cybernetics, Part B, volume 32, number 6, on pages 711 - 722, dated 2002.
+M. A. L. Thathachar besides P. S - sastry present a survey of the main classes of learning automata. The article appears in IEEE Transactions on Systems, Man or Cybernetics, Part B, volume 32, issue 6, pages 711 - 722, published in 2002.
 
-S - b., Dupont, C., Boyer, L., Juanes, F. and Costa, M. employed passive remote sensing to chart bull kelp. The report appears in Global Ecology besides Conservation, volume 22, article identifier e00948, year 2020.
+S - b., Dupont, C., Boyer, L., Juanes, F. and Costa, M. Passive remote sensing technology for mapping bull kelp. Global Ecology besides Conservation, 22:e00948, 2020.
 
-S. Starko and coworkers report that kelp forests along the British Columbia coast contain communities with pronounced heterogeneity. Their findings appear in the Journal of Phycology for the year 2024.
+S. and co authors - heterogeneity within British Columbia kelp forest communities. Journal of Phycology, 2024.
 
-A. Mora Soto and co authors examine the difficulties that appear when researchers attempt to locate kelp forests across the entire planet by means of satellite images.
+A. Mora Soto and co authors identify the principal obstacles that hinder the reliable identification of kelp forests across the entire planet in a 2024 paper for Remote Sensing of Environment.
 
 \end{thebibliography}
 

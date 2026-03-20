@@ -10,7 +10,7 @@
 CONFIG ?= config.yaml
 
 # Conda environment and Python interpreter
-CONDA_ENV = kelp
+CONDA_ENV = uvic
 CONDA_ACTIVATE = eval "$$(~/anaconda3/bin/conda shell.zsh hook)" && conda activate $(CONDA_ENV)
 PYTHON = python3
 

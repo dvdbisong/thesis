@@ -30,7 +30,8 @@
       "Bash(cat:*)",
       "WebFetch(domain:dpird-dma.github.io)",
       "Bash(humanize:*)",
-      "WebFetch(domain:ai-text-humanizer.com)"
+      "WebFetch(domain:ai-text-humanizer.com)",
+      "Bash(earthengine authenticate:*)"
     ],
     "deny": []
   }
